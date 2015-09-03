@@ -9,7 +9,7 @@ Works with (Todo):
  * Windows ✘
  * Linux ✘
 
- ![Preview](https://github.com/mulian/smart-daemon-controll/blob/master/preview.gif)
+ ![Preview](https://raw.githubusercontent.com/mulian/smart-daemon-controll/master/preview.gif)
 
 ## Install Steps
 1. Install smart-daemon-controll (apm install ...)
