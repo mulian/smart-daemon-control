@@ -1,7 +1,6 @@
 # smart-daemon-controll package
 
-Easy controll your Development Daemons like PHP, Apache, Nginx, MySql.
-Easy to install (if you already use brew currently).
+Easy manage and controll your development Daemons like PHP, Apache, Nginx, MySql in your status bar.
 
 Works with (Todo):
  * Mac OS X
