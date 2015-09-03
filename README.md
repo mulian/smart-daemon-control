@@ -10,6 +10,8 @@ Works with (Todo):
  * Windows ✘
  * Linux ✘
 
+ ![A screenshot of your package](https://f.cloud.github.com/assets/69169/2290250/c35d867a-a017-11e3-86be-cd7c5bf3ff9b.gif)
+
 ## Install Steps
 1. Install smart-daemon-controll (apm install ...)
 2. Scan your installed Daemons
@@ -22,7 +24,3 @@ Works with (Todo):
 ## Setup your Daemons on Package Settings to ..
  ..* .. start with Atom
  ..* .. hide in status-bar
-
-
-
-![A screenshot of your package](https://f.cloud.github.com/assets/69169/2290250/c35d867a-a017-11e3-86be-cd7c5bf3ff9b.gif)
