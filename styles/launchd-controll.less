@@ -3,6 +3,9 @@
 // See https://github.com/atom/atom-dark-ui/blob/master/styles/ui-variables.less
 // for a full listing of what's available.
 @import "ui-variables";
+@color_off: @background-color-error;
+@color_on: @background-color-success;
+@color_load: @background-color-info;
 
 .launchd-controll {
 
@@ -17,11 +20,11 @@
   cursor: pointer;
 }
 .launchd-controll .on {
-  color: #257e2e;
+  color: @color_on;
 }
 .launchd-controll .off {
-  color: #e75e3a;
+  color: @color_off;
 }
 .launchd-controll .load {
-  color: #d4e73a;
+  color: @color_load;
 }

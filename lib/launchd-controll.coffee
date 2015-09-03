@@ -111,7 +111,7 @@ module.exports = LaunchdControll =
         "hide":
           type: 'boolean'
           default: false
-        "Start with Atom":
+        "autostart":
           type: 'boolean'
           default: false
     @saveToConfig()

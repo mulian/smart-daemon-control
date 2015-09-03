@@ -6,18 +6,29 @@ class DaemonIconView
   status : null
   inProcess : false
 
-  constructor : (@serializedState,@name,@path,@daemonControll) ->
+  constructor : (@serializedState,@setting,@daemonControll) ->
     @element = $("<span/>",
       class : 'launchd-controll-daemon-icon load'
-      text : @name
+      text : @setting.key
     )
     @status = false
     @element.click (event) =>
       @toggle()
     @checkStatus()
+    @addSettingListener()
+    @setSettings(@setting)
+
+  setSettings : (@setting) ->
+    if @setting.hide
+      @hide()
+    else @show()
+
+  addSettingListener : () ->
+    atom.config.onDidChange "launchd-controll.#{@setting.key}", ({newValue, oldValue}) =>
+      @setSettings newValue
 
   checkStatus : () ->
-    @daemonControll.launchctl_check @name, @setRunning, @setStop
+    @daemonControll.launchctl_check @setting.key, @setRunning, @setStop
 
   setRunning : () =>
     @element.removeClass "off load"
@@ -27,6 +38,9 @@ class DaemonIconView
     @element.removeClass "on load"
     @element.addClass "off"
     @status=false
+    if @setting.autostart
+      @start()
+      @setting.autostart=false
 
   setLoad : () =>
     @inProcess=true
@@ -34,7 +48,8 @@ class DaemonIconView
     @element.addClass "load"
 
   toggle: () ->
-    if @status @stop()
+    if @status
+      @stop()
     else @start()
 
   startCallBack : (err) =>
@@ -46,7 +61,7 @@ class DaemonIconView
   start : () ->
     if !@inProcess
       @setLoad()
-      @daemonControll.launchctl_run @path, true, @startCallBack
+      @daemonControll.launchctl_run @setting.path, true, @startCallBack
     else console.log "There is already an process"
 
   stopCallBack : (err) =>
@@ -58,5 +73,10 @@ class DaemonIconView
   stop : () ->
     if !@inProcess
       @setLoad()
-      @daemonControll.launchctl_run @path, false, @stopCallBack
+      @daemonControll.launchctl_run @setting.path, false, @stopCallBack
     else console.log "There is already an process"
+
+  hide: ->
+    @element.addClass 'hidden'
+  show: ->
+    @element.removeClass 'hidden'

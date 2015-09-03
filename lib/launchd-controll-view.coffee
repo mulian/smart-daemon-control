@@ -21,13 +21,15 @@ class LaunchdControllView
   initialize: (@statusBar) ->
     console.log "add"
     for key,obj of atom.config.get('launchd-controll')
-      console.log "add #{key}"
-      icon = new DaemonIconView(@serializedState,key,obj.path,@daemonControll)
+      console.log "add #{key} with"
+      obj.key = key
+      console.log obj
+      icon = new DaemonIconView(@serializedState,obj,@daemonControll)
       @icons.push icon
       @element.append icon.element
 
   hide: ->
-    @element.className = 'hidden'
+    @element.addClass 'hidden'
 
   # Returns an object that can be retrieved when package is activated
   serialize: ->
