@@ -6,7 +6,7 @@
   "keywords": [
     "Daemon","Controll","brew","Mac OS X"
   ],
-  "repository": "https://github.com/atom/smart-daemon-controll",
+  "repository": "https://github.com/mulian/smart-daemon-controll",
   "license": "MIT",
   "engines": {
     "atom": ">=1.0.0 <2.0.0"
