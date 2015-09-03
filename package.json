@@ -1,7 +1,7 @@
 {
   "name": "smart-daemon-controll",
   "main": "./lib/smart-daemon-controll",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Easy manage and controll your development Daemons like PHP, Apache, Nginx, MySql in your status bar.",
   "keywords": [
     "Daemon",
