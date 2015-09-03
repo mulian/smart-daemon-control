@@ -8,7 +8,7 @@ class LaunchdControllView
   daemonControll : null
   icons : []
 
-  constructor: (@serializedState) ->
+  constructor: (@serializedState,@scannServices) ->
     #Create root element
     @element = $("<div/>",
       class: "inline-block launchd-controll",
@@ -16,14 +16,22 @@ class LaunchdControllView
     # @element = document.createElement('div')
     # @element.className = "inline-block"
     # @element.classList.add('launchd-controll')
+    @showScanButton() if !@scannServices.succesfulScan()
     @daemonControll = new DaemonControll()
 
+  showScanButton: () ->
+    @scanButton = $("<span/>",
+      text: "Scan Daemons now"
+      class: "scanButton"
+    ).click ()=>
+      @scanButton.text "reload Atom"
+      @scannServices.run()
+      @scanButton.click = null
+    @element.append @scanButton
+
   initialize: (@statusBar) ->
-    console.log "add"
     for key,obj of atom.config.get('launchd-controll')
-      console.log "add #{key} with"
       obj.key = key
-      console.log obj
       icon = new DaemonIconView(@serializedState,obj,@daemonControll)
       @icons.push icon
       @element.append icon.element

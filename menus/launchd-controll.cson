@@ -1,22 +1,30 @@
 # See https://atom.io/docs/latest/hacking-atom-package-word-count#menus for more details
+
 #Right Click
+### there is no benefit for this or?
 'context-menu':
   'atom-text-editor': [
     {
-      'label': 'Toggle launchd-controll'
-      'command': 'launchd-controll:toggle'
+      'label': 'Scan Daemons'
+      'command': 'launchd-controll:scan-daemons'
     }
   ]
+###
+
 #Top Menu
 'menu': [
   {
     'label': 'Packages'
     'submenu': [
-      'label': 'launchd-controll'
+      'label': 'Smart Daemon Controll'
       'submenu': [
         {
-          'label': 'Toggle'
-          'command': 'launchd-controll:toggle'
+          'label': 'Scan Daemons'
+          'command': 'launchd-controll:scan-daemons'
+        },
+        {
+          'label': 'Reset Scan'
+          'command': 'launchd-controll:scan-reset'
         }
       ]
     ]
