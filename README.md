@@ -9,6 +9,8 @@ Works with (Todo):
  * Windows ✘
  * Linux ✘
 
+ ![Preview](https://github.com/mulian/smart-daemon-controll/blob/master/preview.gif)
+
 ## Install Steps
 1. Install smart-daemon-controll (apm install ...)
 2. Scan your installed Daemons
@@ -21,5 +23,3 @@ Works with (Todo):
 ## Setup your Daemons on Package Settings to ..
  * .. start with Atom
  * .. hide in status-bar
-
-![Preview](https://github.com/mulian/smart-daemon-controll/blob/master/preview.gif)
