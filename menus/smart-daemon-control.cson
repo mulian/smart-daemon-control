@@ -6,7 +6,7 @@
   'atom-text-editor': [
     {
       'label': 'Scan Daemons'
-      'command': 'launchd-controll:scan-daemons'
+      'command': 'launchd-control:scan-daemons'
     }
   ]
 ###
@@ -16,15 +16,15 @@
   {
     'label': 'Packages'
     'submenu': [
-      'label': 'Smart Daemon Controll'
+      'label': 'Smart Daemon Control'
       'submenu': [
         {
           'label': 'Scan Daemons'
-          'command': 'launchd-controll:scan-daemons'
+          'command': 'launchd-control:scan-daemons'
         },
         {
           'label': 'Reset Scan'
-          'command': 'launchd-controll:scan-reset'
+          'command': 'launchd-control:scan-reset'
         }
       ]
     ]

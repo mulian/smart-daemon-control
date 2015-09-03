@@ -1,18 +1,18 @@
-# smart-daemon-controll package
+# smart-daemon-control package
 
-Easy manage and controll your development Daemons like PHP, Apache, Nginx, MySql in your status bar.
+Easy manage and control your development Daemons like PHP, Apache, Nginx, MySql in your status bar.
 
-Works with (Todo):
+Use with (Todo):
  * Mac OS X
    * brew ✔
    * macports ?
  * Windows ✘
  * Linux ✘
 
- ![Preview](https://raw.githubusercontent.com/mulian/smart-daemon-controll/master/preview.gif)
+ ![Preview](https://raw.githubusercontent.com/mulian/smart-daemon-control/master/preview.gif)
 
 ## Install Steps
-1. Install smart-daemon-controll (apm install ...)
+1. Install smart-daemon-control (e.g. apm install smart-daemon-control)
 2. Scan your installed Daemons
  * [⌘ + ⇧ + P] and choose "Smart Daemon Controll: Scan Daemons"
  * Menu Bar: Packages -> Smart Daemon Controll -> Scan Daemons

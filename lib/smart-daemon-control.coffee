@@ -1,28 +1,28 @@
-SmartDaemonControllView = require './smart-daemon-controll-view'
+SmartDaemonControlView = require './smart-daemon-control-view'
 {CompositeDisposable} = require 'atom'
 ScanDeamons = require './scan-deamons'
 
-module.exports = SmartDaemonControll =
+module.exports = SmartDaemonControl =
   config: require '../config.json' #the config is ready, if you already install
   defaultConfig: {} #this is the defaultConfig for Global Settings
 
-  smartDaemonControllView: null
+  smartDaemonControlView: null
   subscriptions: null
 
   activate: (state) ->
     @subscriptions = new CompositeDisposable # Events subscribed to in atom's system can be easily cleaned up with a CompositeDisposable
 
     @scanDeamons = new ScanDeamons(@defaultConfig)
-    @smartDaemonControllView = new SmartDaemonControllView(state.smartDaemonControllViewState,@scanDeamons)
+    @smartDaemonControlView = new SmartDaemonControlView(state.smartDaemonControlViewState,@scanDeamons)
 
     # Register command to scan
     @subscriptions.add atom.commands.add 'atom-workspace',
-        'smart-daemon-controll:scan-daemons' : ()=> @scanDeamons.run()
-        'smart-daemon-controll:scan-reset' : ()=> @scanDeamons.reset()
+        'smart-daemon-control:scan-daemons' : ()=> @scanDeamons.run()
+        'smart-daemon-control:scan-reset' : ()=> @scanDeamons.reset()
 
   consumeStatusBar: (statusBar) ->
-    @smartDaemonControllView.initialize statusBar
-    @smartDaemonControllView.attach()
+    @smartDaemonControlView.initialize statusBar
+    @smartDaemonControlView.attach()
 
   test:() ->
     #div = document.createElement('div')
@@ -30,7 +30,7 @@ module.exports = SmartDaemonControll =
 
   deactivate: ->
     @subscriptions.dispose()
-    @smartDaemonControllView.detach()
+    @smartDaemonControlView.detach()
 
   serialize: ->
-    smartDaemonControllViewState: @smartDaemonControllView.serialize()
+    smartDaemonControlViewState: @smartDaemonControlView.serialize()

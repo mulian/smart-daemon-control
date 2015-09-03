@@ -2,14 +2,14 @@ packageName = require('../package.json').name
 $ = require 'jquery'
 
 module.exports =
-class DaemonControllItemView
+class DaemonControlItemView
   element : null
   status : null
   inProcess : false
 
-  constructor : (@serializedState,@setting,@daemonControll) ->
+  constructor : (@serializedState,@setting,@daemonControl) ->
     @element = $("<span/>",
-      class : 'smart-daemon-controll-item load'
+      class : 'smart-daemon-control-item load'
       text : @setting.key
     )
     @status = false
@@ -29,7 +29,7 @@ class DaemonControllItemView
       @setSettings newValue
 
   checkStatus : () ->
-    @daemonControll.launchctl_check @setting.key, @setRunning, @setStop
+    @daemonControl.launchctl_check @setting.key, @setRunning, @setStop
 
   setRunning : () =>
     @element.removeClass "off load"
@@ -62,7 +62,7 @@ class DaemonControllItemView
   start : () ->
     if !@inProcess
       @setLoad()
-      @daemonControll.launchctl_run @setting.path, true, @startCallBack
+      @daemonControl.launchctl_run @setting.path, true, @startCallBack
     else atom.notifications.addInfo "Wait"
 
   stopCallBack : (err) =>
@@ -74,7 +74,7 @@ class DaemonControllItemView
   stop : () ->
     if !@inProcess
       @setLoad()
-      @daemonControll.launchctl_run @setting.path, false, @stopCallBack
+      @daemonControl.launchctl_run @setting.path, false, @stopCallBack
     else atom.notifications.addInfo "Wait"
 
   hide: ->

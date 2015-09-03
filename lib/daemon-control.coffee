@@ -1,7 +1,7 @@
 {BufferedProcess} = require 'atom'
 
 module.exports =
-class DaemonControll
+class DaemonControl
   constructor: () ->
 
   #check if Service is already startet and run CallBack (cb) function
