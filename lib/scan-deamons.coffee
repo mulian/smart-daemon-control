@@ -10,7 +10,7 @@ clone = (obj) ->
   copy
 
 module.exports =
-class ScanServices
+class ScanDeamons
   rootPackageDir : null
   config : null
   constructor: (@defaultConfig) ->

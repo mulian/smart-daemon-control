@@ -1,7 +1,7 @@
-$ = jQuery = require 'jquery'
+$ = require 'jquery'
 
 module.exports =
-class DaemonIconView
+class DaemonControllItemView
   element : null
   status : null
   inProcess : false
@@ -55,26 +55,26 @@ class DaemonIconView
   startCallBack : (err) =>
     @inProcess=false
     if err
-      console.log "Fehler startCallBack"
+      atom.notifications.addError "Fehler startCallBack"
     else
       @setRunning()
   start : () ->
     if !@inProcess
       @setLoad()
       @daemonControll.launchctl_run @setting.path, true, @startCallBack
-    else console.log "There is already an process"
+    else atom.notifications.addInfo "Wait"
 
   stopCallBack : (err) =>
     @inProcess=false
     if err
-      console.log "Fehler startCallBack"
+      atom.notifications.addError "Fehler startCallBack"
     else
       @setStop()
   stop : () ->
     if !@inProcess
       @setLoad()
       @daemonControll.launchctl_run @setting.path, false, @stopCallBack
-    else console.log "There is already an process"
+    else atom.notifications.addInfo "Wait"
 
   hide: ->
     @element.addClass 'hidden'

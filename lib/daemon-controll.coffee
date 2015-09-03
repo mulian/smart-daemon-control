@@ -4,14 +4,6 @@ module.exports =
 class DaemonControll
   constructor: () ->
 
-
-  #toggle services
-  service_toggle:(service_file_name) ->
-    t = @
-    start = () -> t.launchctl_run service_file_name
-    stop = () -> t.launchctl_run service_file_name,false
-    @launchctl_check service_file_name,stop,start
-
   #check if Service is already startet and run CallBack (cb) function
   launchctl_check:(service_file_name,cbIsRunning,cbIsNotRunning) ->
     command = "launchctl"
