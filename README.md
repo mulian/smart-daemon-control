@@ -4,8 +4,8 @@ Easy manage and controll your development Daemons like PHP, Apache, Nginx, MySql
 
 Works with (Todo):
  * Mac OS X
- ..* brew ✔
- ..* macports ?
+   * brew ✔
+   * macports ?
  * Windows ✘
  * Linux ✘
 
@@ -14,12 +14,12 @@ Works with (Todo):
 ## Install Steps
 1. Install smart-daemon-controll (apm install ...)
 2. Scan your installed Daemons
- ..* [⌘ + ⇧ + P] and choose "Smart Daemon Controll: Scan Daemons"
- ..* Menu Bar: Packages -> Smart Daemon Controll -> Scan Daemons
+ * [⌘ + ⇧ + P] and choose "Smart Daemon Controll: Scan Daemons"
+ * Menu Bar: Packages -> Smart Daemon Controll -> Scan Daemons
 3. Restart Atom manualy or [⌘ + ⇧ + P] -> "Window: Reload"
 4. See your Daemons on right bottom (status-bar right)
- ..* Start, stop your Daemons with only **ONE CLICK**
+ * Start, stop your Daemons with only **ONE CLICK**
 
 ## Setup your Daemons on Package Settings to ..
- ..* .. start with Atom
- ..* .. hide in status-bar
+ * .. start with Atom
+ * .. hide in status-bar
