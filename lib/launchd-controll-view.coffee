@@ -1,21 +1,30 @@
+$ = jQuery = require 'jquery'
 DaemonControll = require "./daemon-controll"
+DaemonIconView = require "./daemon-icon-view"
 
 module.exports =
 class LaunchdControllView
   element : null
   daemonControll : null
+  icons : []
 
   constructor: (@serializedState) ->
     #Create root element
-    @element = document.createElement('div')
-    @element.className = "inline-block"
-    @element.classList.add('launchd-controll')
-    @element.textContent = "TEST"
-
+    @element = $("<div/>",
+      class: "inline-block launchd-controll",
+    )
+    # @element = document.createElement('div')
+    # @element.className = "inline-block"
+    # @element.classList.add('launchd-controll')
     @daemonControll = new DaemonControll()
 
   initialize: (@statusBar) ->
-    console.log atom.config.get('launchd-controll')
+    console.log "add"
+    for key,obj of atom.config.get('launchd-controll')
+      console.log "add #{key}"
+      icon = new DaemonIconView(@serializedState,key,obj.path,@daemonControll)
+      @icons.push icon
+      @element.append icon.element
 
   hide: ->
     @element.className = 'hidden'

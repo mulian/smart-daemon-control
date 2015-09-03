@@ -1,6 +1,6 @@
 {BufferedProcess} = require 'atom'
 
-module.exports = 
+module.exports =
 class DaemonControll
   constructor: () ->
 
@@ -27,13 +27,14 @@ class DaemonControll
     process = new BufferedProcess({command, args, stdout, exit})
 
   #run launchctl to (un)load service's
-  launchctl_run:(service_path,start=true) ->
+  launchctl_run:(service_path,start=true,cb) ->
     load = if start then 'load' else 'unload'
 
     command = "launchctl"
     args = [load,service_path]
     stdout = (output) ->
       #if output.indexOf(str) > -1
-    exit = (code) ->
+    exit = (code) =>
       console.log("#{load} #{service_path}")
+      cb(false)
     process = new BufferedProcess({command, args, stdout, exit})
