@@ -1,7 +1,7 @@
 LaunchdControllView = require './launchd-controll-view'
 {CompositeDisposable,Directory,File} = require 'atom'
-configFileName = '../config.json'
 
+configFileName = '../config.json'
 installTimeOut = null
 
 clone = (obj) ->
@@ -19,35 +19,29 @@ module.exports = LaunchdControll =
   modalPanel: null
   subscriptions: null
 
+  hideAll: () ->
+    #TODO
+
+  aktivateAll: () ->
+    #TODO
+
   activate: (state) ->
-    console.log "state"
-    console.log @
-    @launchdControllView = new LaunchdControllView(state.launchdControllViewState)
-    #@modalPanel = document.querySelector("status-bar").addLeftTile(item: @launchdControllView.getElement(), priority: 100)
-    #@modalPanel = atom.workspace.addBottomPanel(
-    # @modalPanel = atom.workspace.addBottomPanel(
-    #   item: @launchdControllView.getElement(),
-    #   visible: false
-    # )
-
     # Events subscribed to in atom's system can be easily cleaned up with a CompositeDisposable
-    @subscriptions = new CompositeDisposable
+    @compositeDisposable = new CompositeDisposable
 
+    @launchdControllView = new LaunchdControllView(state.launchdControllViewState)
+
+    str = "launchd-controll:blubb"
     # Register command that toggles this view
-    @subscriptions.add atom.commands.add 'atom-workspace', 'launchd-controll:install': => @install()
-
-    #meins
-    # filterElement = document.createElement 'atom-text-editor'
-    # filterElement.setAttribute 'mini', true
-    # filterElement.classList.add 'inline-block'
-    # filterElement.classList.add 'birch-statusbar-filter'
-    # filterStatusBarItem = statusBar.addLeftTile(item: filterElement, priority: 0)
+    @compositeDisposable.add atom.commands.add 'atom-workspace',
+        'launchd-controll:install' : ()=> @install()
+        'launchd-controll:hideall' : ()=> @hideAll()
+        'launchd-controll:aktivateall' : ()=> @aktivateAll()
 
   consumeStatusBar: (statusBar) ->
-    @statusBarTile = statusBar.addLeftTile(
-      item: @launchdControllView.getElement(),
-      priority: 100
-    )
+    @launchdControllView.initialize statusBar
+    @launchdControllView.attach()
+
 
   test:() ->
     div = document.createElement('div')
@@ -57,8 +51,8 @@ module.exports = LaunchdControll =
 
   deactivate: ->
     #@modalPanel.destroy()
-    #@subscriptions.dispose()
-    #@launchdControllView.destroy()
+    @compositeDisposable.dispose()
+    @launchdControllView.detach()
 
   serialize: ->
     launchdControllViewState: @launchdControllView.serialize()
@@ -128,6 +122,7 @@ module.exports = LaunchdControll =
       console.log "Succes"
     else
       #nothing added!
+      atom.notifications.addWarning "Nothing found to add."
       console.log "error"
 
   saveToConfig: ->
