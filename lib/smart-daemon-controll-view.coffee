@@ -1,6 +1,7 @@
 $ = require 'jquery'
 DaemonControll = require "./daemon-controll"
 DaemonControllItemView = require "./daemon-controll-item-view"
+packageName = require('../package.json').name
 
 module.exports =
 class SmartDaemonControllView
@@ -10,7 +11,7 @@ class SmartDaemonControllView
 
   constructor: (@serializedState,@scannServices) ->
     @element = $("<div/>",
-      class: "inline-block launchd-controll",
+      class: "inline-block smart-daemon-controll",
     )
     @showScanButton() if !@scannServices.succesfulScan()
     @daemonControll = new DaemonControll()
@@ -18,7 +19,7 @@ class SmartDaemonControllView
   showScanButton: () -> #on reset/first install
     @scanButton = $("<span/>",
       text: "Scan Daemons now"
-      class: "scanButton"
+      class: "scan-button"
     ).click ()=>
       @scanButton.text "reload Atom"
       @scannServices.run()
@@ -26,7 +27,7 @@ class SmartDaemonControllView
     @element.append @scanButton
 
   initialize: (@statusBar) -> #init the Daemon Item
-    for key,obj of atom.config.get('launchd-controll')
+    for key,obj of atom.config.get(packageName)
       obj.key = key
       item = new DaemonControllItemView(@serializedState,obj,@daemonControll)
       @items.push item

@@ -1,4 +1,5 @@
 {Directory,File} = require 'atom'
+packageName = require('../package.json').name
 CSON = require('cson')
 installTimeOut = null
 
@@ -14,17 +15,18 @@ class ScanDeamons
   rootPackageDir : null
   config : null
   constructor: (@defaultConfig) ->
-    @rootPackageDir = atom.packages.loadedPackages["launchd-controll"].path
+    @rootPackageDir = atom.packages.loadedPackages[packageName].path
   run: () ->
     @config = clone @defaultConfig
     if process.platform == "darwin" #mac
-      console.log process.platform
+      #console.log process.platform
       dir = new Directory('/usr/local/opt/')
       if dir.isDirectory() #brew
         @searchBrewPlist dir
 
     else if process.platform == "win32" #win
-      console.log process.platform
+      null
+      #console.log process.platform
 
   searchBrewPlist: (dir) ->
     re = /\.plist$/
@@ -68,7 +70,7 @@ class ScanDeamons
   #It is installed, if more then one Service are registrated.
   succesfulScan: ->
     if @config == null #with config
-      configEntry = atom.config.get('launchd-controll')
+      configEntry = atom.config.get(packageName)
       if configEntry?
         Object.keys(@defaultConfig).length < Object.keys(configEntry).length
       else false
@@ -77,16 +79,14 @@ class ScanDeamons
   postInstall : ->
     if @succesfulScan()
       atom.notifications.addInfo "Restart Atom!"
-      console.log "Succes"
     else
       #nothing added!
       atom.notifications.addWarning "Nothing found to add."
-      console.log "error"
 
   reset : ->
     #config hard reset, ist there a pretty way?
     userConfigCson = CSON.load atom.config.getUserConfigPath()
-    delete userConfigCson["*"]['launchd-controll']
+    delete userConfigCson["*"][packageName]
     userConfigFile = new File atom.config.getUserConfigPath()
     userConfigFile.write CSON.stringify userConfigCson
 
@@ -94,5 +94,5 @@ class ScanDeamons
     pageConfig = new File "#{@rootPackageDir}/config.json"
     pageConfig.write "{}"
 
-    delete atom.config.settings["launchd-controll"] #not necessery
+    delete atom.config.settings[packageName] #not necessery
     atom.notifications.addSuccess "Scan reset successful, restart Atom"

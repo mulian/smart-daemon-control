@@ -1,3 +1,4 @@
+packageName = require('../package.json').name
 $ = require 'jquery'
 
 module.exports =
@@ -8,7 +9,7 @@ class DaemonControllItemView
 
   constructor : (@serializedState,@setting,@daemonControll) ->
     @element = $("<span/>",
-      class : 'launchd-controll-daemon-icon load'
+      class : 'smart-daemon-controll-item load'
       text : @setting.key
     )
     @status = false
@@ -24,7 +25,7 @@ class DaemonControllItemView
     else @show()
 
   addSettingListener : () ->
-    atom.config.onDidChange "launchd-controll.#{@setting.key}", ({newValue, oldValue}) =>
+    atom.config.onDidChange "#{packageName}.#{@setting.key}", ({newValue, oldValue}) =>
       @setSettings newValue
 
   checkStatus : () ->

@@ -17,8 +17,8 @@ module.exports = SmartDaemonControll =
 
     # Register command to scan
     @subscriptions.add atom.commands.add 'atom-workspace',
-        'launchd-controll:scan-daemons' : ()=> @scanDeamons.run()
-        'launchd-controll:scan-reset' : ()=> @scanDeamons.reset()
+        'smart-daemon-controll:scan-daemons' : ()=> @scanDeamons.run()
+        'smart-daemon-controll:scan-reset' : ()=> @scanDeamons.reset()
 
   consumeStatusBar: (statusBar) ->
     @smartDaemonControllView.initialize statusBar

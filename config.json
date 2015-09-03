@@ -1,1 +1,53 @@
-{}
+{
+    "nginx": {
+        "type": "object",
+        "properties": {
+            "path": {
+                "type": "string",
+                "default": "/usr/local/opt/nginx/homebrew.mxcl.nginx.plist"
+            },
+            "hide": {
+                "type": "boolean",
+                "default": false
+            },
+            "autostart": {
+                "type": "boolean",
+                "default": false
+            }
+        }
+    },
+    "php56": {
+        "type": "object",
+        "properties": {
+            "path": {
+                "type": "string",
+                "default": "/usr/local/opt/php56/homebrew.mxcl.php56.plist"
+            },
+            "hide": {
+                "type": "boolean",
+                "default": false
+            },
+            "autostart": {
+                "type": "boolean",
+                "default": false
+            }
+        }
+    },
+    "mysql": {
+        "type": "object",
+        "properties": {
+            "path": {
+                "type": "string",
+                "default": "/usr/local/opt/mysql/homebrew.mxcl.mysql.plist"
+            },
+            "hide": {
+                "type": "boolean",
+                "default": false
+            },
+            "autostart": {
+                "type": "boolean",
+                "default": false
+            }
+        }
+    }
+}

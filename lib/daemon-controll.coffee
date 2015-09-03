@@ -27,6 +27,5 @@ class DaemonControll
     stdout = (output) ->
       #if output.indexOf(str) > -1
     exit = (code) =>
-      console.log("#{load} #{service_path}")
       cb(false)
     process = new BufferedProcess({command, args, stdout, exit})
