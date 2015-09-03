@@ -5,9 +5,6 @@
   "description": "A short description of your package",
   "keywords": [
   ],
-  "activationCommands": {
-    "atom-workspace": "launchd-controll:toggle"
-  },
   "repository": "https://github.com/atom/launchd-controll",
   "license": "MIT",
   "engines": {

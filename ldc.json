@@ -1,0 +1,12 @@
+{
+  "Nginx" : {
+    "command" : "consolen command",
+    "visible" : true,
+    "autoStart" : true
+  },
+  "MySQL" : {
+    "command" : "consolen command",
+    "visible" : false,
+    "autoStart" : true 
+  }
+}
