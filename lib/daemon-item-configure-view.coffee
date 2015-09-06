@@ -53,10 +53,10 @@ class DaemonItemConfigureView extends View
           @div "start with this project"
         @td =>
           @input type:"checkbox", id: "daemon-item-project-autorun"
-#      @tr =>
-#        @td ""
-#        @td =>
-#          @button "New Daemon"
+      @tr =>
+        @td ""
+        @td =>
+          @button "Delete Daemon", click: 'delete'
 
   initialize: ->
     $('#daemon-item-title').mousedown @test
@@ -64,34 +64,33 @@ class DaemonItemConfigureView extends View
   attach: (@smartDaemonControl) ->
     @modalPanel = atom.workspace.addModalPanel(item: @, visible: false)
     @initialize();
-    dI = new DaemonItem("BLUBB","ruun","stoooop","cheeeckit","str!",true,false)
-    @load(dI)
-    # setInterval =>
-    #   console.log dI
-    # , 2000
+
+  delete: () =>
+    @smartDaemonControl.removeDaemon @daemonItem
+    @modalPanel.hide()
 
   load: (@daemonItem) ->
     $('#daemon-item-name').attr('value', @daemonItem.name).keyup (event) =>
       @daemonItem.name = event.target.value
-      @smartDaemonControl.saveDaemonItems()
+      @smartDaemonControl.refreshDaemonItem(daemonItem)
     $('#daemon-item-cmd-run').attr('value',@daemonItem.cmdRun).keyup (event) =>
       @daemonItem.cmdRun = event.target.value
-      @smartDaemonControl.saveDaemonItems()
+      @smartDaemonControl.refreshDaemonItem(daemonItem)
     $('#daemon-item-cmd-stop').attr('value',@daemonItem.cmdStop).keyup (event) =>
       @daemonItem.cmdStop = event.target.value
-      @smartDaemonControl.saveDaemonItems()
+      @smartDaemonControl.refreshDaemonItem(daemonItem)
     $('#daemon-item-cmd-check').attr('value',@daemonItem.cmdCheck).keyup (event) =>
       @daemonItem.cmdCheck = event.target.value
-      @smartDaemonControl.saveDaemonItems()
+      @smartDaemonControl.refreshDaemonItem(daemonItem)
     $('#daemon-item-str-check').attr('value',@daemonItem.strCheck).keyup (event) =>
       @daemonItem.strCheck = event.target.value
-      @smartDaemonControl.saveDaemonItems()
+      @smartDaemonControl.refreshDaemonItem(daemonItem)
     $('#daemon-item-hide').prop('checked',@daemonItem.hide).change (event) =>
       @daemonItem.hide = $(event.target).prop('checked')
-      @smartDaemonControl.saveDaemonItems()
+      @smartDaemonControl.refreshDaemonItem(daemonItem)
     $('#daemon-item-autorun').prop('checked',@daemonItem.autorun).change (event) =>
       @daemonItem.autorun = $(event.target).prop('checked')
-      @smartDaemonControl.saveDaemonItems()
+      @smartDaemonControl.refreshDaemonItem(daemonItem)
 
   aus: ->
     console.log "BLUBB:"

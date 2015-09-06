@@ -20,7 +20,7 @@ class ScanDeamons
       #console.log process.platform
 
   searchPlist: (dir) ->
-    re = /\.plist$/
+    re = /^([\w\.]+)\.plist$/
     searchPlist = (dir) =>
       dir.getEntries (err,entries) =>
         for entrie in entries
@@ -28,16 +28,18 @@ class ScanDeamons
           if entrie.isDirectory()
             searchPlist entrie
           else
-            if re.exec(entrie.getBaseName()) != null
-              regNewPlist entrie
-    regNewPlist = (file) =>
+            result = re.exec(entrie.getBaseName())
+            if result != null
+              regNewPlist entrie, result[1]
+    regNewPlist = (file,fileNameWithoutAfterDot) =>
       #console.log "Servicename: #{file.getParent().getBaseName()}, filename: #{file.path}"
-      @addEntryToConfig file.getParent().getBaseName(), file.path, file.getBaseName()
+      @addEntryToConfig file.getParent().getBaseName(), file.path, fileNameWithoutAfterDot
     #console.log "scan dir for *.plist"
     searchPlist dir
 
-  addEntryToConfig: (daemonName,filePath,fileName) ->
+  addEntryToConfig: (daemonName,filePath,fileNameWithoutAfterDot) ->
+    #console.log fileNameWithoutAfterDot
     @smartDaemonControl.addDaemon new DaemonItem daemonName,"launchctl load #{filePath}",
-                                                "launchctl unload #{filePath}","launchctl list #{filePath}",
-                                                fileName, false, false, false
+                                                "launchctl unload #{filePath}","launchctl list",
+                                                fileNameWithoutAfterDot, false, false, false
     atom.notifications.addInfo "#{daemonName} hinzugefügt"

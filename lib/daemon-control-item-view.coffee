@@ -6,30 +6,44 @@ class DaemonControlItemView
   element : null
   status : null
   inProcess : false
+  dblclickTimeout : null
 
-  constructor : (@serializedState,@setting,@daemonControl) ->
+  constructor : (@serializedState,@daemonItem,@smartDaemonControl) ->
     @element = $("<span/>",
       class : 'smart-daemon-control-item load'
-      text : @setting.key
+      text : @daemonItem.name
     )
     @status = false
     @element.click (event) =>
-      @toggle()
+      if @dblclickTimeout == null
+        @dblclickTimeout = setTimeout =>
+          @toggle()
+          @dblclickTimeout = null
+        , 200
+      else
+        clearTimeout @dblclickTimeout
+        @dblclickTimeout=null
+        @showConfig()
     @checkStatus()
     @addSettingListener()
-    @setSettings(@setting)
+    @checkHide()
 
-  setSettings : (@setting) ->
-    if @setting.hide
+  refresh: () ->
+    @checkHide()
+
+  showConfig: () ->
+    @smartDaemonControl.showItemConfig @daemonItem
+
+  checkHide : () ->
+    if @daemonItem.hide
       @hide()
     else @show()
 
   addSettingListener : () ->
-    atom.config.onDidChange "#{packageName}.#{@setting.key}", ({newValue, oldValue}) =>
-      @setSettings newValue
+    #on set invisble
 
   checkStatus : () ->
-    @daemonControl.launchctl_check @setting.key, @setRunning, @setStop
+    @smartDaemonControl.daemonControl.check @daemonItem, @setRunning, @setStop
 
   setRunning : () =>
     @element.removeClass "off load"
@@ -39,9 +53,9 @@ class DaemonControlItemView
     @element.removeClass "on load"
     @element.addClass "off"
     @status=false
-    if @setting.autostart
+    if @daemonItem.autorun
       @start()
-      @setting.autostart=false
+      @daemonItem.autorun=false
 
   setLoad : () =>
     @inProcess=true
@@ -62,7 +76,7 @@ class DaemonControlItemView
   start : () ->
     if !@inProcess
       @setLoad()
-      @daemonControl.launchctl_run @setting.path, true, @startCallBack
+      @smartDaemonControl.daemonControl.run @daemonItem.cmdRun, @startCallBack
     else atom.notifications.addInfo "Wait"
 
   stopCallBack : (err) =>
@@ -74,7 +88,7 @@ class DaemonControlItemView
   stop : () ->
     if !@inProcess
       @setLoad()
-      @daemonControl.launchctl_run @setting.path, false, @stopCallBack
+      @smartDaemonControl.daemonControl.run @daemonItem.cmdStop, @stopCallBack
     else atom.notifications.addInfo "Wait"
 
   hide: ->

@@ -4,28 +4,33 @@ module.exports =
 class DaemonControl
   constructor: () ->
 
-  #check if Service is already startet and run CallBack (cb) function
-  launchctl_check:(service_file_name,cbIsRunning,cbIsNotRunning) ->
-    command = "launchctl"
-    args = ["list"]
-    stdout = (output) ->
-      #console.log(output)
-      if output.indexOf(service_file_name) >- 1
-        cbIsRunning()
-      else
-        cbIsNotRunning()
-    exit = (code) ->
-      console.log("#{command} exited with #{code}")
-    process = new BufferedProcess({command, args, stdout, exit})
+  strToCmd: (str) ->
+    res = str.split " "
+    return {} =
+      command: res.shift(),
+      args: res
 
-  #run launchctl to (un)load service's
-  launchctl_run:(service_path,start=true,cb) ->
-    load = if start then 'load' else 'unload'
+  check: (daemonItem,cbIsRunning,cbIsNotRunning) ->
+    if daemonItem.cmdCheck?
+      cmd = @strToCmd daemonItem.cmdCheck
+      command = cmd.command
+      args = cmd.args
+      alreadyGetCheckString = false
+      stdout = (output) ->
+        if output.indexOf(daemonItem.strCheck) >- 1
+          alreadyGetCheckString = true
+      exit = (code) ->
+        if alreadyGetCheckString
+          cbIsRunning()
+        else cbIsNotRunning()
+      process = new BufferedProcess({command, args, stdout, exit})
 
-    command = "launchctl"
-    args = [load,service_path]
+  run: (cmdStr,cb) ->
+    cmd = @strToCmd cmdStr
+    command = cmd.command
+    args = cmd.args
     stdout = (output) ->
       #if output.indexOf(str) > -1
     exit = (code) =>
-      cb(false)
+      cb()
     process = new BufferedProcess({command, args, stdout, exit})

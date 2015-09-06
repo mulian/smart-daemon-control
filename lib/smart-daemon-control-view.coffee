@@ -1,5 +1,4 @@
 $ = require 'jquery'
-DaemonControl = require "./daemon-control"
 DaemonControlItemView = require "./daemon-control-item-view"
 packageName = require('../package.json').name
 
@@ -7,14 +6,15 @@ module.exports =
 class SmartDaemonControlView
   element : null
   daemonControl : null
-  items : []
+  items : {}
 
-  constructor: (@serializedState,@scannServices) ->
+  constructor: (@serializedState,@smartDaemonControl) ->
     @element = $("<div/>",
       class: "inline-block smart-daemon-control",
     )
-    @showScanButton() #if !@scannServices.succesfulScan()
-    @daemonControl = new DaemonControl()
+    #@showScanButton() #if !@scannServices.succesfulScan()
+
+  initialize: (@statusBar) ->
 
   showScanButton: () -> #on reset/first install
     @scanButton = $("<span/>",
@@ -26,12 +26,13 @@ class SmartDaemonControlView
       @scanButton.click = null
     @element.append @scanButton
 
-  initialize: (@statusBar) -> #init the Daemon Item
-    for key,obj of atom.config.get(packageName)
-      obj.key = key
-      item = new DaemonControlItemView(@serializedState,obj,@daemonControl)
-      @items.push item
-      @element.append item.element
+  addDaemonItem: (daemonItem) ->
+    item = new DaemonControlItemView(@serializedState,daemonItem,@smartDaemonControl)
+    @items[daemonItem.id] = item
+    @element.append item.element
+  removeDaemon: (daemonItem) ->
+    @items[daemonItem.id].element.remove()
+    delete @items[daemonItem.id]
 
   hide: ->
     @element.addClass 'hidden'
