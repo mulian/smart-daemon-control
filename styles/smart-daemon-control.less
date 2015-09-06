@@ -10,6 +10,29 @@
 .smart-daemon-control {
 
 }
+#daemon-item-manager {
+  width: 100%;
+  background: @scrollbar-background-color;
+}
+#daemon-item-manager #daemon-item-title {
+  font-weight: bold;
+  text-align: center;
+}
+#daemon-item-manager td {
+  border-bottom: 3px solid @overlay-background-color;
+}
+#daemon-item-manager > tbody > tr > td:nth-child(1) {
+  text-align: right;
+  width: 120px;
+  padding-right: 5px;
+}
+#daemon-item-manager > tbody > tr > td:nth-child(2) {
+  width: calc(~"100% - 125px");
+}
+#daemon-item-manager input {
+  width: 100%;
+  border-radius: 4px;
+}
 
 .test .editor {
   display: inline-block;
