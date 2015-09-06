@@ -30,6 +30,7 @@ class DaemonControlItemView
 
   refresh: () ->
     @checkHide()
+    @element.text @daemonItem.name
 
   showConfig: () ->
     @smartDaemonControl.showItemConfig @daemonItem

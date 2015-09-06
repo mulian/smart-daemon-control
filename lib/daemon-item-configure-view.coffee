@@ -9,6 +9,8 @@ class DaemonItemConfigureView extends View
       @tr =>
         @td =>
           @div "Edit Daemon", id: "daemon-item-title", click: 'kill'
+        @td =>
+          @button "Delete Daemon", click: 'delete'
 #        @td =>
 #          @select id:"select-daemon", =>
 #            @option "mysql"
@@ -18,7 +20,7 @@ class DaemonItemConfigureView extends View
         @td =>
           @div "Daemon Name"
         @td =>
-          @input type:"text", id: "daemon-item-name"
+          @input type:"text", id: "daemon-item-name", autofocus: true
       @tr class: "daemon-cmd-run", =>
         @td =>
           @div "run command"
@@ -53,10 +55,7 @@ class DaemonItemConfigureView extends View
           @div "start with this project"
         @td =>
           @input type:"checkbox", id: "daemon-item-project-autorun"
-      @tr =>
-        @td ""
-        @td =>
-          @button "Delete Daemon", click: 'delete'
+
 
   initialize: ->
     $('#daemon-item-title').mousedown @test
