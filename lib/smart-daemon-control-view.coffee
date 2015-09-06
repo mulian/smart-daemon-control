@@ -13,7 +13,7 @@ class SmartDaemonControlView
     @element = $("<div/>",
       class: "inline-block smart-daemon-control",
     )
-    @showScanButton() if !@scannServices.succesfulScan()
+    @showScanButton() #if !@scannServices.succesfulScan()
     @daemonControl = new DaemonControl()
 
   showScanButton: () -> #on reset/first install

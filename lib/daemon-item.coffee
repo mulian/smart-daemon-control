@@ -1,5 +1,3 @@
 module.exports =
 class DaemonItem
-  constructor: (@name,@cmdRun,@cmdStop,@cmdCheck,@strCheck,@hide,@autostart)->
-  showConfig: () ->
-  
+  constructor: (@name,@cmdRun,@cmdStop,@cmdCheck,@strCheck,@hide,@autorun)->
