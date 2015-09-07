@@ -1,7 +1,7 @@
 # smart-daemon-control package
 
-Easy manage and control your development daemons like PHP, Apache, Nginx, MySql(, ALL DAEMONS) in your status bar.
-Use this package with all os!
+Easy manage and control your development daemons like PHP, Apache, Nginx, MySql(, ALL DAEMONS) in your status bar.<br>
+Use this package with all os.
 
 Scan algorithm for:
  * Mac OS X
