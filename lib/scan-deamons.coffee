@@ -29,7 +29,7 @@ class ScanDeamons
   constructor: (@daemonManagement) ->
 
   run: () ->
-    if process.platform == "darwins" #mac
+    if process.platform == "darwin" #mac
       new ScanDaemonsBrew(this)
     else #if /^win/.test(process.platform) #win
       atom.notifications.addInfo "There is no scan algorithm for your #{process.platform} platform, plaese add this!"

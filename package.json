@@ -7,7 +7,7 @@
     "daemon",
     "service",
     "control",
-    "start stop"
+    "start stop",
     "nginx",
     "apache",
     "php",

@@ -34,7 +34,7 @@ class DaemonManagement
     @daemonStatusBarContainerView.attach()
 
   loadDaemonItems: () ->
-    @daemonItems = require "../config.json"
+    @daemonItems = require "../daemons.json"
     highestKey = 0
     for itemKey,item of @daemonItems
       @setDaemonItemCommand item
@@ -47,7 +47,7 @@ class DaemonManagement
     @daemonStatusBarContainerView.items[item.id].refresh()
 
   saveDaemonItems: () ->
-    file = new File "#{@rootPackageDir}/config.json"
+    file = new File "#{@rootPackageDir}/daemons.json"
     file.write JSON.stringify(@daemonItems,null,4)
 
   addDaemon : (item) ->
@@ -71,7 +71,7 @@ class DaemonManagement
     @daemonItemConfigureView.show()
 
   newDaemon: ->
-    newD = new DaemonItem "Neu"
+    newD = new DaemonItem "New"
     @addDaemon newD
     @showItemConfig newD
 
