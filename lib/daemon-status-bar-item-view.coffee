@@ -2,13 +2,13 @@ packageName = require('../package.json').name
 $ = require 'jquery'
 
 module.exports =
-class DaemonControlItemView
+class DaemonStatusBarContainerView
   element : null
   status : null
   inProcess : false
   dblclickTimeout : null
 
-  constructor : (@serializedState,@daemonItem,@smartDaemonControl) ->
+  constructor : (@serializedState,@daemonItem,@daemonManagement) ->
     @element = $("<span/>",
       class : 'smart-daemon-control-item load'
       text : @daemonItem.name
@@ -33,7 +33,7 @@ class DaemonControlItemView
     @element.text @daemonItem.name
 
   showConfig: () ->
-    @smartDaemonControl.showItemConfig @daemonItem
+    @daemonManagement.showItemConfig @daemonItem
 
   checkHide : () ->
     if @daemonItem.hide
@@ -44,7 +44,7 @@ class DaemonControlItemView
     #on set invisble
 
   checkStatus : () ->
-    @smartDaemonControl.daemonControl.check @daemonItem, @setRunning, @setStop
+    @daemonManagement.daemonControl.check @daemonItem, @setRunning, @setStop
 
   setRunning : () =>
     @element.removeClass "off load"
@@ -77,7 +77,7 @@ class DaemonControlItemView
   start : () ->
     if !@inProcess
       @setLoad()
-      @smartDaemonControl.daemonControl.run @daemonItem.cmdRun, @startCallBack
+      @daemonManagement.daemonControl.run @daemonItem.cmdRun, @startCallBack
     else atom.notifications.addInfo "Wait"
 
   stopCallBack : (err) =>
@@ -89,7 +89,7 @@ class DaemonControlItemView
   stop : () ->
     if !@inProcess
       @setLoad()
-      @smartDaemonControl.daemonControl.run @daemonItem.cmdStop, @stopCallBack
+      @daemonManagement.daemonControl.run @daemonItem.cmdStop, @stopCallBack
     else atom.notifications.addInfo "Wait"
 
   hide: ->

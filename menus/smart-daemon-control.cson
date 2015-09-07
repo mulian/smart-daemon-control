@@ -23,8 +23,8 @@
           'command': 'launchd-control:scan-daemons'
         },
         {
-          'label': 'Reset Scan'
-          'command': 'launchd-control:scan-reset'
+          'label': 'New Daemon'
+          'command': 'launchd-control:new-daemon'
         }
       ]
     ]

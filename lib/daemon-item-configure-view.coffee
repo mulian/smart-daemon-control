@@ -1,7 +1,8 @@
 $ = require 'jquery'
 {TextEditorView,View} = require 'atom-space-pen-views'
-DaemonItem = require './daemon-item'
 
+#TODO: less jquery more atom-space-pen
+  #issue: raw input text got no backspace...
 module.exports =
 class DaemonItemConfigureView extends View
   @content: ->
@@ -62,13 +63,13 @@ class DaemonItemConfigureView extends View
     $('#daemon-item-title').mousedown @test
     @autoHide()
 
-  attach: (@smartDaemonControl) ->
+  attach: (@daemonManagement) ->
     @modalPanel = atom.workspace.addModalPanel(item: @, visible: false)
     #@modalPanel = atom.workspace.addBottomPanel(item: @, visible: false)
     @initialize();
 
   delete: () =>
-    @smartDaemonControl.removeDaemon @daemonItem
+    @daemonManagement.removeDaemon @daemonItem
     @modalPanel.hide()
 
   autoHide: () ->
@@ -86,30 +87,22 @@ class DaemonItemConfigureView extends View
   load: (@daemonItem) ->
     $('#daemon-item-name').attr('value', @daemonItem.name).keyup (event) =>
       @daemonItem.name = event.target.value
-      @smartDaemonControl.refreshDaemonItem(daemonItem)
+      @daemonManagement.refreshDaemonItem(daemonItem)
     $('#daemon-item-cmd-run').attr('value',@daemonItem.cmdRun).keyup (event) =>
       @daemonItem.cmdRun = event.target.value
-      @smartDaemonControl.refreshDaemonItem(daemonItem)
+      @daemonManagement.refreshDaemonItem(daemonItem)
     $('#daemon-item-cmd-stop').attr('value',@daemonItem.cmdStop).keyup (event) =>
       @daemonItem.cmdStop = event.target.value
-      @smartDaemonControl.refreshDaemonItem(daemonItem)
+      @daemonManagement.refreshDaemonItem(daemonItem)
     $('#daemon-item-cmd-check').attr('value',@daemonItem.cmdCheck).keyup (event) =>
       @daemonItem.cmdCheck = event.target.value
-      @smartDaemonControl.refreshDaemonItem(daemonItem)
+      @daemonManagement.refreshDaemonItem(daemonItem)
     $('#daemon-item-str-check').attr('value',@daemonItem.strCheck).keyup (event) =>
       @daemonItem.strCheck = event.target.value
-      @smartDaemonControl.refreshDaemonItem(daemonItem)
+      @daemonManagement.refreshDaemonItem(daemonItem)
     $('#daemon-item-hide').prop('checked',@daemonItem.hide).change (event) =>
       @daemonItem.hide = $(event.target).prop('checked')
-      @smartDaemonControl.refreshDaemonItem(daemonItem)
+      @daemonManagement.refreshDaemonItem(daemonItem)
     $('#daemon-item-autorun').prop('checked',@daemonItem.autorun).change (event) =>
       @daemonItem.autorun = $(event.target).prop('checked')
-      @smartDaemonControl.refreshDaemonItem(daemonItem)
-
-  aus: ->
-    console.log "BLUBB:"
-    console.log this.element
-  test: ->
-    console.log "DOWN"
-  kill: ->
-    console.log "kill"
+      @daemonManagement.refreshDaemonItem(daemonItem)

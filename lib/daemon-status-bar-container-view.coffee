@@ -1,35 +1,39 @@
 $ = require 'jquery'
-DaemonControlItemView = require "./daemon-control-item-view"
+DaemonStatusBarItemView = require "./daemon-status-bar-item-view"
 packageName = require('../package.json').name
 
 module.exports =
-class SmartDaemonControlView
+class DaemonStatusBarContainerView
+  #TODO: Drag and Drop DaemonStatusBarItemView to order
   element : null
   daemonControl : null
   items : {}
 
-  constructor: (@serializedState,@smartDaemonControl) ->
+  constructor: (@serializedState,@daemonManagement) ->
     @element = $("<div/>",
       class: "inline-block smart-daemon-control",
     )
-    #@showScanButton() #if !@scannServices.succesfulScan()
+    @addScanButton()
 
   initialize: (@statusBar) ->
 
-  showScanButton: () -> #on reset/first install
+
+  addScanButton: () -> #on reset/first install
     @scanButton = $("<span/>",
       text: "Scan Daemons now"
       class: "scan-button"
     ).click ()=>
-      @scanButton.text "reload Atom"
-      @scannServices.run()
-      @scanButton.click = null
+      @daemonManagement.scanDeamons.run()
+      @removeScanButton()
     @element.append @scanButton
+  removeScanButton: () ->
+    @scanButton.remove()
 
   addDaemonItem: (daemonItem) ->
-    item = new DaemonControlItemView(@serializedState,daemonItem,@smartDaemonControl)
+    item = new DaemonStatusBarItemView(@serializedState,daemonItem,@daemonManagement)
     @items[daemonItem.id] = item
     @element.append item.element
+    @removeScanButton()
   removeDaemon: (daemonItem) ->
     @items[daemonItem.id].element.remove()
     delete @items[daemonItem.id]

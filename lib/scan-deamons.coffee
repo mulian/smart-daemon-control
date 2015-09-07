@@ -1,45 +1,45 @@
 {Directory} = require 'atom'
 DaemonItem = require "./daemon-item"
 
-module.exports =
-class ScanDeamons
-  daemonItems : []
-  installTimeOut : null
-  constructor: (@smartDaemonControl) ->
-
-  run: () ->
-    if process.platform == "darwin" #mac
-      #console.log process.platform
-      dir = new Directory('/usr/local/opt/')
-      if dir.isDirectory() #brew
-        @searchPlist dir
-    #TODO INFOs
-
-    else if process.platform == "win32" #win
-      null
-      #console.log process.platform
+class ScanDaemonsBrew
+  constructor: (@scanDeamons) ->
+    dir = new Directory('/usr/local/opt/')
+    if dir.isDirectory()
+      atom.notifications.addInfo "Scan Brew like Daemons"
+      @searchPlist dir
 
   searchPlist: (dir) ->
     re = /^([\w\.]+)\.plist$/
     searchPlist = (dir) =>
       dir.getEntries (err,entries) =>
         for entrie in entries
-          #console.log entrie.getBaseName()
           if entrie.isDirectory()
             searchPlist entrie
           else
             result = re.exec(entrie.getBaseName())
             if result != null
               regNewPlist entrie, result[1]
+
     regNewPlist = (file,fileNameWithoutAfterDot) =>
-      #console.log "Servicename: #{file.getParent().getBaseName()}, filename: #{file.path}"
-      @addEntryToConfig file.getParent().getBaseName(), file.path, fileNameWithoutAfterDot
-    #console.log "scan dir for *.plist"
+      @scanDeamons.addDaemon file.getParent().getBaseName(), file.path, fileNameWithoutAfterDot
     searchPlist dir
 
-  addEntryToConfig: (daemonName,filePath,fileNameWithoutAfterDot) ->
+module.exports =
+class ScanDeamons
+  constructor: (@daemonManagement) ->
+
+  run: () ->
+    if process.platform == "darwins" #mac
+      new ScanDaemonsBrew(this)
+    else #if /^win/.test(process.platform) #win
+      atom.notifications.addInfo "There is no scan algorithm for your #{process.platform} platform, plaese add this!"
+      atom.notifications.addInfo "Add manual daemons with CMD+SHIFT+P -> Smart Daemon Control: New Daemon"
+      #@daemonManagement.newDaemon()
+    #else if /^linux/.test(process.platform) #linux
+
+  addDaemon: (daemonName,filePath,fileNameWithoutAfterDot) ->
     #console.log fileNameWithoutAfterDot
-    @smartDaemonControl.addDaemon new DaemonItem daemonName,"launchctl load #{filePath}",
+    @daemonManagement.addDaemon new DaemonItem daemonName,"launchctl load #{filePath}",
                                                 "launchctl unload #{filePath}","launchctl list",
                                                 fileNameWithoutAfterDot, false, false, false
-    atom.notifications.addInfo "#{daemonName} hinzugefügt"
+    atom.notifications.addInfo "#{daemonName} added"

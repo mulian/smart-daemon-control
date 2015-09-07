@@ -24,13 +24,19 @@ class DaemonControl
           cbIsRunning()
         else cbIsNotRunning()
       process = new BufferedProcess({command, args, stdout, exit})
+    else
+      atom.notifications.addInfo "Daemon #{daemonItem.name}: daemon-cmdCheck values not set"
 
   run: (cmdStr,cb) ->
-    cmd = @strToCmd cmdStr
-    command = cmd.command
-    args = cmd.args
-    stdout = (output) ->
-      #if output.indexOf(str) > -1
-    exit = (code) =>
-      cb()
-    process = new BufferedProcess({command, args, stdout, exit})
+    if cmdStr?
+      cmd = @strToCmd cmdStr
+      command = cmd.command
+      args = cmd.args
+      stdout = (output) ->
+        #if output.indexOf(str) > -1
+      exit = (code) =>
+        cb()
+      process = new BufferedProcess({command, args, stdout, exit})
+    else
+      atom.notifications.addInfo "daemon-run/-stop values not set"
+      cb(-1)

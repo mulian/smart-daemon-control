@@ -2,12 +2,17 @@
   "name": "smart-daemon-control",
   "main": "./lib/smart-daemon-control",
   "version": "0.6.0",
-  "description": "Easy manage and controll your development Daemons like PHP, Apache, Nginx, MySql in your status bar.",
+  "description": "Easy manage and controll your development Daemons like PHP, Apache, Nginx, MySql in your status bar for all os!",
   "keywords": [
-    "Daemon",
-    "Controll",
-    "brew",
-    "Mac OS X"
+    "daemon",
+    "service",
+    "control",
+    "start stop"
+    "nginx",
+    "apache",
+    "php",
+    "mysql",
+    "brew"
   ],
   "repository": "https://github.com/mulian/smart-daemon-control",
   "license": "MIT",

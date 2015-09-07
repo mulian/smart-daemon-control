@@ -1,25 +1,50 @@
 # smart-daemon-control package
 
-Easy manage and control your development Daemons like PHP, Apache, Nginx, MySql in your status bar.
+Easy manage and control your development daemons like PHP, Apache, Nginx, MySql(, ALL DAEMONS) in your status bar.
+Use this package with all os!
 
-Use with (Todo):
+Scan algorithm for:
  * Mac OS X
-   * brew ✔
-   * macports ?
- * Windows ✘
- * Linux ✘
+   * brew ✓
+   * macports ✕
+ * Windows ✕
+ * Linux ✕
 
- ![Preview](https://raw.githubusercontent.com/mulian/smart-daemon-control/master/preview.gif)
+![Preview](https://raw.githubusercontent.com/mulian/smart-daemon-control/master/preview.png)
 
 ## Install Steps
-1. Install smart-daemon-control (e.g. apm install smart-daemon-control)
+1. Install smart-daemon-control
+ * apm install smart-daemon-control
+ * go to atom -> Preferences -> install -> search "smart daemon control" -> install
 2. Scan your installed Daemons
- * [⌘ + ⇧ + P] and choose "Smart Daemon Controll: Scan Daemons"
+ * Click on "Scan Daemons now" on right bottom StatusBar
+ * [⌘+⇧+P] and choose "Smart Daemon Controll: Scan Daemons"
  * Menu Bar: Packages -> Smart Daemon Controll -> Scan Daemons
-3. Restart Atom manualy or [⌘ + ⇧ + P] -> "Window: Reload"
 4. See your Daemons on right bottom (status-bar right)
  * Start, stop your Daemons with only **ONE CLICK**
 
-## Setup your Daemons on Package Settings to ..
- * .. start with Atom
- * .. hide in status-bar
+## Add new Daemon (necessary for all os without scan algorithm)
+1. Create new Item with [⌘+⇧+P] and choose "Smart Daemon Controll: New Daemon"
+2. Type all necessary Informations
+  * daemon name: your daemon name
+  * run cmd: the Terminal Command to run this Daemon
+  * stop cmd: the Terminal Command to stop this Daemon
+  * check cmd: the Terminal Command to get a list with all running daemons
+  * check str.: the daemon string in the return of check command if it contains the string -> daemon is on else -> off
+  * hide: hides your selected daemon in status bar.
+    * To reshow this daemon use [⌘+⇧+P] and choose "Smart Daemon Controll: Configure <yourDaemonName>" and uncheck hide
+  * start with atom: not working right now
+  * start with this project: not working right now
+3. ready to use in your status bar
+
+## Edit Daemon
+1. Open Daemon Edit Panel
+  * dbl-click on Daemon entry in your status bar
+  * [⌘+⇧+P] and choose "Smart Daemon Controll: Configure <yourDaemonName>"
+2. Edit
+3. ready to use in your status bar
+
+## Delete Daemon
+1. Open Daemon Edit Panel (see above)
+2. Click on Delete Daemon
+  * Right now, there is no safety warning!
