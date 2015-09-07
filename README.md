@@ -17,14 +17,16 @@ Scan algorithm for:
  * apm install smart-daemon-control
  * go to atom -> Preferences -> install -> search "smart daemon control" -> install
 2. Scan your installed Daemons
- * Click on "Scan Daemons now" on right bottom StatusBar
+ * Click on "Scan Daemons now" on right bottom StatusBar, if there is less then 1 demon added only
  * [⌘+⇧+P] and choose "Smart Daemon Controll: Scan Daemons"
  * Menu Bar: Packages -> Smart Daemon Controll -> Scan Daemons
 4. See your Daemons on right bottom (status-bar right)
  * Start, stop your Daemons with only **ONE CLICK**
 
 ## Add new Daemon (necessary for all os without scan algorithm)
-1. Create new Item with [⌘+⇧+P] and choose "Smart Daemon Controll: New Daemon"
+1. Create new Item
+  * [⌘+⇧+P] and choose "Smart Daemon Controll: New Daemon"
+  * Menu Bar: Packages -> Smart Daemon Control -> New Daemon
 2. Type all necessary Informations
   * daemon name: your daemon name
   * run cmd: the Terminal Command to run this Daemon
