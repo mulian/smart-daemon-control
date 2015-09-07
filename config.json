@@ -1,1 +1,32 @@
-{}
+{
+    "1": {
+        "name": "nginx",
+        "cmdRun": "launchctl load /usr/local/opt/nginx/homebrew.mxcl.nginx.plist",
+        "cmdStop": "launchctl unload /usr/local/opt/nginx/homebrew.mxcl.nginx.plist",
+        "cmdCheck": "launchctl list",
+        "strCheck": "homebrew.mxcl.nginx",
+        "hide": false,
+        "autorun": false,
+        "id": 1
+    },
+    "2": {
+        "name": "php56",
+        "cmdRun": "launchctl load /usr/local/opt/php56/homebrew.mxcl.php56.plist",
+        "cmdStop": "launchctl unload /usr/local/opt/php56/homebrew.mxcl.php56.plist",
+        "cmdCheck": "launchctl list",
+        "strCheck": "homebrew.mxcl.php56",
+        "hide": false,
+        "autorun": false,
+        "id": 2
+    },
+    "3": {
+        "name": "mysql",
+        "cmdRun": "launchctl load /usr/local/opt/mysql/homebrew.mxcl.mysql.plist",
+        "cmdStop": "launchctl unload /usr/local/opt/mysql/homebrew.mxcl.mysql.plist",
+        "cmdCheck": "launchctl list",
+        "strCheck": "homebrew.mxcl.mysql",
+        "hide": false,
+        "autorun": false,
+        "id": 3
+    }
+}

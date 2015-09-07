@@ -44,7 +44,9 @@ class SmartDaemonControlView
 
   # Attach to status-bar
   attach: ->
-    @tile = @statusBar.addRightTile(item: @element, priority: 20)
+    @tile = @statusBar.addRightTile(item: @element, priority: 201)
+    #@tile = @statusBar.addLeftTile(item: @element, priority: 100)
+    #console.log @statusBar
 
   detach: ->
     @tile.destroy()

@@ -56,17 +56,32 @@ class DaemonItemConfigureView extends View
         @td =>
           @input type:"checkbox", id: "daemon-item-project-autorun"
 
+  showTime : false
 
   initialize: ->
     $('#daemon-item-title').mousedown @test
+    @autoHide()
 
   attach: (@smartDaemonControl) ->
     @modalPanel = atom.workspace.addModalPanel(item: @, visible: false)
+    #@modalPanel = atom.workspace.addBottomPanel(item: @, visible: false)
     @initialize();
 
   delete: () =>
     @smartDaemonControl.removeDaemon @daemonItem
     @modalPanel.hide()
+
+  autoHide: () ->
+    $('atom-workspace-axis').click =>
+      if @modalPanel.isVisible() and !@showTime
+        @modalPanel.hide()
+  show: () ->
+    @modalPanel.show()
+    #this prevent the hide after dblclick on daemon-item
+    @showTime = true
+    setTimeout =>
+      @showTime = false
+    , 200
 
   load: (@daemonItem) ->
     $('#daemon-item-name').attr('value', @daemonItem.name).keyup (event) =>

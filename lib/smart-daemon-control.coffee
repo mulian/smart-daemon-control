@@ -66,7 +66,7 @@ module.exports = SmartDaemonControl =
     @subscriptions.add atom.commands.add 'atom-workspace',"smart-daemon-control:configure-#{item.name}", => @showItemConfig(item)
   showItemConfig : (item) ->
     @daemonItemConfigureView.load item
-    @daemonItemConfigureView.modalPanel.show()
+    @daemonItemConfigureView.show()
   newDaemon: ->
     newD = new DaemonItem "Neu"
     @addDaemon newD
