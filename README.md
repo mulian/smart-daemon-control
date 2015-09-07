@@ -43,9 +43,10 @@ Scan algorithm for:
   * [⌘+⇧+P] and choose "Smart Daemon Controll: Configure <yourDaemonName>"
 2. Edit
 3. ready to use in your status bar
-* Issue: you cannot use backspace in input elements from this panel right now. Select the text (with mouse or SHIFT+ArrowKeys) and replace it by enter any character key. This will be fixed in the next version.
+
+**Issue:** you cannot use backspace in input elements from this panel right now. Select the text (with mouse or SHIFT+ArrowKeys) and replace it by enter any character key. This will be fixed in the next version.
 
 ## Delete Daemon
 1. Open Daemon Edit Panel (see above)
-2. Click on Delete Daemon
+2. Click Delete Daemon
   * Right now, there is no safety warning!
