@@ -12,14 +12,12 @@ module.exports = SmartDaemonControl =
       default: 'left'
     priority:
       type: 'integer'
-      default: 200
+      default: 300
       minimum: 0
 
   activate: (@state) ->
     #TODO: use state...
     # Events subscribed to in atom's system can be easily cleaned up with a CompositeDisposable
-
-    #TODO: config with set StatusBar left/right + priority
     @subscriptions = new CompositeDisposable
 
     @daemonManagement = new DaemonManagement(this)

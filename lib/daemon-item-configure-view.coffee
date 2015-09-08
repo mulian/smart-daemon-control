@@ -69,8 +69,16 @@ class DaemonItemConfigureView extends View
     @initialize();
 
   delete: () =>
-    @daemonManagement.removeDaemon @daemonItem
-    @modalPanel.hide()
+    onYes = =>
+      @daemonManagement.removeDaemon @daemonItem
+      @modalPanel.hide()
+    @ask onYes
+  ask: (yesCallback,noCallback) ->
+    atom.confirm
+      message: "Do you realy want to delete #{@daemonItem.name}?"
+      buttons:
+        yes: -> yesCallback() if yesCallback?
+        no: -> noCallback() if noCallback?
 
   autoHide: () ->
     $('atom-workspace-axis').click =>
