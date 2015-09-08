@@ -14,6 +14,13 @@ class DaemonStatusBarContainerView
       class: "inline-block smart-daemon-control",
     )
     @addScanButton()
+    @regConfOnDidChange()
+
+  regConfOnDidChange: ->
+    atom.config.onDidChange "#{packageName}.priority", =>
+      @attach()
+    atom.config.onDidChange "#{packageName}.statusbarOrientation", =>
+      @attach()
 
   initialize: (@statusBar) ->
 
@@ -48,7 +55,12 @@ class DaemonStatusBarContainerView
 
   # Attach to status-bar
   attach: ->
-    @tile = @statusBar.addRightTile(item: @element, priority: 201)
+    chosenFunction = null
+    switch atom.config.get("#{packageName}.statusbarOrientation")
+      #when 'right'  then chosenFunction = @statusBar.addRightTile #no need
+      when 'left'   then chosenFunction = @statusBar.addLeftTile
+      else chosenFunction = @statusBar.addRightTile
+    @tile = chosenFunction(item: @element, priority: atom.config.get("#{packageName}.priority"))
     #@tile = @statusBar.addLeftTile(item: @element, priority: 100)
     #console.log @statusBar
 

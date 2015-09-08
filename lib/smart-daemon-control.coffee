@@ -5,11 +5,21 @@ DaemonManagement = require "./daemon-management"
 module.exports = SmartDaemonControl =
   subscriptions: null
 
+  config :
+    statusbarOrientation:
+      type: 'string'
+      enum: ['left','right']
+      default: 'left'
+    priority:
+      type: 'integer'
+      default: 200
+      minimum: 0
+
   activate: (@state) ->
     #TODO: use state...
     # Events subscribed to in atom's system can be easily cleaned up with a CompositeDisposable
 
-    #TODO: config with gloabl-checkCmd and set StatusBar left/right + priority
+    #TODO: config with set StatusBar left/right + priority
     @subscriptions = new CompositeDisposable
 
     @daemonManagement = new DaemonManagement(this)
