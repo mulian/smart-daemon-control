@@ -21,26 +21,31 @@ class DaemonItemConfigureView extends View
         @td =>
           @div "Daemon Name"
         @td =>
-          @input type:"text", id: "daemon-item-name", autofocus: true
+          @subview 'daemon-item-name', new TextEditorView(mini: true), autofocus: true
+#          @input type:"text", id: "daemon-item-name", autofocus: true
       @tr class: "daemon-cmd-run", =>
         @td =>
           @div "run command"
         @td =>
-          @input type:"text", id: "daemon-item-cmd-run"
+          @subview 'daemon-item-cmd-run', new TextEditorView(mini: true)
+          #@input type:"text", id: "daemon-item-cmd-run"
       @tr class: "daemon-cmd-stop", =>
         @td =>
           @div "stop command"
         @td =>
-          @input type:"text", id: "daemon-item-cmd-stop"
+          @subview "daemon-item-cmd-stop", new TextEditorView(mini: true)
+          #@input type:"text", id: "daemon-item-cmd-stop"
       @tr =>
         @td class: "daemon-cmd-check", =>
           @div "check command"
         @td =>
-          @input type:"text", id: "daemon-item-cmd-check"
+          @subview "daemon-item-cmd-check", new TextEditorView(mini: true)
+          #@input type:"text", id: "daemon-item-cmd-check"
       @tr =>
         @td title:"true if isin check cmd result", "check string" , =>
         @td =>
-          @input type:"text", id: "daemon-item-str-check"
+          @subview "daemon-item-str-check", new TextEditorView(mini: true)
+          #@input type:"text", id: "daemon-item-str-check"
       @tr class: "daemon-hide", =>
         @td =>
           @div "hide"
@@ -59,9 +64,14 @@ class DaemonItemConfigureView extends View
 
   showTime : false
 
+  test: ->
+    console.log "t3st"
+
   initialize: ->
     $('#daemon-item-title').mousedown @test
     @autoHide()
+    #console.log @['daemon-item-name']
+    @unloadItems = []
 
   attach: (@daemonManagement) ->
     @modalPanel = atom.workspace.addModalPanel(item: @, visible: false)
@@ -92,22 +102,25 @@ class DaemonItemConfigureView extends View
       @showTime = false
     , 200
 
+  bindTextEditorView: (editorKey,daemonItemKey) ->
+    #@[editorKey].model.off 'did-change'
+    @[editorKey].model.setText @daemonItem[daemonItemKey]
+    @[editorKey].model.emitter.on 'did-change', =>
+      @daemonItem[daemonItemKey] = @[editorKey].model.getText()
+      @daemonManagement.refreshDaemonItem(@daemonItem)
+
   load: (@daemonItem) ->
-    $('#daemon-item-name').attr('value', @daemonItem.name).keyup (event) =>
-      @daemonItem.name = event.target.value
-      @daemonManagement.refreshDaemonItem(daemonItem)
-    $('#daemon-item-cmd-run').attr('value',@daemonItem.cmdRun).keyup (event) =>
-      @daemonItem.cmdRun = event.target.value
-      @daemonManagement.refreshDaemonItem(daemonItem)
-    $('#daemon-item-cmd-stop').attr('value',@daemonItem.cmdStop).keyup (event) =>
-      @daemonItem.cmdStop = event.target.value
-      @daemonManagement.refreshDaemonItem(daemonItem)
-    $('#daemon-item-cmd-check').attr('value',@daemonItem.cmdCheck).keyup (event) =>
-      @daemonItem.cmdCheck = event.target.value
-      @daemonManagement.refreshDaemonItem(daemonItem)
-    $('#daemon-item-str-check').attr('value',@daemonItem.strCheck).keyup (event) =>
-      @daemonItem.strCheck = event.target.value
-      @daemonManagement.refreshDaemonItem(daemonItem)
+    @bindTextEditorView 'daemon-item-name', 'name'
+    @bindTextEditorView 'daemon-item-cmd-run', 'cmdRun'
+    @bindTextEditorView 'daemon-item-cmd-stop', 'cmdStop'
+    @bindTextEditorView 'daemon-item-cmd-check', 'cmdCheck'
+    @bindTextEditorView 'daemon-item-str-check', 'strCheck'
+
+
+    # $('#daemon-item-cmd-run').attr('value',@daemonItem.cmdRun).keyup (event) =>
+    #   @daemonItem.cmdRun = event.target.value
+    #   @daemonManagement.refreshDaemonItem(daemonItem)
+
     $('#daemon-item-hide').prop('checked',@daemonItem.hide).change (event) =>
       @daemonItem.hide = $(event.target).prop('checked')
       @daemonManagement.refreshDaemonItem(daemonItem)
