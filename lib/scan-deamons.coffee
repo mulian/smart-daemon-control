@@ -26,16 +26,29 @@ class ScanDaemonsBrew
 
 module.exports =
 class ScanDeamons
+  scanFunction : null
   constructor: (@daemonManagement) ->
+    @defineScanFunction()
 
-  run: () ->
+  defineScanFunction: ->
     if process.platform == "darwin" #mac
-      new ScanDaemonsBrew(this)
+      @scanFunction = ScanDaemonsBrew
     else #if /^win/.test(process.platform) #win
-      atom.notifications.addInfo "There is no scan algorithm for your #{process.platform} platform, plaese add this!"
-      atom.notifications.addInfo "Add manual daemons with CMD+SHIFT+P -> Smart Daemon Control: New Daemon"
+      #atom.notifications.addInfo "There is no scan algorithm for your #{process.platform} platform, plaese add this!"
+      #atom.notifications.addInfo "Add manual daemons with CMD+SHIFT+P -> Smart Daemon Control: New Daemon"
       #@daemonManagement.newDaemon()
     #else if /^linux/.test(process.platform) #linux
+
+  run: ->
+    new @scanFunction()
+
+  thereIsScanDaemonForOs: ->
+    if @scanFunction == null
+      false
+    else true
+
+  run: () ->
+
 
   addDaemon: (daemonName,filePath,fileNameWithoutAfterDot) ->
     #console.log fileNameWithoutAfterDot
