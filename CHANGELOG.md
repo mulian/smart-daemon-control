@@ -1,6 +1,6 @@
 ## 0.7.3 -
 * remove jQuery from dependencies and use jquery from atom-space-pen-views
-*
+* set default statusbar orientation to right
 
 ## 0.7.2 - Bugfix ...
 * fix: backspace issue on item configuration
