@@ -1,2 +1,16 @@
 {
+    "1": {
+        "name": "",
+        "id": 1
+    },
+    "2": {
+        "name": "New",
+        "id": 2,
+        "hide": false,
+        "autorun": false
+    },
+    "3": {
+        "name": "",
+        "id": 3
+    }
 }
