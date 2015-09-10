@@ -1,7 +1,14 @@
-## 0.7.1 - fix
+## 0.7.3 -
+* remove jQuery from dependencies and use jquery from atom-space-pen-views
+*
+
+## 0.7.2 - Bugfix ...
 * fix: backspace issue on item configuration
 * add yes/no question before delete item
 * add settings to position the DaemonStatusBarContainer in your statusbar
+
+## 0.7.0 - No Atom Restart
+* no more need to restart - i build an own Configuration Item. Now, the atom-config is only for static configurations.
 
 ## 0.1.0 - First Release
 * Mac OS X: scan /usr/local/opt/ for Daemons and add them

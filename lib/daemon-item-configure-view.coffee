@@ -1,8 +1,6 @@
-$ = require 'jquery'
-{TextEditorView,View} = require 'atom-space-pen-views'
+{TextEditorView,View,$} = require 'atom-space-pen-views'
 
 #TODO: less jquery more atom-space-pen
-  #issue: raw input text got no backspace...
 module.exports =
 class DaemonItemConfigureView extends View
   @content: ->
@@ -68,10 +66,8 @@ class DaemonItemConfigureView extends View
     console.log "t3st"
 
   initialize: ->
-    $('#daemon-item-title').mousedown @test
+    #$('#daemon-item-title').mousedown @test
     @autoHide()
-    #console.log @['daemon-item-name']
-    @unloadItems = []
 
   attach: (@daemonManagement) ->
     @modalPanel = atom.workspace.addModalPanel(item: @, visible: false)

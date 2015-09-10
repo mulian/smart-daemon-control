@@ -19,7 +19,6 @@
   },
   "dependencies": {
     "atom-space-pen-views": "2.1.0",
-    "jquery": "^2.1.4",
     "cson": ">=3.0.1 <4.0.0"
   },
   "consumedServices": {

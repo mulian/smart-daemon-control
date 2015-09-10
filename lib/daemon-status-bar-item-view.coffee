@@ -1,5 +1,5 @@
 packageName = require('../package.json').name
-$ = require 'jquery'
+{$} = require 'atom-space-pen-views'
 
 module.exports =
 class DaemonStatusBarContainerView

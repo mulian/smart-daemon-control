@@ -1,4 +1,4 @@
-$ = require 'jquery'
+{$} = require 'atom-space-pen-views'
 DaemonStatusBarItemView = require "./daemon-status-bar-item-view"
 packageName = require('../package.json').name
 
