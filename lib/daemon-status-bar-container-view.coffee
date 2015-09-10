@@ -13,7 +13,9 @@ class DaemonStatusBarContainerView
     @element = $("<div/>",
       class: "inline-block smart-daemon-control",
     )
-    @addScanButton()
+    if @daemonManagement.scanDeamons.thereIsScanDaemonForOs()
+      @addScanButton()
+    else @addAddDaemonButton()
     @regConfOnDidChange()
 
   regConfOnDidChange: ->
@@ -24,23 +26,31 @@ class DaemonStatusBarContainerView
 
   initialize: (@statusBar) ->
 
+  addAddDaemonButton: () ->
+    @addButton = $("<span/>",
+      text: "Add Daemon"
+      class: "scan-button"
+    ).click ()=>
+      @addDaemonItem()
+      @addButton.remove()
+    @element.append @addButton
 
   addScanButton: () -> #on reset/first install
     @scanButton = $("<span/>",
-      text: "Scan Daemons now"
+      text: "Scan Daemons"
       class: "scan-button"
     ).click ()=>
       @daemonManagement.scanDeamons.run()
-      @removeScanButton()
+      @scanButton.remove()
     @element.append @scanButton
-  removeScanButton: () ->
-    @scanButton.remove()
+
 
   addDaemonItem: (daemonItem) ->
     item = new DaemonStatusBarItemView(@serializedState,daemonItem,@daemonManagement)
     @items[daemonItem.id] = item
     @element.append item.element
-    @removeScanButton()
+    @scanButton?.remove()
+    @addButton?.remove()
   removeDaemon: (daemonItem) ->
     @items[daemonItem.id].element.remove()
     delete @items[daemonItem.id]
