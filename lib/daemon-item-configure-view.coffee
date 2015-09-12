@@ -87,6 +87,7 @@ class DaemonItemConfigureView extends View
         no: -> noCallback() if noCallback?
 
   autoHide: () ->
+    #TODO: Windows not working
     $('atom-workspace-axis').click =>
       if @modalPanel.isVisible() and !@showTime
         @modalPanel.hide()
@@ -100,7 +101,7 @@ class DaemonItemConfigureView extends View
 
   bindTextEditorView: (editorKey,daemonItemKey) ->
     #@[editorKey].model.off 'did-change'
-    @[editorKey].model.setText @daemonItem[daemonItemKey]
+    @[editorKey].model.setText @daemonItem[daemonItemKey] if @daemonItem[daemonItemKey]?
     @[editorKey].model.emitter.on 'did-change', =>
       @daemonItem[daemonItemKey] = @[editorKey].model.getText()
       @daemonManagement.refreshDaemonItem(@daemonItem)

@@ -31,7 +31,7 @@ class DaemonStatusBarContainerView
       text: "Add Daemon"
       class: "scan-button"
     ).click ()=>
-      @addDaemonItem()
+      @daemonManagement.newDaemon()
       @addButton.remove()
     @element.append @addButton
 

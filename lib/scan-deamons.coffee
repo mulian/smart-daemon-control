@@ -8,7 +8,7 @@ class ScanDeamons
     @defineScanFunction()
 
   defineScanFunction: ->
-    if process.platform == "darwin" #mac
+    if process.platform == "darwina" #mac
       @scanFunction = ScanDaemonsBrew
     else #if /^win/.test(process.platform) #win
       #atom.notifications.addInfo "There is no scan algorithm for your #{process.platform} platform, plaese add this!"
@@ -17,7 +17,9 @@ class ScanDeamons
     #else if /^linux/.test(process.platform) #linux
 
   run: ->
-    new @scanFunction(this)
+    if @scanFunction?
+      new @scanFunction(this)
+    else atom.notifications.addInfo "There is no scan-algorithm for your OS #{process.platform} right now."
 
   thereIsScanDaemonForOs: ->
     if @scanFunction == null
