@@ -11,7 +11,7 @@ module.exports = SmartDaemonControl =
     statusbarOrientation:
       type: 'string'
       enum: ['left','right']
-      default: 'left'
+      default: 'right'
     priority:
       type: 'integer'
       default: 300

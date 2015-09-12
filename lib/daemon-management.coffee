@@ -14,6 +14,8 @@ class DaemonManagement
   daemonItems: null
   rootPackageDir: null
 
+  daemonsFile: null
+
   increment : 0
 
   constructor: (@smartDaemonControl) ->
@@ -27,11 +29,18 @@ class DaemonManagement
     @daemonStatusBarContainerView = new DaemonStatusBarContainerView(@smartDaemonControl.state.smartDaemonControlViewState,this)
     @daemonControl = new DaemonControl()
 
+    @createDamonsJsonIfNotExist()
     @loadDaemonItems()
 
   consumeStatusBar: (statusBar) ->
     @daemonStatusBarContainerView.initialize statusBar
     @daemonStatusBarContainerView.attach()
+
+
+  createDamonsJsonIfNotExist: ->
+    @daemonsFile = new File "#{@rootPackageDir}/daemons.json"
+    #if not @daemonsFile.existsSync()
+    @daemonsFile.writeSync "{}" if @daemonsFile.create()
 
   loadDaemonItems: () ->
     @daemonItems = require "../daemons.json"
@@ -47,8 +56,7 @@ class DaemonManagement
     @daemonStatusBarContainerView.items[item.id].refresh()
 
   saveDaemonItems: () ->
-    file = new File "#{@rootPackageDir}/daemons.json"
-    file.write JSON.stringify(@daemonItems,null,4)
+    @daemonsFile.write JSON.stringify(@daemonItems,null,4)
 
   addDaemon : (item) ->
     if item instanceof DaemonItem

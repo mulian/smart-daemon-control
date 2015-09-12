@@ -1,6 +1,7 @@
 ## 0.7.3 -
 * remove jQuery from dependencies and use jquery from atom-space-pen-views
-*
+* set default statusbar orientation to right
+* fix windows open settings bug
 
 ## 0.7.2 - Bugfix ...
 * fix: backspace issue on item configuration
@@ -14,4 +15,3 @@
 * Mac OS X: scan /usr/local/opt/ for Daemons andoo add them
 * Start/Stop Daemons with one click in your Atom status-bar
 * Register your Daemons in Config
-0
