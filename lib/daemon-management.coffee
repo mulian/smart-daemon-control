@@ -39,7 +39,6 @@ class DaemonManagement
 
   createDamonsJsonIfNotExist: ->
     @daemonsFile = new File "#{@rootPackageDir}/daemons.json"
-    #if not @daemonsFile.existsSync()
     @daemonsFile.writeSync "{}" if @daemonsFile.create()
 
   loadDaemonItems: () ->

@@ -87,9 +87,21 @@ class DaemonItemConfigureView extends View
         no: -> noCallback() if noCallback?
 
   autoHide: () ->
-    $('atom-workspace-axis').click =>
-      if @modalPanel.isVisible() and !@showTime
-        @modalPanel.hide()
+    #TODO!
+    configurator = @
+    isManagerClick = false
+    $('#daemon-item-manager').click ->
+      isManagerClick = true
+      setTimeout ->
+        isManagerClick = false
+      , 200
+    #atom-workspace-axis
+    $('body').click (event) -> #only works for mac and maby linux
+      setTimeout ->
+        if not isManagerClick
+          if configurator.modalPanel.isVisible() and !configurator.showTime
+            configurator.modalPanel.hide()
+      , 100
   show: () ->
     @modalPanel.show()
     #this prevent the hide after dblclick on daemon-item
@@ -112,14 +124,13 @@ class DaemonItemConfigureView extends View
     @bindTextEditorView 'daemon-item-cmd-check', 'cmdCheck'
     @bindTextEditorView 'daemon-item-str-check', 'strCheck'
 
-
-    # $('#daemon-item-cmd-run').attr('value',@daemonItem.cmdRun).keyup (event) =>
-    #   @daemonItem.cmdRun = event.target.value
-    #   @daemonManagement.refreshDaemonItem(daemonItem)
-
     $('#daemon-item-hide').prop('checked',@daemonItem.hide).change (event) =>
       @daemonItem.hide = $(event.target).prop('checked')
       @daemonManagement.refreshDaemonItem(daemonItem)
     $('#daemon-item-autorun').prop('checked',@daemonItem.autorun).change (event) =>
       @daemonItem.autorun = $(event.target).prop('checked')
       @daemonManagement.refreshDaemonItem(daemonItem)
+
+    # $('#daemon-item-cmd-run').attr('value',@daemonItem.cmdRun).keyup (event) =>
+    #   @daemonItem.cmdRun = event.target.value
+    #   @daemonManagement.refreshDaemonItem(daemonItem)
