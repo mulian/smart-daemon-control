@@ -12,6 +12,6 @@
 * no more need to restart - i build an own Configuration Item. Now, the atom-config is only for static configurations.
 
 ## 0.1.0 - First Release
-* Mac OS X: scan /usr/local/opt/ for Daemons and add them
+* Mac OS X: scan /usr/local/opt/ for Daemons andoo add them
 * Start/Stop Daemons with one click in your Atom status-bar
 * Register your Daemons in Config

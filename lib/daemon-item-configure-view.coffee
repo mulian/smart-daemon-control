@@ -87,6 +87,7 @@ class DaemonItemConfigureView extends View
         no: -> noCallback() if noCallback?
 
   autoHide: () ->
+#<<<<<<< HEAD
     #TODO!
     configurator = @
     isManagerClick = false
@@ -102,6 +103,12 @@ class DaemonItemConfigureView extends View
           if configurator.modalPanel.isVisible() and !configurator.showTime
             configurator.modalPanel.hide()
       , 100
+#=======
+    #TODO: Windows not working
+    $('atom-workspace-axis').click =>
+      if @modalPanel.isVisible() and !@showTime
+        @modalPanel.hide()
+#>>>>>>> dea82531fd0a33137d428beac5c0b017a6416d33
   show: () ->
     @modalPanel.show()
     #this prevent the hide after dblclick on daemon-item
