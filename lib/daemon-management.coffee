@@ -39,7 +39,10 @@ class DaemonManagement
 
   createDamonsJsonIfNotExist: ->
     @daemonsFile = new File "#{@rootPackageDir}/daemons.json"
-    @daemonsFile.writeSync "{}" if @daemonsFile.create()
+    #console.log "create: #{@daemonsFile.create()} isFile: #{@daemonsFile.isFile()} exists: #{@daemonsFile.existsSync()}"
+    if not @daemonsFile.existsSync()
+      @daemonsFile.create()
+      @daemonsFile.writeSync "{}"
 
   loadDaemonItems: () ->
     @daemonItems = require "../daemons.json"
@@ -55,6 +58,7 @@ class DaemonManagement
     @daemonStatusBarContainerView.items[item.id].refresh()
 
   saveDaemonItems: () ->
+    console.log "save"
     @daemonsFile.write JSON.stringify(@daemonItems,null,4)
 
   addDaemon : (item) ->

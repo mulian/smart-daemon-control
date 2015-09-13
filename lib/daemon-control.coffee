@@ -39,4 +39,3 @@ class DaemonControl
       process = new BufferedProcess({command, args, stdout, exit})
     else
       atom.notifications.addInfo "daemon-run/-stop values not set"
-      cb(-1)
