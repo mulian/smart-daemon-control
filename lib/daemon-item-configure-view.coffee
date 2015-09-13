@@ -4,10 +4,10 @@
 module.exports =
 class DaemonItemConfigureView extends View
   @content: ->
-    @table id: 'daemon-item-manager', =>
+    @table id: 'daemon-item-manager' , =>
       @tr =>
         @td =>
-          @div "Edit Daemon", id: "daemon-item-title", click: 'kill'
+          @div "Edit Daemon", id: "daemon-item-title"#, click: 'kill'
         @td =>
           @button "Delete Daemon", click: 'delete'
 #        @td =>
@@ -62,17 +62,17 @@ class DaemonItemConfigureView extends View
 
   showTime : false
 
-  test: ->
+  clickOnTable: ->
     console.log "t3st"
 
   initialize: ->
     #$('#daemon-item-title').mousedown @test
-    @autoHide()
 
+    @autoHide()
   attach: (@daemonManagement) ->
     @modalPanel = atom.workspace.addModalPanel(item: @, visible: false)
     #@modalPanel = atom.workspace.addBottomPanel(item: @, visible: false)
-    @initialize();
+    #@initialize();
 
   delete: () =>
     onYes = =>
@@ -87,28 +87,9 @@ class DaemonItemConfigureView extends View
         no: -> noCallback() if noCallback?
 
   autoHide: () ->
-#<<<<<<< HEAD
-    #TODO!
-    configurator = @
-    isManagerClick = false
-    $('#daemon-item-manager').click ->
-      isManagerClick = true
-      setTimeout ->
-        isManagerClick = false
-      , 200
-    #atom-workspace-axis
-    $('body').click (event) -> #only works for mac and maby linux
-      setTimeout ->
-        if not isManagerClick
-          if configurator.modalPanel.isVisible() and !configurator.showTime
-            configurator.modalPanel.hide()
-      , 100
-#=======
-    #TODO: Windows not working
-    $('atom-workspace-axis').click =>
-      if @modalPanel.isVisible() and !@showTime
-        @modalPanel.hide()
-#>>>>>>> dea82531fd0a33137d428beac5c0b017a6416d33
+    $('body').click (event) =>
+      @hide() if !$(event.target).closest('#daemon-item-manager').length
+
   show: () ->
     @modalPanel.show()
     #this prevent the hide after dblclick on daemon-item
@@ -116,6 +97,8 @@ class DaemonItemConfigureView extends View
     setTimeout =>
       @showTime = false
     , 200
+  hide: ->
+    @modalPanel.hide() if not @showTime
 
   bindTextEditorView: (editorKey,daemonItemKey) ->
     #@[editorKey].model.off 'did-change'

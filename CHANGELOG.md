@@ -2,6 +2,7 @@
 * remove jQuery from dependencies and use jquery from atom-space-pen-views
 * set default statusbar orientation to right
 * fix windows open settings bug
+* fix autohide DaemonItemConfigureView for windows
 
 ## 0.7.2 - Bugfix ...
 * fix: backspace issue on item configuration
