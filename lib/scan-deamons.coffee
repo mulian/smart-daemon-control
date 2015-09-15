@@ -2,6 +2,72 @@
 DaemonItem = require "./daemon-item"
 {BufferedProcess} = require 'atom'
 
+class ScanDaemons #extends this
+  name : null   #OS name
+  dirPath: null #dir path of deamon start/stop
+  re: null      #search Regular Expression
+  formatDaemonItem: (file) -> #transform Filename to Daemon Name & run-/stop-/check-Daemon
+
+  constructor: (@scanDaemons) ->
+    @info()
+    @startScan()
+
+  startScan: (dirPath=@dirPath) -> #run this
+    dir = new Directory(dirPath)
+    if dir.isDirectory()
+      @scanForFile dir
+    else atom.notifications.addInfo "Could not Scan with #{@name}-algorithm"
+  scanForFile: (dir) ->
+    dir.getEntries (err,entries) =>
+      for entrie in entries
+        if not entrie.isDirectory()
+          result = @re.exec entrie.getBaseName()
+          if result != null
+            @scanDaemons.addDaemon @formatDaemonItem entrie
+            #@regNewDaemon entrie, result[1]
+        else @scanForFile entrie #scan subfolder
+  info : ->
+    atom.notifications.addInfo "Scan #{@name} Daemons"
+
+  checkDir: ->
+    dir = new Directory(dirPath)
+    return dir.exists() and dir.isDirectory()
+  #regNewDaemon = (file,fileNameWithoutAfterDot) =>
+    #@scanDeamons.addDaemon file.getParent().getBaseName(), file.path, fileNameWithoutAfterDot
+
+checkLinuxDist = ->
+  #check for Debian
+  dir = new Directory "/etc/init.d/"
+  return "debian" if dir.exists() and dir.isDirectory()
+  #next RedHat, CentOS, Suse, ...
+
+#Scan Class for (Debian)/Ubuntu
+class ScanDaemonsDebian extends ScanDaemons
+  name: "Debian like (Ubuntu)"
+  dirPath: "/etc/init.d/"
+  re: /^([\w\.]+)$/ #all
+  formatDaemonItem: (file) ->
+    return new DaemonItem
+      name: file.getBaseName()
+      cmdRun: "#{filePath} start"
+      cmdStop: "#{filePath} stop"
+      cmdCheck: "#{filePath} check"
+      strCheck: "is running"
+
+#Scan Class for Brew
+class ScanDaemonsBrew extends ScanDaemons
+  name: "Brew"
+  dirPath: "/usr/local/opt/"
+  re: /^([\w\.]+)\.plist$/
+  formatDaemonItem: (file) ->
+    return new DaemonItem
+      #name: "bla"
+      name: file.getParent().getBaseName()
+      cmdRun: "launchctl load #{file.path}"
+      cmdStop: "launchctl unload #{file.path}"
+      cmdCheck: "launchctl list"
+      strCheck: @re.exec file.getBaseName()[1]
+
 module.exports =
 class ScanDeamons
   scanFunction : null
@@ -12,8 +78,8 @@ class ScanDeamons
     if process.platform == "darwin" #mac
       @scanFunction = ScanDaemonsBrew
     else if /^linux/.test(process.platform) #linux
-      @isLinuxDistribution "Ubuntu", =>
-        @scanFunction = ScanDaemonsUbuntu
+      switch checkLinuxDist()
+        when "debian" then @scanFunction = ScanDaemonsDebian
     #else if /^win/.test(process.platform) #win
       #atom.notifications.addInfo "There is no scan algorithm for your #{process.platform} platform, plaese add this!"
       #atom.notifications.addInfo "Add manual daemons with CMD+SHIFT+P -> Smart Daemon Control: New Daemon"
@@ -31,57 +97,6 @@ class ScanDeamons
       false
     else true
 
-  addDaemon: (daemonName,filePath,fileNameWithoutAfterDot) ->
-    #console.log fileNameWithoutAfterDot
-    @daemonManagement.addDaemon new DaemonItem daemonName,"launchctl load #{filePath}",
-                                                "launchctl unload #{filePath}","launchctl list",
-                                                fileNameWithoutAfterDot, false, false, false
-    atom.notifications.addInfo "#{daemonName} added"
-
-  isLinuxDistribution: (name,callback) -> #other better solution?
-    command = "uname"
-    args = ["-v"]
-    alreadyGetCheckString = false
-    stdout = (output) ->
-      if output.indexOf(name) >- 1
-        alreadyGetCheckString = true
-    exit = (code) ->
-      callback() if alreadyGetCheckString
-    process = new BufferedProcess({command, args, stdout, exit})
-
-class ScanDaemons #extends this
-  name : ""   #replace
-  init : null # replace
-
-  constructor: (@scanDaemons) ->
-    @init()
-    @info()
-
-  startScan: (dirUrl,re) -> #run this
-    dir = new Directory(dirUrl)
-    @scanForFile dir, re if dir.isDirectory()
-  scanForFile = (dir,re) ->
-    dir.getEntries (err,entries) =>
-      for entrie in entries
-        if not entrie.isDirectory()
-          result = re.exec entrie.getBaseName()
-          if result != null
-            @regNewDaemon entrie, result[1]
-        else @scanForFile entrie #scan subfolder
-
-  regNewDaemon = (file,fileNameWithoutAfterDot) => #TODO: change format
-    @scanDeamons.addDaemon file.getParent().getBaseName(), file.path, fileNameWithoutAfterDot
-
-  info : ->
-    atom.notifications.addInfo "Scan #{@name} Daemons"
-#Scan Class for (Debian)/Ubuntu
-class ScanDaemonsUbuntu extends ScanDaemons
-  name: "Brew"
-  init: ->
-    @startScan "/usr/local/opt/", /^([\w\.]+)\.plist$/
-
-#Scan Class for Brew
-class ScanDaemonsBrew extends ScanDaemons
-  name: "Brew"
-  init: ->
-    @startScan "/usr/local/opt/", /^([\w\.]+)\.plist$/
+  addDaemon: (daemonItem) ->
+    @daemonManagement.addDaemon daemonItem
+    atom.notifications.addInfo "#{daemonItem.name} added"

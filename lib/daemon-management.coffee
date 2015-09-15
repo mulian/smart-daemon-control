@@ -82,7 +82,7 @@ class DaemonManagement
     @daemonItemConfigureView.show()
 
   newDaemon: ->
-    newD = new DaemonItem "New"
+    newD = new DaemonItem {name: "New"}
     @addDaemon newD
     @showItemConfig newD
 
