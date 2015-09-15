@@ -10,6 +10,8 @@ Scan algorithm for:
  * Windows ✕
  * Linux
    * Debian like (Ubuntu,...) ✓
+     * You'll need root access to start/stop services
+     * Workaround: run atom in termin with root: "sudo atom"
    * Other ✕
 
 ![Preview](https://raw.githubusercontent.com/mulian/smart-daemon-control/master/preview.png)

@@ -12,6 +12,7 @@ class DaemonControl
 
   check: (daemonItem,cbIsRunning,cbIsNotRunning) ->
     if daemonItem.cmdCheck?
+      #console.log "check #{daemonItem.cmdCheck}"
       cmd = @strToCmd daemonItem.cmdCheck
       command = cmd.command
       args = cmd.args
@@ -20,6 +21,7 @@ class DaemonControl
         if output.indexOf(daemonItem.strCheck) >- 1
           alreadyGetCheckString = true
       exit = (code) ->
+        #console.log "exit check #{daemonItem.cmdCheck} with #{code}"
         if alreadyGetCheckString
           cbIsRunning()
         else cbIsNotRunning()
@@ -35,6 +37,7 @@ class DaemonControl
       stdout = (output) ->
         #if output.indexOf(str) > -1
       exit = (code) =>
+        #TODO: check if it really is running -> cb
         cb()
       process = new BufferedProcess({command, args, stdout, exit})
     else
