@@ -4,6 +4,7 @@
 * fix windows open settings bug
 * fix autohide DaemonItemConfigureView for windows
 * fix daemons.json init on update (for the next versions)
+* add Debian-Scan-Algorithm
 
 ## 0.7.2 - Bugfix ...
 * fix: backspace issue on item configuration

@@ -8,7 +8,9 @@ Scan algorithm for:
    * brew ✓
    * macports ✕
  * Windows ✕
- * Linux ✕
+ * Linux
+   * Debian like (Ubuntu,...) ✓
+   * Other ✕
 
 ![Preview](https://raw.githubusercontent.com/mulian/smart-daemon-control/master/preview.png)
 
