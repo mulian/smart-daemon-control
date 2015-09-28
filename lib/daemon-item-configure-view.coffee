@@ -62,22 +62,22 @@ class DaemonItemConfigureView extends View
 
   showTime : false
 
-  clickOnTable: ->
-    console.log "t3st"
+  constructor: (@eventBus) ->
+    super
+    @eventBus.on "daemon-item-configure-view-show", (item) =>
+      @load item
+      @show()
 
   initialize: ->
-    #$('#daemon-item-title').mousedown @test
-
     @autoHide()
+
   attach: (@daemonManagement) ->
-    @modalPanel = atom.workspace.addModalPanel(item: @, visible: false)
-    #@modalPanel = atom.workspace.addBottomPanel(item: @, visible: false)
-    #@initialize();
+    @panel = atom.workspace.addModalPanel(item: @, visible: false)
 
   delete: () =>
     onYes = =>
       @daemonManagement.removeDaemon @daemonItem
-      @modalPanel.hide()
+      @panel.hide()
     @ask onYes
   ask: (yesCallback,noCallback) ->
     atom.confirm
@@ -91,14 +91,14 @@ class DaemonItemConfigureView extends View
       @hide() if !$(event.target).closest('#daemon-item-manager').length
 
   show: () ->
-    @modalPanel.show()
+    @panel.show()
     #this prevent the hide after dblclick on daemon-item
     @showTime = true
     setTimeout =>
       @showTime = false
     , 200
   hide: ->
-    @modalPanel.hide() if not @showTime
+    @panel.hide() if not @showTime
 
   bindTextEditorView: (editorKey,daemonItemKey) ->
     #@[editorKey].model.off 'did-change'
@@ -108,9 +108,9 @@ class DaemonItemConfigureView extends View
       @daemonManagement.refreshDaemonItem(@daemonItem)
 
   load: (@daemonItem) ->
-    @bindTextEditorView 'daemon-item-name', 'name'
-    @bindTextEditorView 'daemon-item-cmd-run', 'cmdRun'
-    @bindTextEditorView 'daemon-item-cmd-stop', 'cmdStop'
+    @bindTextEditorView 'daemon-item-name',      'name'
+    @bindTextEditorView 'daemon-item-cmd-run',   'cmdRun'
+    @bindTextEditorView 'daemon-item-cmd-stop',  'cmdStop'
     @bindTextEditorView 'daemon-item-cmd-check', 'cmdCheck'
     @bindTextEditorView 'daemon-item-str-check', 'strCheck'
 

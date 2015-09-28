@@ -12,7 +12,7 @@
   * show all Daemons with hide option
   * sort
 * Add Daemon Wizard (with modal-file-manager)
-* Use Emitter for Daemons control
+* Use an Eventbus (Emitter) for Daemons control
 
 ## 0.7.3 -
 * remove jQuery from dependencies and use jquery from atom-space-pen-views

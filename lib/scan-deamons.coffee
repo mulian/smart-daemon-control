@@ -8,7 +8,7 @@ class ScanDaemons #extends this
   re: null      #search Regular Expression
   formatDaemonItem: (file) -> #transform Filename to Daemon Name & run-/stop-/check-Daemon
 
-  constructor: (@scanDaemons) ->
+  constructor: (@eventBus) ->
     @info()
     @startScan()
 
@@ -23,7 +23,8 @@ class ScanDaemons #extends this
         if not entrie.isDirectory()
           result = @re.exec entrie.getBaseName()
           if result != null
-            @scanDaemons.addDaemon @formatDaemonItem entrie
+            @eventBus.emit "scan-daemon-add-daemon", @formatDaemonItem entrie
+            #@scanDaemons.addDaemon @formatDaemonItem entrie
             #@regNewDaemon entrie, result[1]
         else @scanForFile entrie #scan subfolder
   info : ->
@@ -72,8 +73,9 @@ module.exports =
 class ScanDeamons
   #TODO: Need an "add to statusbar list, after scan..."
   scanFunction : null
-  constructor: (@daemonManagement) ->
+  constructor: (@eventBus) ->
     @defineScanFunction()
+    @eventBus.on "scan-daemon-run", @run
 
   defineScanFunction: ->
     if process.platform == "darwin" #mac
@@ -86,7 +88,7 @@ class ScanDeamons
       #atom.notifications.addInfo "Add manual daemons with CMD+SHIFT+P -> Smart Daemon Control: New Daemon"
       #@daemonManagement.newDaemon()
 
-  run: ->
+  run: =>
     if @scanFunction?
       new @scanFunction(this)
     else
@@ -99,5 +101,6 @@ class ScanDeamons
     else true
 
   addDaemon: (daemonItem) ->
-    @daemonManagement.addDaemon daemonItem
+    @eventBus.emit "daemon-management-add-Daemon", daemonItem
+    #@daemonManagement.addDaemon daemonItem
     atom.notifications.addInfo "#{daemonItem.name} added"

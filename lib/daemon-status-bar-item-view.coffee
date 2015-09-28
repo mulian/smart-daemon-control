@@ -2,13 +2,19 @@ packageName = require('../package.json').name
 {$} = require 'atom-space-pen-views'
 
 module.exports =
-class DaemonStatusBarContainerView
+class DaemonStatusBarItemView
   element : null
   status : null
   inProcess : false
   dblclickTimeout : null
 
-  constructor : (@serializedState,@daemonItem,@daemonManagement) ->
+  constructor : (@eventBus,@daemonItem) ->
+    @eventBus.on "daemon-status-bar-item-view-set-on", (daemonItem) =>
+      if daemonItem.id==@daemonItem.id
+        @setRunning()
+    @eventBus.on "daemon-status-bar-item-view-set-off", (daemonItem) =>
+      if daemonItem.id==@daemonItem.id
+        @setStop()
     @element = $("<span/>",
       class : 'smart-daemon-control-item load'
       text : @daemonItem.name
@@ -33,7 +39,7 @@ class DaemonStatusBarContainerView
     @element.text @daemonItem.name
 
   showConfig: () ->
-    @daemonManagement.showItemConfig @daemonItem
+    @eventBus.emit "daemon-item-configure-view-show", @daemonItem
 
   checkHide : () ->
     if @daemonItem.hide
@@ -44,7 +50,9 @@ class DaemonStatusBarContainerView
     #on set invisble
 
   checkStatus : () ->
-    @daemonManagement.daemonControl.check @daemonItem, @setRunning, @setStop
+    console.log "check?"
+    @eventBus.emit "daemon-control-check", @daemonItem
+    #@daemonManagement.daemonControl.check @daemonItem, @setRunning, @setStop
 
   setRunning : () =>
     @element.removeClass "off load"
@@ -77,7 +85,8 @@ class DaemonStatusBarContainerView
   start : () ->
     if !@inProcess
       @setLoad()
-      @daemonManagement.daemonControl.run @daemonItem,true, @startCallBack
+      @eventBus.emit "daemon-control-run", @daemonItem,true, @startCallBack
+      #@daemonManagement.daemonControl.run @daemonItem,true, @startCallBack
     else atom.notifications.addInfo "Wait"
 
   stopCallBack : (err) =>
@@ -89,10 +98,11 @@ class DaemonStatusBarContainerView
   stop : () ->
     if !@inProcess
       @setLoad()
-      @daemonManagement.daemonControl.run @daemonItem,false, @stopCallBack
+      @eventBus.emit "daemon-control-run", @daemonItem,false, @stopCallBack
+      #@daemonManagement.daemonControl.run @daemonItem,false, @stopCallBack
     else atom.notifications.addInfo "Wait"
 
-  hide: ->
+  hide: -> #TODO: Change?
     @element.addClass 'hidden'
   show: ->
     @element.removeClass 'hidden'

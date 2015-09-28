@@ -20,21 +20,30 @@ class DaemonManagement
 
   increment : 0
 
-  constructor: (@smartDaemonControl) ->
-    @subscriptions = @smartDaemonControl.subscriptions
-    @daemonItemConfigureView = new DaemonItemConfigureView()
+  emitter: null
+
+  constructor: (@eventBus) ->
+    @regEventBus()
+    @daemonControl = new DaemonControl @eventBus
+    @daemonItemConfigureView = new DaemonItemConfigureView @eventBus
     @daemonItemConfigureView.attach(this)
 
     @rootPackageDir = atom.packages.loadedPackages[packageName].path
 
-    @scanDeamons = new ScanDeamons(this)
-    @daemonStatusBarContainerView = new DaemonStatusBarContainerView(@smartDaemonControl.state.smartDaemonControlViewState,this)
-    @daemonControl = new DaemonControl()
+    @scanDeamons = new ScanDeamons(@eventBus)
+    @daemonStatusBarContainerView = new DaemonStatusBarContainerView @eventBus
+
 
     @createDamonsJsonIfNotExist()
     @loadDaemonItems()
 
-    @daemonAddWizard = new DaemonAddWizard() #test
+    @daemonAddWizard = new DaemonAddWizard(@eventBus) #test
+    @eventBus.emit "get-subscription", (@subscriptions) => #to set @subscription from smart-daemon-control
+
+  regEventBus: ->
+    @eventBus.on "daemon-management-add-daemon", @addDaemon
+    @eventBus.on "daemon-management-new-daemon", @newDaemon
+    @eventBus.on "daemon-management-remove-daemon", @removeDaemon
 
   consumeStatusBar: (statusBar) ->
     @daemonStatusBarContainerView.initialize statusBar
@@ -79,7 +88,8 @@ class DaemonManagement
         @addDaemon i
 
   setDaemonItemCommand : (item) ->
-    @subscriptions.add atom.commands.add 'atom-workspace',"smart-daemon-control:configure-#{item.name}", => @showItemConfig(item)
+    #@subscriptions.add
+    atom.commands.add 'atom-workspace',"smart-daemon-control:configure-#{item.name}", => @showItemConfig(item)
 
   showItemConfig : (item) ->
     @daemonItemConfigureView.load item

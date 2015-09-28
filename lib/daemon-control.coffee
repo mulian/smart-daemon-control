@@ -2,7 +2,9 @@
 
 module.exports =
 class DaemonControl
-  constructor: () ->
+  constructor: (@eventBus) ->
+    @eventBus.on "daemon-control-check", @check
+    @eventBus.on "daemon-control-run", @run
 
   strToCmd: (str) ->
     res = str.split " "
@@ -10,27 +12,29 @@ class DaemonControl
       command: res.shift(),
       args: res
 
-  check: (daemonItem,cbIsRunning,cbIsNotRunning) ->
+  check: (daemonItem) =>
     if daemonItem.cmdCheck?
       #console.log "check #{daemonItem.cmdCheck}"
       cmd = @strToCmd daemonItem.cmdCheck
       command = cmd.command
       args = cmd.args
       alreadyGetCheckString = false
-      stdout = (output) ->
+      stdout = (output) =>
         if output.indexOf(daemonItem.strCheck) >- 1
           alreadyGetCheckString = true
-      exit = (code) ->
+      exit = (code) =>
         #console.log "exit check #{daemonItem.cmdCheck} with #{code}"
         if alreadyGetCheckString
-          cbIsRunning()
+          # cbIsRunning()
+          @eventBus.emit "daemon-status-bar-item-view-set-on", daemonItem
         else
-          cbIsNotRunning() if cbIsNotRunning?
+          # cbIsNotRunning() if cbIsNotRunning?
+          @eventBus.emit "daemon-status-bar-item-view-set-off", daemonItem
       process = new BufferedProcess({command, args, stdout, exit})
     else
       atom.notifications.addInfo "Daemon #{daemonItem.name}: daemon-cmdCheck values not set"
 
-  run: (daemonItem,start,cb) ->
+  run: (daemonItem,start,cb) =>
     if start
       cmdStr = daemonItem.cmdRun
     else

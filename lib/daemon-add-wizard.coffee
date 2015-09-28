@@ -1,30 +1,54 @@
 DaemonItem = require './daemon-item.coffee'
-{File} = require 'atom'
+{File,Emitter} = require 'atom'
 CheckListView = require './views/check-list-view'
 {ModalFileManagerView} = require 'modal-file-manager'
 
 module.exports =
 class DaemonAddWizard
-  constructor: (@daemonManagement) ->
+  constructor: (@eventBus,@daemonManagement) ->
     #@run()
-  run: ->
-    #new CheckListView()
-    mfm = new ModalFileManagerView
-    mfm.open atom.project.getPaths()[0], (file) =>
-        console.log "path: #{file.getBaseName()}"
-    #atom.pickFolder (path) =>
-    #@pickFile (filePath) ->
-    #  console.log filePath
-    #  @saveDaemon filePath
+    option = {} =
+      'darwin':
+        filterDir: /.app$/
+        filterFile: true
+      'win32':
+        filterDir: false
+        filterFile: /.exe$/
+      'linux':
+        filterDir: false
+        filterFile: true
+    @mfm = new ModalFileManagerView option[process.platform]
 
-  saveDaemon: (filePath) ->
-    file = new File filePath
-    @daemonManagement.addDaemon new DaemonItem #MacOS, Linux
-      name: file.getParent().getBaseName()
-      cmdRun: file.path
-      cmdStop: "killall #{file.path}"
-      cmdCheck: "ps -ax"
-      strCheck: file.path
+  getRootPathFromOs: ->
+    return "C:/" if process.platform=='win32'
+    return "/" #else
+    #atom.project.getPaths()[0] #project path
+
+  run: ->
+    @mfm.open @getRootPathFromOs(), (file) =>
+        @saveDaemon file
+
+  saveDaemon: (file) ->
+    item = {}
+    switch process.platform #linux users know how to add Deamons ;)
+      when "darwin" then item = new DaemonItem #MacOS, Linux
+        name: file.getParent().getBaseName()
+        cmdRun: file.path
+        cmdStop: "killall #{file.path}"
+        cmdCheck: "ps -ax"
+        strCheck: file.path
+      when "win32" then item = new DaemonItem #Windows
+        name: file.getParent().getBaseName()
+        cmdRun: file.path
+        cmdStop: "taskkill #{file.path}"
+        cmdCheck: "tasklist"
+        strCheck: file.getBaseName()
+    @eventBus.emit "daemon-management-add-daemon", item
+    @eventBus.emit "daemon-item-configure-view-show", item
+    # @daemonManagement.addDaemon item
+    # @daemonManagement.showItemConfig item
+
+
 
   # pickFile: (callback) ->
   #   prePaneURI = atom.workspace.getActivePaneItem().getURI()

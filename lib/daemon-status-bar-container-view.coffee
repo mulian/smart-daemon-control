@@ -9,14 +9,20 @@ class DaemonStatusBarContainerView
   daemonControl : null
   items : {}
 
-  constructor: (@serializedState,@daemonManagement) ->
+  constructor: (@eventBus) ->
+    @regEventBus()
+    @regConfOnDidChange()
     @element = $("<div/>",
       class: "inline-block smart-daemon-control",
     )
-    if @daemonManagement.scanDeamons.thereIsScanDaemonForOs()
-      @addScanButton()
-    else @addAddDaemonButton()
-    @regConfOnDidChange()
+    # no need?
+    # if @daemonManagement.scanDeamons.thereIsScanDaemonForOs()
+    #   @addScanButton()
+    # else @addAddDaemonButton()
+
+  regEventBus: ->
+    @eventBus.on "statusbar-add-daemon-item", @addDaemonItem
+    @eventBus.on "statusbar-remove-daemon-item", @removeDaemon
 
   regConfOnDidChange: ->
     atom.config.onDidChange "#{packageName}.priority", =>
@@ -31,7 +37,7 @@ class DaemonStatusBarContainerView
       text: "Add Daemon"
       class: "scan-button"
     ).click ()=>
-      @daemonManagement.newDaemon()
+      @eventBus.emit "new-daemon"
       @addButton.remove()
     @element.append @addButton
 
@@ -40,18 +46,19 @@ class DaemonStatusBarContainerView
       text: "Scan Daemons"
       class: "scan-button"
     ).click ()=>
-      @daemonManagement.scanDeamons.run()
+      @eventBus.emit "scan-daemon-run"
+      #@daemonManagement.scanDeamons.run()
       @scanButton.remove()
     @element.append @scanButton
 
 
-  addDaemonItem: (daemonItem) ->
-    item = new DaemonStatusBarItemView(@serializedState,daemonItem,@daemonManagement)
+  addDaemonItem: (daemonItem) =>
+    item = new DaemonStatusBarItemView(@eventBus, daemonItem)
     @items[daemonItem.id] = item
     @element.append item.element
     @scanButton?.remove()
     @addButton?.remove()
-  removeDaemon: (daemonItem) ->
+  removeDaemon: (daemonItem) =>
     @items[daemonItem.id].element.remove()
     delete @items[daemonItem.id]
 
