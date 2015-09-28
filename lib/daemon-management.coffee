@@ -6,6 +6,8 @@ packageName = require('../package.json').name
 DaemonStatusBarContainerView = require './daemon-status-bar-container-view'
 {Directory,File} = require 'atom'
 
+DaemonAddWizard = require "./daemon-add-wizard"
+
 module.exports =
 class DaemonManagement
   DdemonStatusBarContainerView: null
@@ -31,6 +33,8 @@ class DaemonManagement
 
     @createDamonsJsonIfNotExist()
     @loadDaemonItems()
+
+    @daemonAddWizard = new DaemonAddWizard() #test
 
   consumeStatusBar: (statusBar) ->
     @daemonStatusBarContainerView.initialize statusBar

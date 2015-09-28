@@ -13,54 +13,53 @@
 #daemon-item-manager {
   width: 100%;
   background: @scrollbar-background-color;
-}
-#daemon-item-manager #daemon-item-title {
-  font-weight: bold;
-  text-align: center;
-}
-#daemon-item-manager td {
-  border-bottom: 3px solid @overlay-background-color;
-}
-#daemon-item-manager > tbody > tr > td:nth-child(1) {
-  text-align: right;
-  width: 120px;
-  padding-right: 5px;
-}
-#daemon-item-manager > tbody > tr > td:nth-child(2) {
-  width: calc(~"100% - 125px");
-}
-#daemon-item-manager input {
-  width: 100%;
-  border-radius: 4px;
+
+  #daemon-item-title {
+    font-weight: bold;
+    text-align: center;
+  }
+  td {
+    border-bottom: 3px solid @overlay-background-color;
+  }
+  tbody > tr > td:nth-child(1) {
+    text-align: right;
+    width: 120px;
+    padding-right: 5px;
+  }
+  tbody > tr > td:nth-child(2) {
+    width: calc(~"100% - 145px");
+  }
 }
 
 .test .editor {
   display: inline-block;
 }
 
-.smart-daemon-control .scan-button {
-  background-color: @background-color-error;
-  color: @text-color-highlight;
-}
-.smart-daemon-control .scan-button:hover {
-  text-decoration: underline;
-  cursor: pointer;
-}
+.smart-daemon-control {
+  .scan-button {
+    background-color: @background-color-error;
+    color: @text-color-highlight;
+    :hover {
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  }
 
-.smart-daemon-control .smart-daemon-control-item {
-  padding-left: 2px;
-  padding-right: 2px;
-}
-.smart-daemon-control .smart-daemon-control-item:hover {
-  text-decoration: underline;
-  cursor: pointer;
-}
-.smart-daemon-control .on {
-  color: @color_on;
-}
-.smart-daemon-control .off {
-  color: @color_off;
-}
-.smart-daemon-control .load {
-  color: @color_load;
+  .smart-daemon-control-item {
+    padding-left: 2px;
+    padding-right: 2px;
+  }
+  .smart-daemon-control-item:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  .on {
+    color: @color_on;
+  }
+  .off {
+    color: @color_off;
+  }
+  .load {
+    color: @color_load;
+  }
 }

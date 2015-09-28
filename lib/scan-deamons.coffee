@@ -70,6 +70,7 @@ class ScanDaemonsBrew extends ScanDaemons
 
 module.exports =
 class ScanDeamons
+  #TODO: Need an "add to statusbar list, after scan..."
   scanFunction : null
   constructor: (@daemonManagement) ->
     @defineScanFunction()

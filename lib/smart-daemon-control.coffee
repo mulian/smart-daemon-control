@@ -24,8 +24,9 @@ module.exports = SmartDaemonControl =
     @daemonManagement = new DaemonManagement(this)
     # Register command
     @subscriptions.add atom.commands.add 'atom-workspace',
-      'smart-daemon-control:scan-daemons' : ()=> @daemonManagement.scanDeamons.run()
-      'smart-daemon-control:new-daemon' : ()=> @daemonManagement.newDaemon()
+      'smart-daemon-control:scan-daemons' : => @daemonManagement.scanDeamons.run()
+      'smart-daemon-control:new-daemon' : => @daemonManagement.newDaemon()
+      'smart-daemon-control:add-wizard' : => @daemonManagement.daemonAddWizard.run()
       #'smart-daemon-control:test' : ()=> @test()
       #'smart-daemon-control:tes2t' : ()=> @test2()
 

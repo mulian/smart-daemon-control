@@ -19,7 +19,8 @@
   },
   "dependencies": {
     "atom-space-pen-views": "2.1.0",
-    "cson": ">=3.0.1 <4.0.0"
+    "cson": ">=3.0.1 <4.0.0",
+    "modal-file-manager": "git+https://github.com/mulian/modal-file-manager.git"
   },
   "consumedServices": {
     "status-bar": {
