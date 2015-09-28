@@ -21,6 +21,7 @@
 * fix autohide DaemonItemConfigureView for windows
 * fix daemons.json init on update (for the next versions)
 * add Debian-Scan-Algorithm
+* check after start/stop Daemon if it is on/off
 
 ## 0.7.2 - Bugfix ...
 * fix: backspace issue on item configuration

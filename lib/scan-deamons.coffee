@@ -49,9 +49,9 @@ class ScanDaemonsDebian extends ScanDaemons
   formatDaemonItem: (file) ->
     return new DaemonItem
       name: file.getBaseName()
-      cmdRun: "#{filePath} start"
-      cmdStop: "#{filePath} stop"
-      cmdCheck: "#{filePath} check"
+      cmdRun: "#{file.path} start"
+      cmdStop: "#{file.path} stop"
+      cmdCheck: "#{file.path} status"
       strCheck: "is running"
 
 #Scan Class for Brew

@@ -77,7 +77,7 @@ class DaemonStatusBarContainerView
   start : () ->
     if !@inProcess
       @setLoad()
-      @daemonManagement.daemonControl.run @daemonItem.cmdRun, @startCallBack
+      @daemonManagement.daemonControl.run @daemonItem,true, @startCallBack
     else atom.notifications.addInfo "Wait"
 
   stopCallBack : (err) =>
@@ -89,7 +89,7 @@ class DaemonStatusBarContainerView
   stop : () ->
     if !@inProcess
       @setLoad()
-      @daemonManagement.daemonControl.run @daemonItem.cmdStop, @stopCallBack
+      @daemonManagement.daemonControl.run @daemonItem,false, @stopCallBack
     else atom.notifications.addInfo "Wait"
 
   hide: ->
