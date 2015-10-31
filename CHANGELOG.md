@@ -1,6 +1,3 @@
-## 0.9.0
-* Use state instaed of json file to save daemons
-
 ## 0.8.0
 * Atom Checkbox
 * aktivate start with atom
@@ -16,6 +13,9 @@
   * sort
 * Add Daemon Wizard (with modal-file-manager)
 * Use an Eventbus (Emitter) for Daemons control
+* Use atoms state instaed of json file to save daemons
+  * Only on this Release: transform json to atoms state
+    * will be removed in next version
 
 ## 0.7.3 -
 * remove jQuery from dependencies and use jquery from atom-space-pen-views
