@@ -1,3 +1,6 @@
+## 0.9.0
+* Use state instaed of json file to save daemons
+
 ## 0.8.0
 * Atom Checkbox
 * aktivate start with atom

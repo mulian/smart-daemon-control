@@ -25,16 +25,18 @@ class DaemonControl
       exit = (code) =>
         #console.log "exit check #{daemonItem.cmdCheck} with #{code}"
         if alreadyGetCheckString
+          console.log "running"
           # cbIsRunning()
           @eventBus.emit "daemon-status-bar-item-view-set-on", daemonItem
         else
+          console.log "not running"
           # cbIsNotRunning() if cbIsNotRunning?
           @eventBus.emit "daemon-status-bar-item-view-set-off", daemonItem
       process = new BufferedProcess({command, args, stdout, exit})
     else
       atom.notifications.addInfo "Daemon #{daemonItem.name}: daemon-cmdCheck values not set"
 
-  run: (daemonItem,start,cb) =>
+  run: ({daemonItem,start}) =>
     if start
       cmdStr = daemonItem.cmdRun
     else
@@ -48,9 +50,11 @@ class DaemonControl
       exit = (code) =>
         #check if it really is running -> cb
         if start
-          @check daemonItem,cb
+          @check daemonItem
         else
-          @check daemonItem,undefined,cb
+          @check daemonItem
+      console.log "run command: #{command}"
+      console.log args
       process = new BufferedProcess({command, args, stdout, exit})
     else
       atom.notifications.addInfo "daemon-run/-stop values not set"

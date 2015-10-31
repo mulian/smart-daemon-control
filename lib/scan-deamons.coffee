@@ -55,6 +55,10 @@ class ScanDaemonsDebian extends ScanDaemons
       cmdCheck: "#{file.path} status"
       strCheck: "is running"
 
+
+#TODO: Scan Class for Mac
+#/System/Library/LaunchDaemons/
+
 #Scan Class for Brew
 class ScanDaemonsBrew extends ScanDaemons
   name: "Brew"
@@ -101,6 +105,6 @@ class ScanDeamons
     else true
 
   addDaemon: (daemonItem) ->
-    @eventBus.emit "daemon-management-add-Daemon", daemonItem
+    @eventBus.emit "DaemonItemCollection.add", daemonItem
     #@daemonManagement.addDaemon daemonItem
     atom.notifications.addInfo "#{daemonItem.name} added"

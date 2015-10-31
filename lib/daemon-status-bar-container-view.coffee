@@ -31,6 +31,8 @@ class DaemonStatusBarContainerView
       @attach()
 
   initialize: (@statusBar) ->
+    collection = @eventBus.emit 'DaemonItemCollection.get', @addDaemonItem
+    # console.log collection
 
   addAddDaemonButton: () ->
     @addButton = $("<span/>",

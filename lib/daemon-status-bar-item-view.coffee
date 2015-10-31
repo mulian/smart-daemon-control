@@ -85,7 +85,8 @@ class DaemonStatusBarItemView
   start : () ->
     if !@inProcess
       @setLoad()
-      @eventBus.emit "daemon-control-run", @daemonItem,true, @startCallBack
+      # console.log "set running"
+      @eventBus.emit "daemon-control-run", {daemonItem:@daemonItem,start:true}
       #@daemonManagement.daemonControl.run @daemonItem,true, @startCallBack
     else atom.notifications.addInfo "Wait"
 
@@ -98,7 +99,7 @@ class DaemonStatusBarItemView
   stop : () ->
     if !@inProcess
       @setLoad()
-      @eventBus.emit "daemon-control-run", @daemonItem,false, @stopCallBack
+      @eventBus.emit "daemon-control-run", {daemonItem:@daemonItem,start:false}
       #@daemonManagement.daemonControl.run @daemonItem,false, @stopCallBack
     else atom.notifications.addInfo "Wait"
 

@@ -64,7 +64,7 @@ class DaemonItemConfigureView extends View
 
   constructor: (@eventBus) ->
     super
-    @eventBus.on "daemon-item-configure-view-show", (item) =>
+    @eventBus.on "DaemonItemConfigureView.show", (item) =>
       @load item
       @show()
 

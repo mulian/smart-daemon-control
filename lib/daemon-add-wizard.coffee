@@ -30,11 +30,15 @@ class DaemonAddWizard
 
   saveDaemon: (file) ->
     item = {}
+    cmdStop=""
+    if file.getBaseName().indexOf(".app")>0
+      cmdStop= "killall #{file.getBaseName().slice(0,file.getBaseName().length-4)}"
+    else cmdStop= "killall #{file.getBaseName()}"
     switch process.platform #linux users know how to add Deamons ;)
       when "darwin" then item = new DaemonItem #MacOS, Linux
         name: file.getParent().getBaseName()
-        cmdRun: file.path
-        cmdStop: "killall #{file.path}"
+        cmdRun: "open #{file.path}"
+        cmdStop: cmdStop
         cmdCheck: "ps -ax"
         strCheck: file.path
       when "win32" then item = new DaemonItem #Windows

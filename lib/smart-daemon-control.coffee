@@ -3,6 +3,7 @@
 DaemonManagement = require "./daemon-management"
 #Test = require "./views/check-list-view"
 #Test2 = require "./views/select-modal-view"
+DaemonItemCollection = require './daemon-item-collection'
 
 module.exports = SmartDaemonControl =
   subscriptions: null
@@ -18,7 +19,14 @@ module.exports = SmartDaemonControl =
       minimum: 0
 
   activate: (state) ->
+    @daemonItemCollection =
+      if state
+        atom.deserializers.deserialize state
+      else
+        new DaemonItemCollection()
+
     @eventBus = new Emitter
+    @daemonItemCollection.addEventBus @eventBus
     #TODO: use state...
     # Events subscribed to in atom's system can be easily cleaned up with a CompositeDisposable
     @subscriptions = new CompositeDisposable
@@ -50,6 +58,7 @@ module.exports = SmartDaemonControl =
 
   #TODO: use serialize
   serialize: ->
+    @daemonItemCollection.serialize()
     #see https://atom.io/docs/v0.186.0/advanced/serialization
     #require '../daemons.json'
     #smartDaemonControlViewState: @smartDaemonControlView.serialize()
