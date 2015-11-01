@@ -20,6 +20,10 @@
   }
   td {
     border-bottom: 3px solid @overlay-background-color;
+    vertical-align: top;
+  }
+  tr {
+    height: 35px;
   }
   tbody > tr > td:nth-child(1) {
     text-align: right;
@@ -28,6 +32,11 @@
   }
   tbody > tr > td:nth-child(2) {
     width: calc(~"100% - 145px");
+    max-width: 380px;
+
+  }
+  tbody > tr > td > input {
+    margin-left: 5px;
   }
 }
 

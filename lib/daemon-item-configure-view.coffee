@@ -1,10 +1,11 @@
-{TextEditorView,View,$} = require 'atom-space-pen-views'
+{View,$,TextEditorView} = require 'atom-space-pen-views'
+# {View,$} = require 'space-pen'
 
 #TODO: less jquery more atom-space-pen
 module.exports =
 class DaemonItemConfigureView extends View
   @content: ->
-    @table id: 'daemon-item-manager' , =>
+    @table id: 'daemon-item-manager', class:'settings-view' , =>
       @tr =>
         @td =>
           @div "Edit Daemon", id: "daemon-item-title"#, click: 'kill'
@@ -67,6 +68,7 @@ class DaemonItemConfigureView extends View
     @eventBus.on "daemon-item-configure-view:show", (item) =>
       @load item
       @show()
+    console.log @
 
   initialize: ->
     @autoHide()
@@ -93,7 +95,7 @@ class DaemonItemConfigureView extends View
 
   show: () ->
     @panel.show()
-    #this prevent the hide after dblclick on daemon-item
+    #this prevents the hide after dblclick on daemon-item
     @showTime = true
     setTimeout =>
       @showTime = false
@@ -102,7 +104,6 @@ class DaemonItemConfigureView extends View
     @panel.hide() if not @showTime
 
   bindTextEditorView: (editorKey,daemonItemKey) ->
-    #@[editorKey].model.off 'did-change'
     @[editorKey].model.emitter.clear()
     @[editorKey].model.setText @daemonItem[daemonItemKey] if @daemonItem[daemonItemKey]?
     @[editorKey].model.emitter.on 'did-change', =>

@@ -4,12 +4,12 @@
 * Use atoms state instaed of json file to save daemons
   * Only on this Release: transform json to atoms state
 ->     * will be removed in next version
--> * Atom Checkbox
 -> * aktivate start with atom
--> * Daemon Edit Page
+* Daemon Edit Page
+  * Atom Checkbox
   * fit input length
-  * remove hide
-  * remove start with this project
+->  * remove hide
+->  * add start with this project
 -> * add Modal Panel for daemons like currently in statusbar
   * Add key to open this Modal Panel
   * add Settings item to deaktivate statusbar
@@ -18,6 +18,7 @@
   * sort
 -> * Add Daemon Wizard (with modal-file-manager)
 -> * recode everything
+
 
 ## 0.7.3 -
 * remove jQuery from dependencies and use jquery from atom-space-pen-views
