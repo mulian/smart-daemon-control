@@ -1,13 +1,14 @@
 {CompositeDisposable,Emitter} = require 'atom'
-
-DaemonManagement = require "./daemon-management"
-#Test = require "./views/check-list-view"
-#Test2 = require "./views/select-modal-view"
+DaemonManagement = require './daemon-management'
 DaemonItemCollection = require './daemon-item-collection'
+DaemonControl = require './daemon-control'
+DaemonItemConfigureView = require './daemon-item-configure-view'
+DaemonStatusBarContainerView = require './status-bar-container-view'
+DaemonAddWizard = require "./daemon-add-wizard"
+ScanDeamons = require './scan-deamons'
 
 module.exports = SmartDaemonControl =
-  subscriptions: null
-
+  #config definition
   config :
     statusbarOrientation:
       type: 'string'
@@ -18,47 +19,58 @@ module.exports = SmartDaemonControl =
       default: 300
       minimum: 0
 
+  #will called on package init
   activate: (state) ->
+    @subscriptions = new CompositeDisposable
+    @eventBus = new Emitter
+    #parse state or create new collection
     @daemonItemCollection =
       if state
         atom.deserializers.deserialize state
       else
         new DaemonItemCollection()
-
-    @eventBus = new Emitter
     @daemonItemCollection.addEventBus @eventBus
-    #TODO: use state...
-    # Events subscribed to in atom's system can be easily cleaned up with a CompositeDisposable
-    @subscriptions = new CompositeDisposable
-    @daemonManagement = new DaemonManagement(@eventBus)
-    # Register command
+
+    @initCommands()
+
+    @initServices()
+
+    # Run Daemon Management
+    @daemonManagement = new DaemonManagement @eventBus
+
+    console.log "init ready?"
+    @eventBus.emit "EventsReady"
+
+  initServices: ->
+    @daemonControl = new DaemonControl @eventBus
+
+    @daemonItemConfigureView = new DaemonItemConfigureView @eventBus
+    @daemonItemConfigureView.attach(this)
+
+
+
+    @scanDeamons = new ScanDeamons @eventBus
+    @daemonAddWizard = new DaemonAddWizard @eventBus
+
+  initCommands: ->
     @subscriptions.add atom.commands.add 'atom-workspace',
-      'smart-daemon-control:scan-daemons' : => @daemonManagement.scanDeamons.run()
+      'smart-daemon-control:scan-daemons' : => @scanDeamons.run()
       'smart-daemon-control:new-daemon' : => @daemonManagement.newDaemon()
       'smart-daemon-control:add-wizard' : => @daemonManagement.daemonAddWizard.run()
-    @eventBus.on "get-subscription", (cb) =>
-      cb @subscriptions
-      #'smart-daemon-control:test' : ()=> @test()
-      #'smart-daemon-control:tes2t' : ()=> @test2()
 
-  # test: ->
-  #   new Test()
-  #
-  # test2: ->
-  #   new Test2()
+  # outside call: init statusbar
+  consumeStatusBar: (statusBar) ->
+    @daemonStatusBarContainerView = new DaemonStatusBarContainerView @eventBus, statusBar
+    @daemonStatusBarContainerView.attach()
 
-  consumeStatusBar: (statusBar) -> #del?
-    @daemonManagement.consumeStatusBar statusBar
-
+  # outside call: on package deactivate:
   deactivate: ->
     @eventBus.emit "destroy"
     @subscriptions.dispose()
+    @daemonStatusBarContainerView.detach()
     @daemonManagement.destroy()
     @eventBus.dispose()
 
-  #TODO: use serialize
+  # outside call: save current daemonItems state
   serialize: ->
     @daemonItemCollection.serialize()
-    #see https://atom.io/docs/v0.186.0/advanced/serialization
-    #require '../daemons.json'
-    #smartDaemonControlViewState: @smartDaemonControlView.serialize()

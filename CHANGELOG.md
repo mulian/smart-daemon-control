@@ -16,6 +16,8 @@
 * Use atoms state instaed of json file to save daemons
   * Only on this Release: transform json to atoms state
     * will be removed in next version
+* recode everything
+* Add checkDeamon interfall to settings
 
 ## 0.7.3 -
 * remove jQuery from dependencies and use jquery from atom-space-pen-views

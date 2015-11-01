@@ -23,7 +23,7 @@ class ScanDaemons #extends this
         if not entrie.isDirectory()
           result = @re.exec entrie.getBaseName()
           if result != null
-            @eventBus.emit "scan-daemon-add-daemon", @formatDaemonItem entrie
+            @eventBus.emit "daemon-item-collection:add", @formatDaemonItem entrie
             #@scanDaemons.addDaemon @formatDaemonItem entrie
             #@regNewDaemon entrie, result[1]
         else @scanForFile entrie #scan subfolder
@@ -71,7 +71,7 @@ class ScanDaemonsBrew extends ScanDaemons
       cmdRun: "launchctl load #{file.path}"
       cmdStop: "launchctl unload #{file.path}"
       cmdCheck: "launchctl list"
-      strCheck: @re.exec file.getBaseName()[1]
+      strCheck: @re.exec(file.getBaseName())[1]
 
 module.exports =
 class ScanDeamons
@@ -93,11 +93,12 @@ class ScanDeamons
       #@daemonManagement.newDaemon()
 
   run: =>
-    if @scanFunction?
-      new @scanFunction(this)
-    else
-      #console.log process
-      atom.notifications.addInfo "There is no scan-algorithm for your OS #{process.platform} right now."
+    new ScanDaemonsBrew @eventBus
+    # if @scanFunction?
+    #   new @scanFunction(@eventBus)
+    # else
+    #   #console.log process
+    #   atom.notifications.addInfo "There is no scan-algorithm for your OS #{process.platform} right now."
 
   thereIsScanDaemonForOs: ->
     if @scanFunction == null
@@ -105,6 +106,6 @@ class ScanDeamons
     else true
 
   addDaemon: (daemonItem) ->
-    @eventBus.emit "DaemonItemCollection.add", daemonItem
+    @eventBus.emit "daemon-item-collection:add", daemonItem
     #@daemonManagement.addDaemon daemonItem
     atom.notifications.addInfo "#{daemonItem.name} added"
