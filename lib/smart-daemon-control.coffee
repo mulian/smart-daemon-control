@@ -3,7 +3,7 @@ DaemonManagement = require './daemon-management'
 DaemonItemCollection = require './daemon-item-collection'
 DaemonControl = require './daemon-control'
 DaemonItemConfigureView = require './daemon-item-configure-view'
-DaemonStatusBarContainerView = require './status-bar-container-view'
+StatusBarContainerView = require './status-bar-container-view'
 DaemonAddWizard = require "./daemon-add-wizard"
 ScanDeamons = require './scan-deamons'
 
@@ -18,8 +18,13 @@ module.exports = SmartDaemonControl =
       type: 'integer'
       default: 300
       minimum: 0
+    refresh:
+      type: 'integer'
+      default: 15
+      minimum: 0
+      description: 'Refresh rate of check Deamons in seconds, 0=off'
 
-  #will called on package init
+  # outside call: will called on package init
   activate: (state) ->
     @subscriptions = new CompositeDisposable
     @eventBus = new Emitter
@@ -45,9 +50,6 @@ module.exports = SmartDaemonControl =
     @daemonControl = new DaemonControl @eventBus
 
     @daemonItemConfigureView = new DaemonItemConfigureView @eventBus
-    @daemonItemConfigureView.attach(this)
-
-
 
     @scanDeamons = new ScanDeamons @eventBus
     @daemonAddWizard = new DaemonAddWizard @eventBus
@@ -55,19 +57,18 @@ module.exports = SmartDaemonControl =
   initCommands: ->
     @subscriptions.add atom.commands.add 'atom-workspace',
       'smart-daemon-control:scan-daemons' : => @scanDeamons.run()
-      'smart-daemon-control:new-daemon' : => @daemonManagement.newDaemon()
-      'smart-daemon-control:add-wizard' : => @daemonManagement.daemonAddWizard.run()
+      'smart-daemon-control:new-daemon' : => @daemonItemCollection.new()
+      'smart-daemon-control:add-wizard' : => @daemonAddWizard.run()
 
   # outside call: init statusbar
   consumeStatusBar: (statusBar) ->
-    @daemonStatusBarContainerView = new DaemonStatusBarContainerView @eventBus, statusBar
-    @daemonStatusBarContainerView.attach()
+    @statusBarContainerView = new StatusBarContainerView @eventBus, statusBar
 
   # outside call: on package deactivate:
   deactivate: ->
     @eventBus.emit "destroy"
     @subscriptions.dispose()
-    @daemonStatusBarContainerView.detach()
+    @statusBarContainerView.detach()
     @daemonManagement.destroy()
     @eventBus.dispose()
 

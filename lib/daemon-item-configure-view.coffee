@@ -70,13 +70,14 @@ class DaemonItemConfigureView extends View
 
   initialize: ->
     @autoHide()
+    @attach()
 
-  attach: (@daemonManagement) ->
+  attach: ->
     @panel = atom.workspace.addModalPanel(item: @, visible: false)
 
-  delete: () =>
+  delete: =>
     onYes = =>
-      @daemonManagement.removeDaemon @daemonItem
+      @eventBus.emit 'daemon-item-collection:remove', @daemonItem
       @panel.hide()
     @ask onYes
   ask: (yesCallback,noCallback) ->
@@ -105,7 +106,7 @@ class DaemonItemConfigureView extends View
     @[editorKey].model.setText @daemonItem[daemonItemKey] if @daemonItem[daemonItemKey]?
     @[editorKey].model.emitter.on 'did-change', =>
       @daemonItem[daemonItemKey] = @[editorKey].model.getText()
-      @daemonManagement.refreshDaemonItem(@daemonItem)
+      @eventBus.emit 'daemon-item-collection:change', @daemonItem
 
   load: (@daemonItem) ->
     @bindTextEditorView 'daemon-item-name',      'name'
@@ -116,10 +117,10 @@ class DaemonItemConfigureView extends View
 
     $('#daemon-item-hide').prop('checked',@daemonItem.hide).change (event) =>
       @daemonItem.hide = $(event.target).prop('checked')
-      @daemonManagement.refreshDaemonItem(daemonItem)
+      @eventBus.emit 'daemon-item-collection:change', daemonItem
     $('#daemon-item-autorun').prop('checked',@daemonItem.autorun).change (event) =>
       @daemonItem.autorun = $(event.target).prop('checked')
-      @daemonManagement.refreshDaemonItem(daemonItem)
+      @eventBus.emit 'daemon-item-collection:change', daemonItem
 
     # $('#daemon-item-cmd-run').attr('value',@daemonItem.cmdRun).keyup (event) =>
     #   @daemonItem.cmdRun = event.target.value

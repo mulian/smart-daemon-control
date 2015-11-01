@@ -21,20 +21,19 @@ class StatusBarContainerView extends View
     @eventBus.on "status-bar-container-view:remove", @removeDaemon
 
   regConfOnDidChange: ->
-    atom.config.onDidChange "#{packageName}.priority", =>
-      @attach()
-    atom.config.onDidChange "#{packageName}.statusbarOrientation", =>
-      @attach()
+    atom.config.onDidChange "#{packageName}.priority", => @attach()
+    atom.config.onDidChange "#{packageName}.statusbarOrientation", => @attach()
+    atom.config.onDidChange "#{packageName}.refresh", => @attach()
 
   initialize: ->
     @eventBus.emit 'daemon-item-collection:get', @addDaemonItem
-    @_refresh()
+    @attach()
 
   _refresh: ->
     @eventBus.emit 'daemon-item-collection:checkStates'
-    setInterval =>
+    @_refreshInterfall = setInterval =>
       @eventBus.emit 'daemon-item-collection:checkStates'
-    , 15*1000
+    , @_refreshRateInSec*1000
 
   addAddDaemonButton: () ->
     @addButton = $("<span/>",
@@ -74,6 +73,10 @@ class StatusBarContainerView extends View
       when 'left'   then chosenFunction = @statusBar.addLeftTile
       else chosenFunction = @statusBar.addRightTile
     @tile = chosenFunction(item: @, priority: atom.config.get("#{packageName}.priority"))
+    clearInterval @_refreshInterfall if @_refreshInterfall?
+    @_refreshRateInSec = atom.config.get("#{packageName}.refresh")
+    @_refresh() if @_refreshRateInSec!=0
+
 
   detach: ->
     @tile.destroy()

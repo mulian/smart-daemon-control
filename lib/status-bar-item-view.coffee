@@ -32,9 +32,15 @@ class StatusBarItemView #TODO: add class View
     @eventBus.on "status-bar-item-view:remove", (item) => @remove() if @_amI item #delete?
     @eventBus.on "status-bar-item-view:hide", (item) => @hide() if @_amI item
     @eventBus.on "status-bar-item-view:show", (item) => @show() if @_amI item
+    @eventBus.on "status-bar-item-view:refresh", (item) => @refresh item if @_amI item
 
     @eventBus.on "status-bar-item-view:aktivate", (item) => @setRunning() if @_amI item
     @eventBus.on "status-bar-item-view:deaktivate", (item) => @setNotRunning() if @_amI item
+
+  refresh: (item) ->
+    @daemonItem = item
+    @element.text @daemonItem.name
+    @checkHide()
 
   _amI: (item) ->
     return true if item.id==@daemonItem.id
