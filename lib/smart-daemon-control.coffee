@@ -31,10 +31,11 @@ module.exports = SmartDaemonControl =
     #parse state or create new collection
     @daemonItemCollection =
       if state
+        state.eventBus = @eventBus
         atom.deserializers.deserialize state
       else
-        new DaemonItemCollection()
-    @daemonItemCollection.addEventBus @eventBus
+        new DaemonItemCollection @eventBus
+    # @daemonItemCollection.addEventBus @eventBus
 
     @initCommands()
 

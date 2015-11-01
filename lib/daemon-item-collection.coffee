@@ -5,8 +5,8 @@ class DaemonItemCollection
   atom.deserializers.add(this)
 
   # @version: 0.1
-  @deserialize: ({data}) ->
-    return new DaemonItemCollection(data)
+  @deserialize: ({data,eventBus}) ->
+    return new DaemonItemCollection eventBus, data
   serialize: ->
     return {} =
       deserializer: 'DaemonItemCollection'
@@ -15,19 +15,22 @@ class DaemonItemCollection
         checks: @checks
       # version: @constructor.version
 
-  constructor: (data) ->
+  constructor: (@eventBus,data) ->
     {@items,@checks}=data
     # data=undefined #reset list
     # console.log @checks
+    @reqEventBus()
     if not data?
       @items = {} =
         inc: 0
       @checks = {}
     else
       for key,item of @items
-        @addCommands item if key!='inc'
+        if key!='inc'
+          @addCommands item
+          @eventBus.emit 'daemon-control:run', {daemonItem:item,start:true} if item.autorun
 
-  addEventBus: (@eventBus) ->
+  reqEventBus: ->
     @eventBus.on 'daemon-item-collection:add', @add
     @eventBus.on 'daemon-item-collection:remove', @remove
     @eventBus.on 'daemon-item-collection:change', @change
@@ -41,6 +44,7 @@ class DaemonItemCollection
 
 
   change: (item) =>
+    console.log item
     @items[item.id] = item
     #TODO: status-bar checks: daemon-item-collection:change not like this
     @eventBus.emit 'status-bar-item-view:refresh', @items[item.id]
