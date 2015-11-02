@@ -17,20 +17,20 @@ class DaemonItemCollection
       # version: @constructor.version
 
   constructor: (@eventBus,data) ->
-    {@items,@checks}=data
+    @reqEventBus()
     # data=undefined #reset list
     # console.log @items
     # console.log @checks
-    @reqEventBus()
-    if not data?
-      @items = {} =
-        inc: 0
-      @checks = {}
-    else
+    if data?
+      {@items,@checks}=data
       for key,item of @items
         if key!='inc'
           @addCommands item
           # @eventBus.emit 'daemon-control:run', {daemonItem:item,start:true} if item.autorun
+    else
+      @items = {} =
+        inc: 0
+      @checks = {}
 
   reqEventBus: ->
     @eventBus.on 'daemon-item-collection:add', (item) => @_callWhenDaemonItem item,@add

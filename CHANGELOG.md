@@ -9,6 +9,10 @@
 * Daemon Edit Page
   * remove hide option
 
+## 0.8.3 - next Bugfix: atom's state
+* Fix problems with atom's state
+  * Thanks for testing aitorllj93 !
+
 ## 0.8.2 - Fix secound bug of issue #2
 * Fix daemonItemCollection==undefined
 
