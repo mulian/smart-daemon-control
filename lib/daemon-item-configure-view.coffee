@@ -45,11 +45,11 @@ class DaemonItemConfigureView extends View
           @div "start with atom"
         @td =>
           @input type:"checkbox", id: "daemon-item-autorun"
-      @tr class: "daemon-autorun-project", =>
-        @td =>
-          @div "start with this project"
-        @td =>
-          @input type:"checkbox", id: "daemon-item-project-autorun"
+      # @tr class: "daemon-autorun-project", =>
+      #   @td =>
+      #     @div "start with this project"
+      #   @td =>
+      #     @input type:"checkbox", id: "daemon-item-project-autorun"
 
   showTime : false
 
@@ -95,12 +95,14 @@ class DaemonItemConfigureView extends View
 
   bindTextEditorView: (editorKey,daemonItemKey) ->
     @[editorKey].model.emitter.clear()
-    @[editorKey].model.setText @daemonItem[daemonItemKey] if @daemonItem[daemonItemKey]?
+    @daemonItem[daemonItemKey]="" if not @daemonItem[daemonItemKey]?
+    @[editorKey].model.setText @daemonItem[daemonItemKey]
     @[editorKey].model.emitter.on 'did-change', =>
       @daemonItem[daemonItemKey] = @[editorKey].model.getText()
       @eventBus.emit 'daemon-item-collection:change', @daemonItem
 
   load: (@daemonItem) ->
+    console.log @daemonItem
     @bindTextEditorView 'daemon-item-name',      'name'
     @bindTextEditorView 'daemon-item-cmd-run',   'cmdRun'
     @bindTextEditorView 'daemon-item-cmd-stop',  'cmdStop'

@@ -1,4 +1,17 @@
 DaemonItem = require "./daemon-item"
+#atom.project.rootDirectories[0].path
+
+clone = (obj) ->
+  return obj if (null == obj || "object" != typeof obj)
+  copy = obj.constructor()
+  for attr of obj
+    console.log "clone #{obj[attr]}"
+    copy[attr] = obj[attr] if (obj.hasOwnProperty(attr))
+  # for (var attr in obj) {
+  #     if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
+  # }
+  return copy
+
 
 module.exports =
 class DaemonItemCollection
@@ -18,6 +31,7 @@ class DaemonItemCollection
   constructor: (@eventBus,data) ->
     {@items,@checks}=data
     # data=undefined #reset list
+    # console.log @items
     # console.log @checks
     @reqEventBus()
     if not data?
@@ -28,7 +42,7 @@ class DaemonItemCollection
       for key,item of @items
         if key!='inc'
           @addCommands item
-          @eventBus.emit 'daemon-control:run', {daemonItem:item,start:true} if item.autorun
+          # @eventBus.emit 'daemon-control:run', {daemonItem:item,start:true} if item.autorun
 
   reqEventBus: ->
     @eventBus.on 'daemon-item-collection:add', (item) => @_callWhenDaemonItem item,@add
@@ -56,15 +70,42 @@ class DaemonItemCollection
       console.log "ERROR on _callWhenDaemonItem"
 
   change: (item) =>
-    console.log JSON.stringify item
-    @items[item.id] = item
     #TODO: status-bar checks: daemon-item-collection:change not like this
+    #will be automatic changed, this is only a trigger
+    @changeCheck item
     @eventBus.emit 'status-bar-item-view:refresh', @items[item.id]
+
+  changeCheck: (item) -> #TODO: reuse add and remove functions?
+    if item.checkAdded != item.cmdCheck
+      #remove from checkAdded list
+      if @checks[item.checkAdded]?
+        if @checks[item.checkAdded].length==1
+          delete @checks[item.checkAdded]
+        else
+          for i,key in @checks[item.checkAdded]
+            if i.id==item.id
+              @checks[item.checkAdded].splice key,1
+      #add on new list
+      if item.cmdCheck? and item.cmdCheck.length>0
+        @checks[item.cmdCheck] = [] if not @checks[item.cmdCheck]?
+        @checks[item.cmdCheck].push item
+        item.checkAdded = item.cmdCheck
+
+    # if item.cmdCheck? and item.cmdCheck.length>0
+    #   if @checks[item.cmdCheck]?
+    #     if @checks[item.cmdCheck].length>1 #update
+    #       #remove from list
+    #       for i,key in @checks[item.cmdCheck]
+    #         if i.id==item.id
+    #           @checks[item.cmdCheck].splice key,1
+    #           break;
+    #       #add to list
+    #       @checks[item.cmdCheck].push item
 
   new: =>
     newItem = new DaemonItem {name: "New"}
     @add newItem
-    @eventbus.emit 'DaemonItemConfigureView.show', newItem
+    @eventBus.emit 'daemon-item-configure-view:show', newItem
 
   #If there is an id, return only item with id
   #else return collection
@@ -82,8 +123,11 @@ class DaemonItemCollection
     @addCheck item
     return true
   addCheck: (item) ->
-    @checks[item.cmdCheck]=[] if not @checks[item.cmdCheck]?
-    @checks[item.cmdCheck].push item
+    if item.cmdCheck? and item.cmdCheck.length>0
+      @checks[item.cmdCheck]=[] if not @checks[item.cmdCheck]?
+      @checks[item.cmdCheck].push item
+      #for change
+      item.checkAdded = item.cmdCheck
 
   remove: (item) =>
     console.log item
@@ -102,15 +146,16 @@ class DaemonItemCollection
       return true
     else return false
   removeCheck: (item) ->
-    checks = @checks[item.cmdCheck]
-    if not checks.length>1
-      delete @checks[item.cmdCheck]
-      return true
-    else
-      for value,key in checks
-        if item.id == value.id
-          checks.splice key,1
-          return true
+    if item.cmdCheck? and item.cmdCheck.length>0
+      checks = @checks[item.cmdCheck]
+      if not checks.length>1
+        delete @checks[item.cmdCheck]
+        return true
+      else
+        for value,key in checks
+          if item.id == value.id
+            checks.splice key,1
+            return true
     return false
 
   addCommands: (item) ->

@@ -56,13 +56,13 @@ module.exports = SmartDaemonControl =
     @daemonItemConfigureView = new DaemonItemConfigureView @eventBus
 
     @scanDeamons = new ScanDeamons @eventBus
-    @daemonAddWizard = new DaemonAddWizard @eventBus
+    # @daemonAddWizard = new DaemonAddWizard @eventBus
 
   initCommands: ->
     @subscriptions.add atom.commands.add 'atom-workspace',
       'smart-daemon-control:scan-daemons' : => @scanDeamons.run()
       'smart-daemon-control:new-daemon' : => @daemonItemCollection.new()
-      'smart-daemon-control:add-wizard' : => @daemonAddWizard.run()
+      # 'smart-daemon-control:add-wizard' : => @daemonAddWizard.run()
 
   # outside call: init statusbar
   consumeStatusBar: (statusBar) ->

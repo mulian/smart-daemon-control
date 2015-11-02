@@ -66,9 +66,6 @@ class StatusBarItemView #TODO: add class View
     @element.removeClass "on load"
     @element.addClass "off"
     @status=false
-    if @daemonItem.autorun
-      @start()
-      @daemonItem.autorun=false
     @isInProgress=false
   setInPgrogress : () =>
     @isInProgress=true

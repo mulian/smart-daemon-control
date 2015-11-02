@@ -1,23 +1,27 @@
-## 0.8.0
-* Use an Eventbus (Emitter) for Daemons control
-* Add checkDeamon interfall to settings
-* Use atoms state instaed of json file to save daemons
-  * Only on this Release: transform json to atoms state
-->     * will be removed in next version
--> * aktivate start with atom
-* Daemon Edit Page
-  * Atom Checkbox
-  * fit input length
-->  * remove hide
-->  * add start with this project
--> * add Modal Panel for daemons like currently in statusbar
+## next version
+* add Modal Panel for daemons like currently in statusbar
   * Add key to open this Modal Panel
   * add Settings item to deaktivate statusbar
   * define keys for modal panel (1-9-0 and a-z)
   * show all Daemons with hide option
   * sort
--> * Add Daemon Wizard (with modal-file-manager)
--> * recode everything
+* Add Daemon Wizard (with modal-file-manager)
+* Daemon Edit Page
+  * remove hide option
+
+
+## 0.8.0
+* Use an Eventbus (Emitter) for Daemons control
+* Add checkDeamon interfall to settings
+* Use atoms state instaed of json file to save daemons
+  * Only on this Release: transform json to atoms state
+    * will be removed in next version
+* aktivate start with atom
+* Daemon Edit Page
+  * Atom Checkbox
+  * fit input length
+  * add start with this project
+* recode all
 
 
 ## 0.7.3 -
