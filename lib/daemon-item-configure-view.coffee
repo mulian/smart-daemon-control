@@ -58,7 +58,7 @@ class DaemonItemConfigureView extends View
     @eventBus.on "daemon-item-configure-view:show", (item) =>
       @load item
       @show()
-    console.log @
+    # console.log @
 
   initialize: ->
     @autoHide()

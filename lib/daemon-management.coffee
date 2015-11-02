@@ -28,7 +28,7 @@ class DaemonManagement
     daemonsFile = new File "#{@rootPackageDir}/daemons.json"
     # Check if there is an daemon.json from prev. version
     if daemonsFile.existsSync()
-      console.log  "Transform JSON to State"
+      # console.log  "Transform JSON to State"
       daemons = require '../daemons.json'
       # pipe it to state
       for k,item of daemons

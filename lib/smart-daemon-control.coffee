@@ -47,7 +47,7 @@ module.exports = SmartDaemonControl =
     # Run Daemon Management
     @daemonManagement = new DaemonManagement @eventBus
 
-    console.log "init ready?"
+    # console.log "init ready?"
     @eventBus.emit "EventsReady"
 
   initServices: ->

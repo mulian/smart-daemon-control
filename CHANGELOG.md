@@ -10,7 +10,7 @@
   * remove hide option
 
 
-## 0.8.0
+## 0.8.0 - runtime improvements
 * Use an Eventbus (Emitter) for Daemons control
 * Add checkDeamon interval to settings
 * Use atoms state instaed of json file to save daemons
@@ -24,7 +24,7 @@
 * And many other fixes
 
 
-## 0.7.3 -
+## 0.7.3 - unpublished
 * remove jQuery from dependencies and use jquery from atom-space-pen-views
 * set default statusbar orientation to right
 * fix windows open settings bug
