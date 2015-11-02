@@ -9,6 +9,9 @@
 * Daemon Edit Page
   * remove hide option
 
+## 0.8.2 - Fix secound bug of issue #2
+* Fix daemonItemCollection==undefined
+
 ## 0.8.1 - Bugfix jQuery
 * Bugfix jQuery
 

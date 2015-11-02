@@ -38,6 +38,8 @@ module.exports = SmartDaemonControl =
         atom.deserializers.deserialize state
       else
         new DaemonItemCollection @eventBus
+    if not @daemonItemCollection? #only because of issue #2
+      @daemonItemCollection = new DaemonItemCollection @eventBus
 
     @initCommands()
     @initServices()
