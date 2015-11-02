@@ -1,18 +1,6 @@
 DaemonItem = require "./daemon-item"
 #atom.project.rootDirectories[0].path
 
-clone = (obj) ->
-  return obj if (null == obj || "object" != typeof obj)
-  copy = obj.constructor()
-  for attr of obj
-    console.log "clone #{obj[attr]}"
-    copy[attr] = obj[attr] if (obj.hasOwnProperty(attr))
-  # for (var attr in obj) {
-  #     if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
-  # }
-  return copy
-
-
 module.exports =
 class DaemonItemCollection
   atom.deserializers.add(this)
@@ -31,8 +19,8 @@ class DaemonItemCollection
   constructor: (@eventBus,data) ->
     {@items,@checks}=data
     # data=undefined #reset list
-    console.log @items
-    console.log @checks
+    # console.log @items
+    # console.log @checks
     @reqEventBus()
     if not data?
       @items = {} =
@@ -93,10 +81,10 @@ class DaemonItemCollection
 
     #update check item
     if @checks[item.cmdCheck]?
-      console.log "check:"
+      # console.log "check:"
       for i,key in @checks[item.cmdCheck]
         if i.id==item.id
-          console.log "found"
+          # console.log "found"
           @checks[item.cmdCheck].splice key,1
           break;
       @checks[item.cmdCheck].push item
@@ -130,10 +118,11 @@ class DaemonItemCollection
       item.checkAdded = item.cmdCheck
 
   remove: (item) =>
-    console.log item
+    # console.log item
     #if daemonItem is in collection, +check name?
     if item.id?
       #if item is on top
+      item.command.dispose()
       if @items.inc == (@items.inc-1)
         delete @items[item.id]
       #else swap deletet with top item
@@ -159,6 +148,6 @@ class DaemonItemCollection
     return false
 
   addCommands: (item) ->
-    atom.commands.add 'atom-workspace',"smart-daemon-control:configure-#{item.name}", =>
+    item.command = atom.commands.add 'atom-workspace',"smart-daemon-control:configure-#{item.name}", =>
       # console.log @items
       @eventBus.emit 'daemon-item-configure-view:show', @items[item.id]
