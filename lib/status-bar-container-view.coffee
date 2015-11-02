@@ -30,7 +30,6 @@ class StatusBarContainerView extends View
     @attach()
 
   _refresh: ->
-    @eventBus.emit 'daemon-item-collection:checkStates'
     @_refreshInterfall = setInterval =>
       @eventBus.emit 'daemon-item-collection:checkStates'
     , @_refreshRateInSec*1000

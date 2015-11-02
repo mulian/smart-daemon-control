@@ -11,18 +11,21 @@ module.exports = SmartDaemonControl =
   #config definition
   config :
     statusbarOrientation:
+      title: 'Statusbar Orientation'
       type: 'string'
       enum: ['left','right']
       default: 'right'
     priority:
+      title: 'Priority in statusbar'
       type: 'integer'
       default: 300
       minimum: 0
     refresh:
+      title: 'Refresh rate in sec.'
       type: 'integer'
       default: 15
       minimum: 0
-      description: 'Refresh rate of check Deamons in seconds, 0=off'
+      description: 'Refresh rate of check Deamons in seconds, 0=off.'
 
   # outside call: will called on package init
   activate: (state) ->

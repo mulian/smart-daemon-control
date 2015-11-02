@@ -33,7 +33,7 @@ class DaemonControl
         if (output.indexOf(item.strCheck) > -1)
           @eventBus.emit 'status-bar-item-view:aktivate', item
           checkList.splice key,1
-    exit = (code) => #remove?
+    exit = (code) =>
       for item in checkList
         @eventBus.emit 'status-bar-item-view:deaktivate', item
     process = new BufferedProcess {command,args,stdout,exit}
