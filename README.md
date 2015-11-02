@@ -3,7 +3,7 @@
 Easy manage and control your development daemons like PHP, Apache, Nginx, MySql(, ALL DAEMONS) in your status bar.<br>
 Use this package with all os.
 
-Scan algorithm for:
+#Scan algorithm
  * Mac OS X
    * brew ✓
    * macports ✕
@@ -15,6 +15,12 @@ Scan algorithm for:
    * Other ✕
 
 ![Preview](https://raw.githubusercontent.com/mulian/smart-daemon-control/master/preview.png)
+
+## INFO
+Now it use atoms state.
+
+**NOTE:**
+The update from version <=0.7.3 to a newer version published after 12/01/2015 will delete your stored daemons. - Update now!
 
 ## Install Steps
 1. Install smart-daemon-control

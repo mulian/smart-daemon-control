@@ -12,7 +12,7 @@
 
 ## 0.8.0
 * Use an Eventbus (Emitter) for Daemons control
-* Add checkDeamon interfall to settings
+* Add checkDeamon interval to settings
 * Use atoms state instaed of json file to save daemons
   * Only on this Release: transform json to atoms state
     * will be removed in next version
@@ -20,7 +20,8 @@
 * Daemon Edit Page
   * Atom Checkbox
   * fit input length
-* recode source code
+* The source code has been completely reworked.
+* And many other fixes
 
 
 ## 0.7.3 -
