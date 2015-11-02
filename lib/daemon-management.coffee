@@ -17,7 +17,6 @@ class DaemonManagement
     @rootPackageDir = atom.packages.loadedPackages[packageName].path
     @transportJsonToStateIfExist()
 
-
   regEventBus: ->
     @eventBus.on "destroy", @destroy
 

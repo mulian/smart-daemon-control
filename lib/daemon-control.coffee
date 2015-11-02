@@ -3,7 +3,7 @@
 module.exports =
 class DaemonControl
   constructor: (@eventBus) ->
-    @eventBus.on "daemon-control:checkAll", @checkAll
+    @eventBus.on "daemon-control:checkAll", @letsCheckAll
     @eventBus.on "daemon-control:run", @run
 
   strToCmd: (str) ->
@@ -12,7 +12,14 @@ class DaemonControl
       command: res.shift(),
       args: res
 
-  checkAll: (checks) =>
+  #to sumerize all checks if they came in short time
+  letsCheckAll: (checks) =>
+    clearTimeout @_timeOut if @_timeOut?
+    @_timeOut = setTimeout =>
+      @checkAll checks
+      delete @_timeOut
+    , 200
+  checkAll: (checks) ->
     for checkStr,checkList of checks
       copyList = checkList.slice(0)
       @check checkStr,copyList

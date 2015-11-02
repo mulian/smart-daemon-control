@@ -54,9 +54,9 @@ class StatusBarContainerView extends View
       @scanButton.remove()
     $(@element).append @scanButton
 
-
   addDaemonItem: (daemonItem) =>
     item = new StatusBarItemView(@eventBus, daemonItem)
+    @eventBus.emit 'daemon-item-collection:checkStates'
     @items[daemonItem.id] = item
     $(@element).append item.element
     @scanButton?.remove()
