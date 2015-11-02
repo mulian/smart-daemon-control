@@ -79,3 +79,4 @@ module.exports = SmartDaemonControl =
   # atom call: save current daemonItems state
   serialize: ->
     @daemonItemCollection.serialize()
+    # return undefined -> to test reset state
