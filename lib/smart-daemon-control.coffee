@@ -1,10 +1,10 @@
-{CompositeDisposable,Emitter} = require 'atom'
+{CompositeDisposable, Emitter} = require 'atom'
 DaemonManagement = require './daemon-management'
 DaemonItemCollection = require './daemon-item-collection'
 DaemonControl = require './daemon-control'
 DaemonItemConfigureView = require './daemon-item-configure-view'
 StatusBarContainerView = require './status-bar-container-view'
-DaemonAddWizard = require "./daemon-add-wizard"
+# DaemonAddWizard = require "./daemon-add-wizard"
 ScanDeamons = require './scan-deamons'
 
 module.exports = SmartDaemonControl =
@@ -27,7 +27,7 @@ module.exports = SmartDaemonControl =
       minimum: 0
       description: 'Refresh rate of check Deamons in seconds, 0=off.'
 
-  # outside call: will called on package init
+  # atom call: will called on package init
   activate: (state) ->
     @subscriptions = new CompositeDisposable
     @eventBus = new Emitter
@@ -38,10 +38,8 @@ module.exports = SmartDaemonControl =
         atom.deserializers.deserialize state
       else
         new DaemonItemCollection @eventBus
-    # @daemonItemCollection.addEventBus @eventBus
 
     @initCommands()
-
     @initServices()
 
     # Run Daemon Management
@@ -64,11 +62,11 @@ module.exports = SmartDaemonControl =
       'smart-daemon-control:new-daemon' : => @daemonItemCollection.new()
       # 'smart-daemon-control:add-wizard' : => @daemonAddWizard.run()
 
-  # outside call: init statusbar
+  # atom call: init statusbar
   consumeStatusBar: (statusBar) ->
     @statusBarContainerView = new StatusBarContainerView @eventBus, statusBar
 
-  # outside call: on package deactivate:
+  # atom call: on package deactivate:
   deactivate: ->
     @eventBus.emit "destroy"
     @subscriptions.dispose()
@@ -76,6 +74,6 @@ module.exports = SmartDaemonControl =
     @daemonManagement.destroy()
     @eventBus.dispose()
 
-  # outside call: save current daemonItems state
+  # atom call: save current daemonItems state
   serialize: ->
     @daemonItemCollection.serialize()

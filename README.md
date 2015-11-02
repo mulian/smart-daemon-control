@@ -1,8 +1,8 @@
 # smart-daemon-control package
 
-Easy manage and control your development daemons like PHP, Apache, Nginx, MySql(, ALL DAEMONS) in your status bar.<br>
-Use this package with all os.
+Easy manage and control your development daemons like PHP, Apache, Nginx, MySql,... in your status bar.<br>
 
+![Preview](https://raw.githubusercontent.com/mulian/smart-daemon-control/master/preview.png)
 #Scan algorithm
  * Mac OS X
    * brew ✓
@@ -13,8 +13,6 @@ Use this package with all os.
      * You'll need root access to start/stop services
      * Workaround: run atom in termin with root: "sudo atom"
    * Other ✕
-
-![Preview](https://raw.githubusercontent.com/mulian/smart-daemon-control/master/preview.png)
 
 ## INFO
 Now it use atoms state.

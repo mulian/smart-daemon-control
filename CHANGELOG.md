@@ -9,6 +9,8 @@
 * Daemon Edit Page
   * remove hide option
 
+## 0.8.1 - Bugfix jQuery
+* Bugfix jQuery
 
 ## 0.8.0 - runtime improvements
 * Use an Eventbus (Emitter) for Daemons control
