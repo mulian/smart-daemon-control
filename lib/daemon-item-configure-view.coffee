@@ -11,40 +11,30 @@ class DaemonItemConfigureView extends View
           @div "Edit Daemon", id: "daemon-item-title"#, click: 'kill'
         @td =>
           @button "Delete Daemon", click: 'delete'
-#        @td =>
-#          @select id:"select-daemon", =>
-#            @option "mysql"
-#            @option "nginx"
-#            @option "php56"
       @tr class: "daemon-name", =>
         @td =>
           @div "Daemon Name"
         @td =>
           @subview 'daemon-item-name', new TextEditorView(mini: true), autofocus: true
-#          @input type:"text", id: "daemon-item-name", autofocus: true
       @tr class: "daemon-cmd-run", =>
         @td =>
           @div "run command"
         @td =>
           @subview 'daemon-item-cmd-run', new TextEditorView(mini: true)
-          #@input type:"text", id: "daemon-item-cmd-run"
       @tr class: "daemon-cmd-stop", =>
         @td =>
           @div "stop command"
         @td =>
           @subview "daemon-item-cmd-stop", new TextEditorView(mini: true)
-          #@input type:"text", id: "daemon-item-cmd-stop"
       @tr =>
         @td class: "daemon-cmd-check", =>
           @div "check command"
         @td =>
           @subview "daemon-item-cmd-check", new TextEditorView(mini: true)
-          #@input type:"text", id: "daemon-item-cmd-check"
       @tr =>
         @td title:"true if isin check cmd result", "check string" , =>
         @td =>
           @subview "daemon-item-str-check", new TextEditorView(mini: true)
-          #@input type:"text", id: "daemon-item-str-check"
       @tr class: "daemon-hide", =>
         @td =>
           @div "hide"
@@ -123,7 +113,3 @@ class DaemonItemConfigureView extends View
     $('#daemon-item-autorun').prop('checked',@daemonItem.autorun).change (event) =>
       @daemonItem.autorun = $(event.target).prop('checked')
       @eventBus.emit 'daemon-item-collection:change', daemonItem
-
-    # $('#daemon-item-cmd-run').attr('value',@daemonItem.cmdRun).keyup (event) =>
-    #   @daemonItem.cmdRun = event.target.value
-    #   @daemonManagement.refreshDaemonItem(daemonItem)

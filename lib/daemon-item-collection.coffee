@@ -31,20 +31,32 @@ class DaemonItemCollection
           @eventBus.emit 'daemon-control:run', {daemonItem:item,start:true} if item.autorun
 
   reqEventBus: ->
-    @eventBus.on 'daemon-item-collection:add', @add
-    @eventBus.on 'daemon-item-collection:remove', @remove
-    @eventBus.on 'daemon-item-collection:change', @change
+    @eventBus.on 'daemon-item-collection:add', (item) => @_callWhenDaemonItem item,@add
+    @eventBus.on 'daemon-item-collection:remove', (item) => @_callWhenDaemonItem item,@remove
+    @eventBus.on 'daemon-item-collection:change', (item) => @_callWhenDaemonItem item,@change
     @eventBus.on 'daemon-item-collection:get', @get
-    @eventBus.on 'daemon-item-collection:new', @new
+    @eventBus.on 'daemon-item-collection:new', (item) => @_callWhenDaemonItem item,@new
     @eventBus.on 'daemon-item-collection:checkStates', @checkStates
 
   checkStates: =>
     # checks = @checks.slice(0) #copy
     @eventBus.emit 'daemon-control:checkAll', @checks
 
+  #There are 2 Kinds of item:
+  # * DaemonItem Object
+  # * Or an Array with DaemonItem
+  # call== callback
+  _callWhenDaemonItem: (item,call) ->
+    if (item instanceof DaemonItem) or (item instanceof Object)
+      call item
+    else if item instanceof Array
+      for i in item
+        call i
+    else
+      console.log "ERROR on _callWhenDaemonItem"
 
   change: (item) =>
-    console.log item
+    console.log JSON.stringify item
     @items[item.id] = item
     #TODO: status-bar checks: daemon-item-collection:change not like this
     @eventBus.emit 'status-bar-item-view:refresh', @items[item.id]
@@ -74,6 +86,7 @@ class DaemonItemCollection
     @checks[item.cmdCheck].push item
 
   remove: (item) =>
+    console.log item
     #if daemonItem is in collection, +check name?
     if item.id?
       #if item is on top
