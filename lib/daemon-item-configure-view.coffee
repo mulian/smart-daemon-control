@@ -102,12 +102,16 @@ class DaemonItemConfigureView extends View
       @eventBus.emit 'daemon-item-collection:change', @daemonItem
 
   load: (@daemonItem) ->
-    console.log @daemonItem
     @bindTextEditorView 'daemon-item-name',      'name'
     @bindTextEditorView 'daemon-item-cmd-run',   'cmdRun'
     @bindTextEditorView 'daemon-item-cmd-stop',  'cmdStop'
     @bindTextEditorView 'daemon-item-cmd-check', 'cmdCheck'
     @bindTextEditorView 'daemon-item-str-check', 'strCheck'
+
+    @daemonItem.hide=false if not @daemonItem.hide?
+    $(event.target).prop('checked',@daemonItem.hide)
+    @daemonItem.autorun=false if not @daemonItem.autorun?
+    $(event.target).prop('checked',@daemonItem.autorun)
 
     $('#daemon-item-hide').prop('checked',@daemonItem.hide).change (event) =>
       @daemonItem.hide = $(event.target).prop('checked')

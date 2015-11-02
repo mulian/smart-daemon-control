@@ -31,8 +31,8 @@ class DaemonItemCollection
   constructor: (@eventBus,data) ->
     {@items,@checks}=data
     # data=undefined #reset list
-    # console.log @items
-    # console.log @checks
+    console.log @items
+    console.log @checks
     @reqEventBus()
     if not data?
       @items = {} =
@@ -91,16 +91,16 @@ class DaemonItemCollection
         @checks[item.cmdCheck].push item
         item.checkAdded = item.cmdCheck
 
-    # if item.cmdCheck? and item.cmdCheck.length>0
-    #   if @checks[item.cmdCheck]?
-    #     if @checks[item.cmdCheck].length>1 #update
-    #       #remove from list
-    #       for i,key in @checks[item.cmdCheck]
-    #         if i.id==item.id
-    #           @checks[item.cmdCheck].splice key,1
-    #           break;
-    #       #add to list
-    #       @checks[item.cmdCheck].push item
+    #update check item
+    if @checks[item.cmdCheck]?
+      console.log "check:"
+      for i,key in @checks[item.cmdCheck]
+        if i.id==item.id
+          console.log "found"
+          @checks[item.cmdCheck].splice key,1
+          break;
+      @checks[item.cmdCheck].push item
+
 
   new: =>
     newItem = new DaemonItem {name: "New"}
@@ -160,4 +160,5 @@ class DaemonItemCollection
 
   addCommands: (item) ->
     atom.commands.add 'atom-workspace',"smart-daemon-control:configure-#{item.name}", =>
-      @eventBus.emit 'daemon-item-configure-view:show', item
+      # console.log @items
+      @eventBus.emit 'daemon-item-configure-view:show', @items[item.id]

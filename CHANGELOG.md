@@ -20,8 +20,7 @@
 * Daemon Edit Page
   * Atom Checkbox
   * fit input length
-  * add start with this project
-* recode all
+* recode source code
 
 
 ## 0.7.3 -
