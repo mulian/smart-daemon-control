@@ -107,7 +107,8 @@ class DaemonItemCollection
     @items[item.id] = item
     @items.inc++
     @addCommands item
-    @eventBus.emit 'status-bar-container-view:add', item
+    eb().SmartDaemonControl.StatusBarContainerView.add item
+    # @eventBus.emit 'status-bar-container-view:add', item
     @addCheck item
     return true
   addCheck: (item) ->
@@ -131,7 +132,8 @@ class DaemonItemCollection
         delete @items[(@items.inc-1)]
       @items.inc--
       @removeCheck item
-      @eventBus.emit 'status-bar-container-view:remove', item
+      eb().SmartDaemonControl.StatusBarContainerView.remove item
+      # @eventBus.emit 'status-bar-container-view:remove', item
       return true
     else return false
   removeCheck: (item) ->

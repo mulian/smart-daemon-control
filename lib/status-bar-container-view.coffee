@@ -17,8 +17,12 @@ class StatusBarContainerView extends View
     @regConfOnDidChange()
 
   regEventBus: ->
-    @eventBus.on "status-bar-container-view:add", @addDaemonItem
-    @eventBus.on "status-bar-container-view:remove", @removeDaemon
+    eb('debug',true)
+    eb('on',{thisArg:@}) 'SmartDaemonControl.StatusBarContainerView', {} =
+      add: @addDaemonItem
+      remove: @removeDaemon
+    # @eventBus.on "status-bar-container-view:add", @addDaemonItem
+    # @eventBus.on "status-bar-container-view:remove", @removeDaemon
 
   regConfOnDidChange: ->
     atom.config.onDidChange "#{packageName}.priority", => @attach()

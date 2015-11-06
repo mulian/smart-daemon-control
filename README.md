@@ -18,7 +18,7 @@ Easy manage and control your development daemons like PHP, Apache, Nginx, MySql,
 Now it use atoms state.
 
 **NOTE:**
-The update from version <=0.7.3 to a newer version published after 12/01/2015 will delete your stored daemons. - Update now!
+Update from version <=0.7.3 to a newer version published after 12/01/2015 will delete your stored daemons. - Update now!
 
 ## Install Steps
 1. Install smart-daemon-control

@@ -7,6 +7,8 @@ StatusBarContainerView = require './status-bar-container-view'
 # DaemonAddWizard = require "./daemon-add-wizard"
 ScanDeamons = require './scan-deamons'
 
+require 'e-bus'
+
 module.exports = SmartDaemonControl =
   #config definition
   config :
@@ -48,7 +50,7 @@ module.exports = SmartDaemonControl =
     @daemonManagement = new DaemonManagement @eventBus
 
     # console.log "init ready?"
-    @eventBus.emit "EventsReady"
+    # @eventBus.emit "EventsReady"
 
   initServices: ->
     @daemonControl = new DaemonControl @eventBus
@@ -75,6 +77,7 @@ module.exports = SmartDaemonControl =
     @statusBarContainerView.detach()
     @daemonManagement.destroy()
     @eventBus.dispose()
+    eb('rm')('SmartDaemonControl')
 
   # atom call: save current daemonItems state
   serialize: ->
