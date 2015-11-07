@@ -31,33 +31,35 @@ module.exports = SmartDaemonControl =
 
   # atom call: will called on package init
   activate: (state) ->
+    # eb.debug=true
     @subscriptions = new CompositeDisposable
-    @eventBus = new Emitter
+    eb.ebAdd 'smartDaemonControl'
+    # @eventBus = new Emitter
     #parse state or create new collection
     @daemonItemCollection =
       if state
-        state.eventBus = @eventBus
+        # state.eventBus = @eventBus
         atom.deserializers.deserialize state
       else
-        new DaemonItemCollection @eventBus
+        new DaemonItemCollection #@eventBus
     if not @daemonItemCollection? #only because of issue #2
-      @daemonItemCollection = new DaemonItemCollection @eventBus
+      @daemonItemCollection = new DaemonItemCollection #@eventBus
 
     @initCommands()
     @initServices()
 
     # Run Daemon Management
-    @daemonManagement = new DaemonManagement @eventBus
+    @daemonManagement = new DaemonManagement #@eventBus
 
     # console.log "init ready?"
     # @eventBus.emit "EventsReady"
 
   initServices: ->
-    @daemonControl = new DaemonControl @eventBus
+    @daemonControl = new DaemonControl #@eventBus
 
-    @daemonItemConfigureView = new DaemonItemConfigureView @eventBus
+    @daemonItemConfigureView = new DaemonItemConfigureView #@eventBus
 
-    @scanDeamons = new ScanDeamons @eventBus
+    @scanDeamons = new ScanDeamons #@eventBus
     # @daemonAddWizard = new DaemonAddWizard @eventBus
 
   initCommands: ->
@@ -68,16 +70,16 @@ module.exports = SmartDaemonControl =
 
   # atom call: init statusbar
   consumeStatusBar: (statusBar) ->
-    @statusBarContainerView = new StatusBarContainerView @eventBus, statusBar
+    @statusBarContainerView = new StatusBarContainerView statusBar
 
   # atom call: on package deactivate:
   deactivate: ->
-    @eventBus.emit "destroy"
+    # @eventBus.emit "destroy"
     @subscriptions.dispose()
     @statusBarContainerView.detach()
     @daemonManagement.destroy()
-    @eventBus.dispose()
-    eb('rm')('SmartDaemonControl')
+    # @eventBus.dispose()
+    eb.SmartDaemonControl.ebRemove()
 
   # atom call: save current daemonItems state
   serialize: ->

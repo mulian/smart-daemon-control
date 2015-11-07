@@ -9,7 +9,7 @@ packageName = require('../package.json').name
 # Will be deleted in next version!
 module.exports =
 class DaemonManagement
-  constructor: (@eventBus) ->
+  constructor: ->
     @subscriptions = new CompositeDisposable
     @regEventBus()
 
@@ -18,7 +18,8 @@ class DaemonManagement
     @transportJsonToStateIfExist()
 
   regEventBus: ->
-    @eventBus.on "destroy", @destroy
+    @eb = eb.SmartDaemonControl
+    # @eventBus.on "destroy", @destroy
 
   #Test:
   # {"1":{"name":"mysql","cmdRun":"launchctl load /usr/local/opt/mysql/homebrew.mxcl.mysql.plist","cmdStop":"launchctl unload /usr/local/opt/mysql/homebrew.mxcl.mysql.plist","cmdCheck":"launchctl list","strCheck":"homebrew.mxcl.mysql","autorun":true,"id":2}}
@@ -32,7 +33,8 @@ class DaemonManagement
       daemons = require '../daemons.json'
       # pipe it to state
       for k,item of daemons
-        @eventBus.emit "daemon-item-collection:add", item
+        @eb.daemonItemCollection.add item
+        # @eventBus.emit "daemon-item-collection:add", item
       # and set file to an emtpy object
       daemonsFile.writeSync "{}"
 

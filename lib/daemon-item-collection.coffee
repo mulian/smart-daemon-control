@@ -6,8 +6,8 @@ class DaemonItemCollection
   atom.deserializers.add(this)
 
   # @version: 0.1
-  @deserialize: ({data,eventBus}) ->
-    return new DaemonItemCollection eventBus, data
+  @deserialize: ({data}) ->
+    return new DaemonItemCollection data
   serialize: ->
     return {} =
       deserializer: 'DaemonItemCollection'
@@ -16,7 +16,7 @@ class DaemonItemCollection
         checks: @checks
       # version: @constructor.version
 
-  constructor: (@eventBus,data) ->
+  constructor: (data) ->
     @reqEventBus()
     # data=undefined #reset list
     # console.log @items
@@ -33,16 +33,27 @@ class DaemonItemCollection
       @checks = {}
 
   reqEventBus: ->
-    @eventBus.on 'daemon-item-collection:add', (item) => @_callWhenDaemonItem item,@add
-    @eventBus.on 'daemon-item-collection:remove', (item) => @_callWhenDaemonItem item,@remove
-    @eventBus.on 'daemon-item-collection:change', (item) => @_callWhenDaemonItem item,@change
-    @eventBus.on 'daemon-item-collection:get', @get
-    @eventBus.on 'daemon-item-collection:new', (item) => @_callWhenDaemonItem item,@new
-    @eventBus.on 'daemon-item-collection:checkStates', @checkStates
+    @eb = eb.smartDaemonControl
+    # eb('on',{thisArg:@}) 'SmartDaemonControl.DaemonItemCollection', {} =
+    @eb.ebAdd 'daemonItemCollection', {} =
+      thisArg:@
+      add : (item) => @_callWhenDaemonItem item,@add
+      remove : (item) => @_callWhenDaemonItem item,@remove
+      change : (item) => @_callWhenDaemonItem item,@change
+      new : (item) => @_callWhenDaemonItem item,@new
+      get : @get
+      checkStates : @checkStates
+    # @eventBus.on 'daemon-item-collection:add', (item) => @_callWhenDaemonItem item,@add
+    # @eventBus.on 'daemon-item-collection:remove', (item) => @_callWhenDaemonItem item,@remove
+    # @eventBus.on 'daemon-item-collection:change', (item) => @_callWhenDaemonItem item,@change
+    # @eventBus.on 'daemon-item-collection:get', @get
+    # @eventBus.on 'daemon-item-collection:new', (item) => @_callWhenDaemonItem item,@new
+    # @eventBus.on 'daemon-item-collection:checkStates', @checkStates
 
   checkStates: =>
     # checks = @checks.slice(0) #copy
-    @eventBus.emit 'daemon-control:checkAll', @checks
+    @eb.daemonControl.checkAll @checks
+    # @eventBus.emit 'daemon-control:checkAll', @checks
 
   #There are 2 Kinds of item:
   # * DaemonItem Object
@@ -61,7 +72,8 @@ class DaemonItemCollection
     #TODO: status-bar checks: daemon-item-collection:change not like this
     #will be automatic changed, this is only a trigger
     @changeCheck item
-    @eventBus.emit 'status-bar-item-view:refresh', @items[item.id]
+    @eb.statusBarItemView.refresh @items[item.id]
+    # @eventBus.emit 'status-bar-item-view:refresh', @items[item.id]
 
   changeCheck: (item) -> #TODO: reuse add and remove functions?
     if item.checkAdded != item.cmdCheck
@@ -93,7 +105,8 @@ class DaemonItemCollection
   new: =>
     newItem = new DaemonItem {name: "New"}
     @add newItem
-    @eventBus.emit 'daemon-item-configure-view:show', newItem
+    @eb.daemonItemConfigureView.show newItem
+    # @eventBus.emit 'daemon-item-configure-view:show', newItem
 
   #If there is an id, return only item with id
   #else return collection
@@ -107,7 +120,7 @@ class DaemonItemCollection
     @items[item.id] = item
     @items.inc++
     @addCommands item
-    eb().SmartDaemonControl.StatusBarContainerView.add item
+    @eb.statusBarContainerView.add item
     # @eventBus.emit 'status-bar-container-view:add', item
     @addCheck item
     return true
@@ -132,7 +145,7 @@ class DaemonItemCollection
         delete @items[(@items.inc-1)]
       @items.inc--
       @removeCheck item
-      eb().SmartDaemonControl.StatusBarContainerView.remove item
+      @eb.statusBarContainerView.remove item
       # @eventBus.emit 'status-bar-container-view:remove', item
       return true
     else return false
@@ -151,4 +164,5 @@ class DaemonItemCollection
 
   addCommands: (item) ->
     item.command = atom.commands.add 'atom-workspace',"smart-daemon-control:configure-#{item.name}", =>
-      @eventBus.emit 'daemon-item-configure-view:show', @items[item.id]
+      @eb.daemonItemConfigureView.show @items[item.id]
+      # @eventBus.emit 'daemon-item-configure-view:show', @items[item.id]

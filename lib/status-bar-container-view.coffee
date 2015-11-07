@@ -11,16 +11,18 @@ class StatusBarContainerView extends View
   daemonControl : null
   items : {}
 
-  constructor: (@eventBus,@statusBar) ->
+  constructor: (@statusBar) ->
     super
-    @regEventBus()
-    @regConfOnDidChange()
 
   regEventBus: ->
-    eb('debug',true)
-    eb('on',{thisArg:@}) 'SmartDaemonControl.StatusBarContainerView', {} =
+    @eb = eb.smartDaemonControl
+    @eb.ebAdd 'statusBarContainerView',{} =
+      thisArg: @
       add: @addDaemonItem
       remove: @removeDaemon
+    # eb('on',{thisArg:@}) 'SmartDaemonControl.StatusBarContainerView', {} =
+    #   add: @addDaemonItem
+    #   remove: @removeDaemon
     # @eventBus.on "status-bar-container-view:add", @addDaemonItem
     # @eventBus.on "status-bar-container-view:remove", @removeDaemon
 
@@ -30,12 +32,17 @@ class StatusBarContainerView extends View
     atom.config.onDidChange "#{packageName}.refresh", => @attach()
 
   initialize: ->
-    @eventBus.emit 'daemon-item-collection:get', @addDaemonItem
+    @regEventBus()
+    @regConfOnDidChange()
+    # eb({thisArg:@}).SmartDaemonControl.DaemonItemCollection.get @addDaemonItem
+    # @eventBus.emit 'daemon-item-collection:get', @addDaemonItem
     @attach()
+    @eb.daemonItemCollection.get @addDaemonItem
 
   _refresh: ->
     @_refreshInterfall = setInterval =>
-      @eventBus.emit 'daemon-item-collection:checkStates'
+      @eb.daemonItemCollection.checkStates()
+      # @eventBus.emit 'daemon-item-collection:checkStates'
     , @_refreshRateInSec*1000
 
   addAddDaemonButton: () ->
@@ -43,7 +50,8 @@ class StatusBarContainerView extends View
       text: "Add Daemon"
       class: "scan-button"
     ).click ()=>
-      @eventBus.emit "new-daemon"
+      @eb.daemonItemCollection.new()
+      # @eventBus.emit "new-daemon"
       @addButton.remove()
     $(@element).append @addButton
 
@@ -52,14 +60,16 @@ class StatusBarContainerView extends View
       text: "Scan Daemons"
       class: "scan-button"
     ).click ()=>
-      @eventBus.emit "scan-daemon-run"
+      # @eventBus.emit "scan-daemon-run"
+      @eb.scanDaemons.run()
       #@daemonManagement.scanDeamons.run()
       @scanButton.remove()
     $(@element).append @scanButton
 
   addDaemonItem: (daemonItem) =>
-    item = new StatusBarItemView(@eventBus, daemonItem)
-    @eventBus.emit 'daemon-item-collection:checkStates'
+    item = new StatusBarItemView(daemonItem)
+    # @eventBus.emit 'daemon-item-collection:checkStates'
+    @eb.daemonItemCollection.checkStates()
     @items[daemonItem.id] = item
     $(@element).append item.element
     @scanButton?.remove()

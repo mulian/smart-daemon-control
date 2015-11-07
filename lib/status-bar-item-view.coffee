@@ -4,7 +4,7 @@ packageName = require('../package.json').name
 
 module.exports =
 class StatusBarItemView #TODO: add class View
-  constructor : (@eventBus,@daemonItem) ->
+  constructor : (@daemonItem) ->
     @_reqEventBus()
     @status = false
     @isInProgress = false
@@ -29,28 +29,41 @@ class StatusBarItemView #TODO: add class View
         @showConfig()
 
   _reqEventBus: ->
-    @eventBus.on "status-bar-item-view:remove", (item) => @remove() if @_amI item #delete?
-    @eventBus.on "status-bar-item-view:hide", (item) => @hide() if @_amI item
-    @eventBus.on "status-bar-item-view:show", (item) => @show() if @_amI item
-    @eventBus.on "status-bar-item-view:refresh", (item) => @refresh item if @_amI item
-
-    @eventBus.on "status-bar-item-view:aktivate", (item) => @setRunning() if @_amI item
-    @eventBus.on "status-bar-item-view:deaktivate", (item) => @setNotRunning() if @_amI item
+    @eb = eb.smartDaemonControl
+    eb.debug=true
+    @eb.ebAdd 'statusBarItemView', {} =
+      thisArg : @
+      "remove": (item) => @_amI item,@remove
+      "hide": (item) => @_amI item,@hide
+      "show": (item) => @_amI item,@show
+      "refresh": (item) => @_amI item,@refresh
+      "aktivate": (item) => @_amI item,@setRunning
+      "deaktivate": (item) => @_amI item,@setNotRunning
+    eb.debug=false
+    # @eventBus.on "status-bar-item-view:remove", (item) => @remove() if @_amI item #delete?
+    # @eventBus.on "status-bar-item-view:hide", (item) => @hide() if @_amI item
+    # @eventBus.on "status-bar-item-view:show", (item) => @show() if @_amI item
+    # @eventBus.on "status-bar-item-view:refresh", (item) => @refresh item if @_amI item
+    #
+    # @eventBus.on "status-bar-item-view:aktivate", (item) => @setRunning() if @_amI item
+    # @eventBus.on "status-bar-item-view:deaktivate", (item) => @setNotRunning() if @_amI item
 
   refresh: (item) ->
     @daemonItem = item
     @element.text @daemonItem.name
     @checkHide()
 
-  _amI: (item) ->
-    return true if item.id==@daemonItem.id
+  _amI: (item,call) =>
+    call item if item.id==@daemonItem.id
+    # console.log "_amI",item.name,"!=",@daemonItem.name
     return false
 
   removeMe: ->
     $(@element).remove()
 
   showConfig: () ->
-    @eventBus.emit "daemon-item-configure-view:show", @daemonItem
+    @eb.daemonItemConfigureView.show @daemonItem
+    # @eventBus.emit "daemon-item-configure-view:show", @daemonItem
 
   checkHide : () ->
     if @daemonItem.hide
@@ -58,6 +71,7 @@ class StatusBarItemView #TODO: add class View
     else @show()
 
   setRunning : () =>
+    console.log "set on",@daemonItem.name
     @element.removeClass "off load"
     @element.addClass "on"
     @status=true
@@ -74,10 +88,12 @@ class StatusBarItemView #TODO: add class View
 
   start : () ->
     @setInPgrogress()
-    @eventBus.emit "daemon-control:run", {daemonItem:@daemonItem,start:true}
+    @eb.daemonControl.run {daemonItem:@daemonItem,start:true}
+    # @eventBus.emit "daemon-control:run", {daemonItem:@daemonItem,start:true}
   stop : () ->
     @setInPgrogress()
-    @eventBus.emit "daemon-control:run", {daemonItem:@daemonItem,start:false}
+    @eb.daemonControl.run {daemonItem:@daemonItem,start:false}
+    # @eventBus.emit "daemon-control:run", {daemonItem:@daemonItem,start:false}
   toggle: ->
     if not @isInProgress
       if @status

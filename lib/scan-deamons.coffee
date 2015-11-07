@@ -8,7 +8,7 @@ class ScanDaemons #extends this
   re: null      #search Regular Expression
   formatDaemonItem: (file) -> #transform Filename to Daemon Name & run-/stop-/check-Daemon
 
-  constructor: (@eventBus) ->
+  constructor: ->
     @info()
     @startScan()
 
@@ -23,7 +23,8 @@ class ScanDaemons #extends this
         if not entrie.isDirectory()
           result = @re.exec entrie.getBaseName()
           if result != null
-            @eventBus.emit "daemon-item-collection:add", @formatDaemonItem entrie
+            eb.smartDaemonControl.daemonItemCollection.add @formatDaemonItem entrie
+            # @eventBus.emit "daemon-item-collection:add", @formatDaemonItem entrie
             #@scanDaemons.addDaemon @formatDaemonItem entrie
             #@regNewDaemon entrie, result[1]
         else @scanForFile entrie #scan subfolder
@@ -77,9 +78,11 @@ module.exports =
 class ScanDeamons
   #TODO: Need an "add to statusbar list, after scan..."
   scanFunction : null
-  constructor: (@eventBus) ->
+  constructor: ->
     @defineScanFunction()
-    @eventBus.on "scan-daemon-run", @run
+    @eb = eb.smartDaemonControl
+    @eb.ebAdd 'scanDaemons', @run
+    # @eventBus.on "scan-daemon-run", @run
 
   defineScanFunction: ->
     if process.platform == "darwin" #mac
@@ -93,7 +96,7 @@ class ScanDeamons
       #@daemonManagement.newDaemon()
 
   run: =>
-    new ScanDaemonsBrew @eventBus
+    new ScanDaemonsBrew #@eventBus
     # if @scanFunction?
     #   new @scanFunction(@eventBus)
     # else
@@ -106,6 +109,7 @@ class ScanDeamons
     else true
 
   addDaemon: (daemonItem) ->
-    @eventBus.emit "daemon-item-collection:add", daemonItem
+    @eb.daemonItemCollection.add daemonItem
+    # @eventBus.emit "daemon-item-collection:add", daemonItem
     #@daemonManagement.addDaemon daemonItem
     atom.notifications.addInfo "#{daemonItem.name} added"

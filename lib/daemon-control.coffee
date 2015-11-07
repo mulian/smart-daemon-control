@@ -2,9 +2,13 @@
 
 module.exports =
 class DaemonControl
-  constructor: (@eventBus) ->
-    @eventBus.on "daemon-control:checkAll", @letsCheckAll
-    @eventBus.on "daemon-control:run", @run
+  constructor: ->
+    @eb = eb.smartDaemonControl
+    @eb.ebAdd 'daemonControl', {} =
+      checkAll: @letsCheckAll
+      run: @run
+    # @eventBus.on "daemon-control:checkAll", @letsCheckAll
+    # @eventBus.on "daemon-control:run", @run
 
   strToCmd: (str) ->
     res = str.split " "
@@ -32,14 +36,19 @@ class DaemonControl
       while key--
         item = checkList[key]
         if (output.indexOf(item.strCheck) > -1)
-          @eventBus.emit 'status-bar-item-view:aktivate', item
+          console.log "on", item.name
+          @eb.statusBarItemView.aktivate item
+          # @eventBus.emit 'status-bar-item-view:aktivate', item
           checkList.splice key,1
     exit = (code) =>
       for item in checkList
-        @eventBus.emit 'status-bar-item-view:deaktivate', item
+        console.log "off", item.name
+        @eb.statusBarItemView.deaktivate item
+        # @eventBus.emit 'status-bar-item-view:deaktivate', item
         #if it is deactivated and autorun, run it!
         if item.autorun and @_firstTime
-          @eventBus.emit 'daemon-control:run', {daemonItem:item,start:true}
+          @eb.daemonControl.run {daemonItem:item,start:true}
+          # @eventBus.emit 'daemon-control:run', {daemonItem:item,start:true}
       @_firstTime=false
     process = new BufferedProcess {command,args,stdout,exit}
     process.onWillThrowError (err) ->

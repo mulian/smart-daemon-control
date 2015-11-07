@@ -53,11 +53,15 @@ class DaemonItemConfigureView extends View
 
   showTime : false
 
-  constructor: (@eventBus) ->
+  constructor: ->
     super
-    @eventBus.on "daemon-item-configure-view:show", (item) =>
+    @eb = eb.smartDaemonControl
+    @eb.ebAdd 'daemonItemConfigureView.show', (item) =>
       @load item
       @show()
+    # @eventBus.on "daemon-item-configure-view:show", (item) =>
+    #   @load item
+    #   @show()
     # console.log @
 
   initialize: ->
@@ -69,7 +73,8 @@ class DaemonItemConfigureView extends View
 
   delete: =>
     onYes = =>
-      @eventBus.emit 'daemon-item-collection:remove', @daemonItem
+      @eb.daemonItemCollection.remove @daemonItem
+      # @eventBus.emit 'daemon-item-collection:remove', @daemonItem
       @panel.hide()
     @ask onYes
   ask: (yesCallback,noCallback) ->
@@ -99,7 +104,8 @@ class DaemonItemConfigureView extends View
     @[editorKey].model.setText @daemonItem[daemonItemKey]
     @[editorKey].model.emitter.on 'did-change', =>
       @daemonItem[daemonItemKey] = @[editorKey].model.getText()
-      @eventBus.emit 'daemon-item-collection:change', @daemonItem
+      @eb.daemonItemCollection.change @daemonItem
+      # @eventBus.emit 'daemon-item-collection:change', @daemonItem
 
   load: (@daemonItem) ->
     @bindTextEditorView 'daemon-item-name',      'name'
@@ -115,7 +121,9 @@ class DaemonItemConfigureView extends View
 
     $('#daemon-item-hide').prop('checked',@daemonItem.hide).change (event) =>
       @daemonItem.hide = $(event.target).prop('checked')
-      @eventBus.emit 'daemon-item-collection:change', daemonItem
+      @eb.daemonItemCollection.change daemonItem
+      # @eventBus.emit 'daemon-item-collection:change', daemonItem
     $('#daemon-item-autorun').prop('checked',@daemonItem.autorun).change (event) =>
       @daemonItem.autorun = $(event.target).prop('checked')
-      @eventBus.emit 'daemon-item-collection:change', daemonItem
+      @eb.daemonItemCollection.change daemonItem
+      # @eventBus.emit 'daemon-item-collection:change', daemonItem
