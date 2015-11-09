@@ -16,7 +16,7 @@ class StatusBarContainerView extends View
 
   regEventBus: ->
     @eb = eb.smartDaemonControl
-    @eb.ebAdd 'statusBarContainerView',{} =
+    @eb.eb 'statusBarContainerView',{} =
       thisArg: @
       add: @addDaemonItem
       remove: @removeDaemon

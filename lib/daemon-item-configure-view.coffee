@@ -56,7 +56,7 @@ class DaemonItemConfigureView extends View
   constructor: ->
     super
     @eb = eb.smartDaemonControl
-    @eb.ebAdd 'daemonItemConfigureView.show', (item) =>
+    @eb.eb 'daemonItemConfigureView.show', (item) =>
       @load item
       @show()
     # @eventBus.on "daemon-item-configure-view:show", (item) =>
@@ -90,11 +90,13 @@ class DaemonItemConfigureView extends View
 
   show: () ->
     @panel.show()
+    @['daemon-item-name'].focus()
     #this prevents the hide after dblclick on daemon-item
     @showTime = true
     setTimeout =>
       @showTime = false
     , 200
+
   hide: ->
     @panel.hide() if not @showTime
 
@@ -103,6 +105,7 @@ class DaemonItemConfigureView extends View
     @daemonItem[daemonItemKey]="" if not @daemonItem[daemonItemKey]?
     @[editorKey].model.setText @daemonItem[daemonItemKey]
     @[editorKey].model.emitter.on 'did-change', =>
+      console.log "change?!"
       @daemonItem[daemonItemKey] = @[editorKey].model.getText()
       @eb.daemonItemCollection.change @daemonItem
       # @eventBus.emit 'daemon-item-collection:change', @daemonItem

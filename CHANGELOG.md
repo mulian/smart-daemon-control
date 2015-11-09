@@ -9,6 +9,10 @@
 * Daemon Edit Page
   * remove hide option
 
+## 0.8.4 - new EventBusSystem (ebs)
+* add new awesome EventBusSystem (ebs on npm)
+* fix bug on delete item
+
 ## 0.8.3 - next Bugfix: atom's state
 * Fix problems with atom's state
   * Thanks for testing aitorllj93

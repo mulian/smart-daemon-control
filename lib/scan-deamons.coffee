@@ -81,7 +81,7 @@ class ScanDeamons
   constructor: ->
     @defineScanFunction()
     @eb = eb.smartDaemonControl
-    @eb.ebAdd 'scanDaemons', @run
+    @eb.eb 'scanDaemons', @run
     # @eventBus.on "scan-daemon-run", @run
 
   defineScanFunction: ->

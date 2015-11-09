@@ -31,11 +31,12 @@ class DaemonItemCollection
       @items = {} =
         inc: 0
       @checks = {}
+    # console.log @checks
 
   reqEventBus: ->
     @eb = eb.smartDaemonControl
     # eb('on',{thisArg:@}) 'SmartDaemonControl.DaemonItemCollection', {} =
-    @eb.ebAdd 'daemonItemCollection', {} =
+    @eb.eb 'daemonItemCollection', {} =
       thisArg:@
       add : (item) => @_callWhenDaemonItem item,@add
       remove : (item) => @_callWhenDaemonItem item,@remove
@@ -69,10 +70,11 @@ class DaemonItemCollection
       console.log "ERROR on _callWhenDaemonItem"
 
   change: (item) =>
+    # console.log "change"
     #TODO: status-bar checks: daemon-item-collection:change not like this
     #will be automatic changed, this is only a trigger
     @changeCheck item
-    @eb.statusBarItemView.refresh @items[item.id]
+    @eb.statusBarItemView.refresh item
     # @eventBus.emit 'status-bar-item-view:refresh', @items[item.id]
 
   changeCheck: (item) -> #TODO: reuse add and remove functions?
@@ -82,6 +84,7 @@ class DaemonItemCollection
         if @checks[item.checkAdded].length==1
           delete @checks[item.checkAdded]
         else
+          console.log item.checkAdded, @checks
           for i,key in @checks[item.checkAdded]
             if i.id==item.id
               @checks[item.checkAdded].splice key,1
@@ -152,14 +155,14 @@ class DaemonItemCollection
   removeCheck: (item) ->
     if item.cmdCheck? and item.cmdCheck.length>0
       checks = @checks[item.cmdCheck]
-      if not checks.length>1
-        delete @checks[item.cmdCheck]
-        return true
-      else
+      if checks.length>1
         for value,key in checks
           if item.id == value.id
             checks.splice key,1
             return true
+      else
+        delete @checks[item.cmdCheck]
+        return true
     return false
 
   addCommands: (item) ->

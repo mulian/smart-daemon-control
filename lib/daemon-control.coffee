@@ -4,7 +4,7 @@ module.exports =
 class DaemonControl
   constructor: ->
     @eb = eb.smartDaemonControl
-    @eb.ebAdd 'daemonControl', {} =
+    @eb.eb 'daemonControl', {} =
       checkAll: @letsCheckAll
       run: @run
     # @eventBus.on "daemon-control:checkAll", @letsCheckAll
@@ -23,12 +23,13 @@ class DaemonControl
       @checkAll checks
       delete @_timeOut
     , 200
-  _firstTime: true
+  _firstTime: {}
   checkAll: (checks) ->
     for checkStr,checkList of checks
       copyList = checkList.slice(0)
       @check checkStr,copyList
   check: (checkStr,checkList) ->
+    # console.log "check: #{checkStr} and #{checkList} and #{@_firstTime}"
     {command,args} = @strToCmd checkStr
     stdout = (output) =>
       #need a decrement loop, because of remove (splice x,1)
@@ -36,20 +37,22 @@ class DaemonControl
       while key--
         item = checkList[key]
         if (output.indexOf(item.strCheck) > -1)
-          console.log "on", item.name
+          # console.log "on", item.name
           @eb.statusBarItemView.aktivate item
           # @eventBus.emit 'status-bar-item-view:aktivate', item
           checkList.splice key,1
     exit = (code) =>
       for item in checkList
-        console.log "off", item.name
+        # console.log "exit: #{item.name}: #{item.autorun} and #{@_firstTime}"
+        # console.log "off", item.name
         @eb.statusBarItemView.deaktivate item
         # @eventBus.emit 'status-bar-item-view:deaktivate', item
         #if it is deactivated and autorun, run it!
-        if item.autorun and @_firstTime
+        if item.autorun and @_firstTime[item.id]!=true
+          # console.log "start #{item.name}"
           @eb.daemonControl.run {daemonItem:item,start:true}
           # @eventBus.emit 'daemon-control:run', {daemonItem:item,start:true}
-      @_firstTime=false
+        @_firstTime[item.id] = true
     process = new BufferedProcess {command,args,stdout,exit}
     process.onWillThrowError (err) ->
       console.log err

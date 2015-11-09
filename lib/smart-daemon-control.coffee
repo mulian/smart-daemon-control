@@ -7,7 +7,7 @@ StatusBarContainerView = require './status-bar-container-view'
 # DaemonAddWizard = require "./daemon-add-wizard"
 ScanDeamons = require './scan-deamons'
 
-require 'e-bus'
+EBS = require 'ebs'
 
 module.exports = SmartDaemonControl =
   #config definition
@@ -31,9 +31,10 @@ module.exports = SmartDaemonControl =
 
   # atom call: will called on package init
   activate: (state) ->
+    new EBS() if not global.eb?
     # eb.debug=true
     @subscriptions = new CompositeDisposable
-    eb.ebAdd 'smartDaemonControl'
+    eb.eb 'smartDaemonControl'
     # @eventBus = new Emitter
     #parse state or create new collection
     @daemonItemCollection =
@@ -79,9 +80,9 @@ module.exports = SmartDaemonControl =
     @statusBarContainerView.detach()
     @daemonManagement.destroy()
     # @eventBus.dispose()
-    eb.SmartDaemonControl.ebRemove()
+    eb.SmartDaemonControl.eb(remove:true)
 
   # atom call: save current daemonItems state
   serialize: ->
     @daemonItemCollection.serialize()
-    # return undefined -> to test reset state
+    # return {} #-> to test reset state
