@@ -10,6 +10,7 @@ Other OS -> use Add new Daemon.
 
 Note: Debian needs root (sudo) privileges for Atom.
 
+
 ## Install Steps
 1. Install smart-daemon-control
  * Terminal: `apm install smart-daemon-control`
