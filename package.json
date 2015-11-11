@@ -1,7 +1,7 @@
 {
   "name": "smart-daemon-control",
   "main": "./lib/smart-daemon-control",
-  "version": "0.8.3",
+  "version": "0.8.4",
   "description": "Easy manage and controll your dev. Daemons like PHP, Apache, Nginx, MySql, ... in your status bar.",
   "keywords": [
     "daemon",
@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "atom-space-pen-views": "2.1.0",
-    "geb" : ">=0.1.0"
+    "geb": ">=0.1.0"
   },
   "consumedServices": {
     "status-bar": {
