@@ -1,6 +1,6 @@
 packageName = require('../package.json').name
 # {$} = require 'atom-space-pen-views'
-{View,$} = require 'space-pen'
+{View,$} = require 'atom-space-pen-views'
 
 module.exports =
 class StatusBarItemView #TODO: add class View
