@@ -20,11 +20,11 @@
       'submenu': [
         {
           'label': 'Scan Daemons'
-          'command': 'launchd-control:scan-daemons'
+          'command': 'smart-daemon-control:scan-daemons'
         },
         {
           'label': 'New Daemon'
-          'command': 'launchd-control:new-daemon'
+          'command': 'smart-daemon-control:new-daemon'
         }
       ]
     ]

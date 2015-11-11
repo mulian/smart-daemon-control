@@ -152,7 +152,7 @@ class DaemonItemCollection
       # @eventBus.emit 'status-bar-container-view:remove', item
       return true
     else return false
-  removeCheck: (item) ->
+  removeCheck: (item) =>
     if item.cmdCheck? and item.cmdCheck.length>0
       checks = @checks[item.cmdCheck]
       if checks.length>1

@@ -7,7 +7,7 @@ StatusBarContainerView = require './status-bar-container-view'
 # DaemonAddWizard = require "./daemon-add-wizard"
 ScanDeamons = require './scan-deamons'
 
-EBS = require 'ebs'
+GEB = require 'geb'
 
 module.exports = SmartDaemonControl =
   #config definition
@@ -31,7 +31,7 @@ module.exports = SmartDaemonControl =
 
   # atom call: will called on package init
   activate: (state) ->
-    new EBS() if not global.eb?
+    new GEB() if not global.eb?
     # eb.debug=true
     @subscriptions = new CompositeDisposable
     eb.eb 'smartDaemonControl'

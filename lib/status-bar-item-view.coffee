@@ -102,6 +102,6 @@ class StatusBarItemView #TODO: add class View
     else atom.notifications.addInfo "Wait"
 
   hide: -> #TODO: Change?
-    @element.addClass 'hidden'
+    @element?.addClass 'hidden'
   show: ->
-    @element.removeClass 'hidden'
+    @element?.removeClass 'hidden'

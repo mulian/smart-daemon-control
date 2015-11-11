@@ -4,21 +4,11 @@ Easy manage and control your development daemons like PHP, Apache, Nginx, MySql,
 
 ![Preview](https://raw.githubusercontent.com/mulian/smart-daemon-control/master/preview.png)
 #Scan algorithm
- * Mac OS X
-   * brew ✓
-   * macports ✕
- * Windows ✕
- * Linux
-   * Debian like (Ubuntu,...) ✓
-     * You'll need root access to start/stop services
-     * Workaround: run atom in termin with root: "sudo atom"
-   * Other ✕
+Only for Mac OS X with brew and Debian Linux.
 
-## INFO
-Now it use atoms state.
+Other OS -> use Add new Daemon.
 
-**NOTE:**
-Update from version <=0.7.3 to a newer version published after 12/01/2015 will delete your stored daemons. - Update now!
+Note: Debian needs root (sudo) privileges for Atom.
 
 ## Install Steps
 1. Install smart-daemon-control
