@@ -39,12 +39,12 @@ class DaemonItemConfigureView extends View
         @td =>
           @div "hide"
         @td =>
-          @input type:"checkbox", id: "daemon-item-hide"
+          @input type:"checkbox", id: "daemon-item-hide", outlet: "daemon-item-hide"
       @tr class: "daemon-autorun", =>
         @td =>
           @div "start with atom"
         @td =>
-          @input type:"checkbox", id: "daemon-item-autorun"
+          @input type:"checkbox", id: "daemon-item-autorun", outlet: "daemon-item-autorun"
       # @tr class: "daemon-autorun-project", =>
       #   @td =>
       #     @div "start with this project"
@@ -56,9 +56,7 @@ class DaemonItemConfigureView extends View
   constructor: ->
     super
     @eb = eb.smartDaemonControl
-    @eb.eb 'daemonItemConfigureView.show', (item) =>
-      @load item
-      @show()
+    @eb.eb 'daemonItemConfigureView.show', @load, {thisArg:@}
     # @eventBus.on "daemon-item-configure-view:show", (item) =>
     #   @load item
     #   @show()
@@ -118,9 +116,9 @@ class DaemonItemConfigureView extends View
     @bindTextEditorView 'daemon-item-str-check', 'strCheck'
 
     @daemonItem.hide=false if not @daemonItem.hide?
-    $(event.target).prop('checked',@daemonItem.hide)
+    @['daemon-item-hide'].prop('checked',@daemonItem.hide)
     @daemonItem.autorun=false if not @daemonItem.autorun?
-    $(event.target).prop('checked',@daemonItem.autorun)
+    @['daemon-item-autorun'].prop('checked',@daemonItem.autorun)
 
     $('#daemon-item-hide').prop('checked',@daemonItem.hide).change (event) =>
       @daemonItem.hide = $(event.target).prop('checked')
@@ -130,3 +128,4 @@ class DaemonItemConfigureView extends View
       @daemonItem.autorun = $(event.target).prop('checked')
       @eb.daemonItemCollection.change daemonItem
       # @eventBus.emit 'daemon-item-collection:change', daemonItem
+    @show()

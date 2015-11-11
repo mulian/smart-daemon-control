@@ -9,8 +9,8 @@
 * Daemon Edit Page
   * remove hide option
 
-## 0.8.4 - new EventBusSystem (ebs)
-* add new awesome EventBusSystem (ebs on npm)
+## 0.8.4 - new GlobalEventBus (geb)
+* add new awesome EventBusSystem (geb on npm)
 * fix bug on delete item
 * fix menu bar call
 

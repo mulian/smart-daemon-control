@@ -167,5 +167,6 @@ class DaemonItemCollection
 
   addCommands: (item) ->
     item.command = atom.commands.add 'atom-workspace',"smart-daemon-control:configure-#{item.name}", =>
+      # console.log @items, item
       @eb.daemonItemConfigureView.show @items[item.id]
       # @eventBus.emit 'daemon-item-configure-view:show', @items[item.id]

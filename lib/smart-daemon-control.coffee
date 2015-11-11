@@ -35,6 +35,7 @@ module.exports = SmartDaemonControl =
     # eb.debug=true
     @subscriptions = new CompositeDisposable
     eb.eb 'smartDaemonControl'
+    # eb.debug=true
     # @eventBus = new Emitter
     #parse state or create new collection
     @daemonItemCollection =
