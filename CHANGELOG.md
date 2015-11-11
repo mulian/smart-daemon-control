@@ -9,6 +9,9 @@
 * Daemon Edit Page
   * remove hide option
 
+## 0.8.5 - Bugfix
+* fix space-pen issue
+
 ## 0.8.4 - new GlobalEventBus (geb)
 * add new awesome EventBusSystem (geb on npm)
 * fix bug on delete item
