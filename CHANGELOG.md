@@ -9,6 +9,10 @@
 * Daemon Edit Page
   * remove hide option
 
+## 0.8.6 - Bugfix
+* fix theme issue #4
+* remove old load daemons from file
+
 ## 0.8.5 - Bugfix
 * fix space-pen issue
 

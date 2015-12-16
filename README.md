@@ -48,3 +48,7 @@ Note: Debian needs root (sudo) privileges for Atom.
 ## Delete Daemon
 1. Open Daemon Edit Panel (see above)
 2. Click Delete Daemon
+
+## Theme Issue
+For [issue #4](https://github.com/mulian/smart-daemon-control/issues/4), there are now fallback Colors.
+If your theme will not define the default Colors, smart-daemon-control will now work fine. BUT maybe it looks bad.

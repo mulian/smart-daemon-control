@@ -2,7 +2,14 @@
 //
 // See https://github.com/atom/atom-dark-ui/blob/master/styles/ui-variables.less
 // for a full listing of what's available.
-@import "ui-variables";
+
+//pre-defined fallback color's from atom-dark-ui
+@text-color: #aaa;
+@background-color-success: #2BDA77;
+@background-color-info: #5293d8;
+
+// @import "ui-variables";
+
 @color_off: @text-color;
 @color_on: @background-color-success;
 @color_load: @background-color-info;
@@ -12,14 +19,12 @@
 }
 #daemon-item-manager {
   width: 100%;
-  background: @scrollbar-background-color;
 
   #daemon-item-title {
     font-weight: bold;
     text-align: center;
   }
   td {
-    border-bottom: 3px solid @overlay-background-color;
     vertical-align: top;
   }
   tr {
@@ -46,8 +51,8 @@
 
 .smart-daemon-control {
   .scan-button {
-    background-color: @background-color-error;
-    color: @text-color-highlight;
+    // background-color: @background-color-error;
+    color: @color_on;
     :hover {
       text-decoration: underline;
       cursor: pointer;

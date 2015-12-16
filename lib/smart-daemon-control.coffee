@@ -1,5 +1,5 @@
 {CompositeDisposable, Emitter} = require 'atom'
-DaemonManagement = require './daemon-management'
+# DaemonManagement = require './daemon-management'
 DaemonItemCollection = require './daemon-item-collection'
 DaemonControl = require './daemon-control'
 DaemonItemConfigureView = require './daemon-item-configure-view'
@@ -51,7 +51,7 @@ module.exports = SmartDaemonControl =
     @initServices()
 
     # Run Daemon Management
-    @daemonManagement = new DaemonManagement #@eventBus
+    # @daemonManagement = new DaemonManagement #@eventBus
 
     # console.log "init ready?"
     # @eventBus.emit "EventsReady"
