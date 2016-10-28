@@ -19,19 +19,22 @@ class ScanDaemons #extends this
     else atom.notifications.addInfo "Could not Scan with #{@name}-algorithm"
   scanForFile: (dir) ->
     dir.getEntries (err,entries) =>
-      for entrie in entries
-        if not entrie.isDirectory()
-          result = @re.exec entrie.getBaseName()
-          if result != null
-            eb.smartDaemonControl.daemonItemCollection.add @formatDaemonItem entrie
-            # @eventBus.emit "daemon-item-collection:add", @formatDaemonItem entrie
-            #@scanDaemons.addDaemon @formatDaemonItem entrie
-            #@regNewDaemon entrie, result[1]
-        else @scanForFile entrie #scan subfolder
+      if err
+        atom.notifications.addError dir.path+" dosnt exists. Is Brew installed?"
+      else
+        for entrie in entries
+          if not entrie.isDirectory()
+            result = @re.exec entrie.getBaseName()
+            if result != null
+              eb.smartDaemonControl.daemonItemCollection.add @formatDaemonItem entrie
+              # @eventBus.emit "daemon-item-collection:add", @formatDaemonItem entrie
+              #@scanDaemons.addDaemon @formatDaemonItem entrie
+              #@regNewDaemon entrie, result[1]
+          else @scanForFile entrie #scan subfolder
   info : ->
     atom.notifications.addInfo "Scan #{@name} Daemons"
 
-  checkDir: ->
+  checkDir: (dirPath) ->
     dir = new Directory(dirPath)
     return dir.exists() and dir.isDirectory()
   #regNewDaemon = (file,fileNameWithoutAfterDot) =>
